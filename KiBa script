@@ -4,7 +4,7 @@ local Window = OrionLib:MakeWindow({Name = "Script của Kiệt Bá", HidePremiu
 
 local Tab = Window:MakeTab({
 	Name = "Script tổng hợp",
-	Icon = "rbxassetid://4483345998",
+	Icon = "rbxassetid://7229442422",
 	PremiumOnly = false
 })
 
