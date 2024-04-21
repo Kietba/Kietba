@@ -3,135 +3,115 @@ local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shl
 local Window = OrionLib:MakeWindow({Name = "Script của Kiệt Bá", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 local Tab = Window:MakeTab({
-	Name = "Script tổng hợp",
-	Icon = "rbxassetid://7229442422",
-	PremiumOnly = false
+    Name = "Script tổng hợp",
+    Icon = "rbxassetid://7229442422",
+    PremiumOnly = false
 })
 
 local Section = Tab:AddSection({
-	Name = "Script"
+    Name = "Script"
 })
 
 Tab:AddButton({
-	Name = "Redz hub script",
-	Callback = function()
-      		loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/BloxFruits/main/redz9999"))()
-  	end    
+    Name = "Redz hub script",
+    Callback = function()
+              loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/BloxFruits/main/redz9999"))()
+      end    
 })
 
 Tab:AddButton({
-	Name = "W-Azure v2",
-	Callback = function()
-      		getgenv().Team = "Pirates"
+    Name = "W-Azure v2",
+    Callback = function()
+              getgenv().Team = "Pirates"
 getgenv().FixCrash = true
 getgenv().FixCrash2 = true
 loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/3b2169cf53bc6104dabe8e19562e5cc2.lua"))()
-  	end    
+      end    
 })
 
 Tab:AddButton({
-	Name = "W-Azure ( Săn bounty )",
-	Callback = function()
-      		loadstring(game:HttpGet("https://scriptblox.com/raw/Blox-Fruits-Auto-Bounty-11164"))()
-  	end    
+    Name = "W-Azure ( Săn bounty )",
+    Callback = function()
+              loadstring(game:HttpGet("https://scriptblox.com/raw/Blox-Fruits-Auto-Bounty-11164"))()
+      end    
 })
 
 Tab:AddButton({
-	Name = "Nyuchan aimbot",
-	Callback = function()
-      		loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/nyulachan/nyula/main/nyuladhm"))()
-  	end    
+    Name = "Nyuchan aimbot",
+    Callback = function()
+              loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/nyulachan/nyula/main/nyuladhm"))()
+      end    
 })
 
 Tab:AddButton({
-	Name = "Tạo bàn phím",
-	Callback = function()
-      		loadstring(game:HttpGet("https://raw.githubusercontent.com/tuankiet987/idk/main/Keybind%20creator",true))()
-  	end    
+    Name = "Tạo bàn phím",
+    Callback = function()
+              loadstring(game:HttpGet("https://raw.githubusercontent.com/tuankiet987/idk/main/Keybind%20creator",true))()
+      end    
 })
 
 Tab:AddButton({
-	Name = "X2 Chạy nhanh",
-	Callback = function()
-      		loadstring(game:HttpGet("https://raw.githubusercontent.com/H4R7NHacks/Obfuscated/master/Breaking%20Point%20H4R7N%20Hack.lua"))()
-  	end    
+    Name = "X2 Chạy nhanh",
+    Callback = function()
+              loadstring(game:HttpGet("https://raw.githubusercontent.com/H4R7NHacks/Obfuscated/master/Breaking%20Point%20H4R7N%20Hack.lua"))()
+      end    
 })
 
 Tab:AddButton({
-	Name = "Chống kick",
-	Callback = function()
-      		loadstring(game:HttpGet("https://raw.githubusercontent.com/tuankiet987/idk/main/anti%20ban"))()()
-  	end    
+    Name = "Chống kick",
+    Callback = function()
+              loadstring(game:HttpGet("https://raw.githubusercontent.com/tuankiet987/idk/main/anti%20ban"))()()
+      end    
 })
 
 Tab:AddButton({
-	Name = "Giảm lag",
-	Callback = function()
+    Name = "Giảm lag",
+    Callback = function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/zephyr10101/ignore-touchinterests/main/main",true))()
-  	end    
+      end    
 })
 
 Tab:AddButton({
-	Name = "Dịch chuyển gần người chơi",
-	Callback = function()
+    Name = "Dịch chuyển gần người chơi",
+    Callback = function()
 loadstring(game:HttpGet(('https://raw.githubusercontent.com/0Ben1/fe/main/obf_nN0N66DHV2BjPwzYN59M17qSSlvJryM201CSC1sg07czxnZf48h9GHOFGd87G6Hh.lua.txt'),true))()
-  	end    
+      end    
 })
 
 Tab:AddButton({
-	Name = "GOHAN hub",
-	Callback = function()
+    Name = "Maru hub",
+    Callback = function()
 loadstring(game:HttpGet('https://raw.githubusercontent.com/joi-droid/MaruHubBF/main/GOHANSSJ3'))()
-  	end    
+      end    
 })
 
 Tab:AddButton({
-	Name = "MinMoi hub",
-	Callback = function()
-loadstring(game:HttpGet"https://github.com/Basicallyy/Basicallyy/raw/main/MinMoi.lua")()
-  	end    
-})
-
-Tab:AddButton({
-	Name = "Basicaly hub",
-	Callback = function()
-loadstring(game:HttpGet"https://raw.githubusercontent.com/Basicallyy/Basicallyy/main/Premium-Viet.lua")()
-  	end    
-})
-
-Tab:AddButton({
-	Name = "Speedz hub",
-	Callback = function()
+    Name = "Speedz hub",
+    Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ahmadsgamer2/Speed-Hub-X/main/SpeedHubX", true))()
-  	end    
+      end    
 })
 
 Tab:AddButton({
-	Name = "Omg hub",
-	Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Omgshit/Scripts/main/MainLoader.lua"))()
-  	end    
-})
-
-Tab:AddButton({
-	Name = "Đánh hộp",
-	Callback = function()
+    Name = "Đánh hộp",
+    Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/HITBOX"))()
-  	end    
+      end    
 })
 
+local Tab = Window:MakeTab({
 Name = "Admin",
-	Icon = "rbxassetid://7229442422",
-	PremiumOnly = false
+    Icon = "rbxassetid://7229442422",
+    PremiumOnly = false
 })
 
 local Section = Tab:AddSection({
-	Name = "Admin"
+    Name = "Admin"
 })
 
 Tab:AddButton({
-	Name = "Infinite yield",
-	Callback = function()
+    Name = "Infinite yield",
+    Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
-  	end    
+      end    
 })
