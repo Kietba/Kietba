@@ -119,3 +119,19 @@ Tab:AddButton({
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/HITBOX"))()
   	end    
 })
+
+Name = "Admin",
+	Icon = "rbxassetid://7229442422",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "Admin"
+})
+
+Tab:AddButton({
+	Name = "Infinite yield",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+  	end    
+})
