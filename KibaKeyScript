@@ -1,15 +1,9 @@
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Mobile%20Friendly%20Orion')))() --This Will Load The Script Code
-local Player = game.Players.LocalPlayer --This Will Reveal The Player Name
-  local Window = OrionLib:MakeWindow({
-		Name = "Nhập mẹ mày chiều khoá đi",
-		HidePremium = false,
-		SaveConfig = true,
-		ConfigFolder = "OrionTest",
-        IntroText = "Đang tải..."       
-}) --This Will Load The Script Hub
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+local Window = OrionLib:MakeWindow({Name = "Nhập mẹ mày chiều khoá đi", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 function MakeScriptHub()
-         loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/KiBa%20script"))() --Put The Script That Will Load If The Key Is Correct Here
+         loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/GhostHub'))() --Put The Script That Will Load If The Key Is Correct Here
 end
 
 OrionLib:MakeNotification({
@@ -55,6 +49,35 @@ Tab:AddButton({
                 Time = 5
             })
             wait(1)
+            OrionLib:Destroy()
+            wait(.3)
+            MakeScriptHub()
+        else
+           OrionLib:MakeNotification({
+                Name = "Xem key",
+                Content = "Xem chiều khoá",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+            wait(2)
+            OrionLib:MakeNotification({
+                Name = "Sai Chiều khoá",
+                Content = "Sai mẹ mày mật khẩu rồi.",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+        end
+    end
+}) --This Will Check The Key You Entered
+
+Tab:AddButton({
+	Name = "Sao chép chiều khoá",
+	Callback = function()
+      		setclipboard("KibaXKabiLTK) --This Will Copy The Link Of The Key
+  	end    
+}) 
+    
+OrionLib:Init() --Require If The Script Is Done
             OrionLib:Destroy()
             wait(.3)
             MakeScriptHub()
