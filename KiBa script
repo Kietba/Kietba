@@ -44,6 +44,13 @@ Tab:AddButton({
 })
 
 Tab:AddButton({
+    Name = "Ware camlock",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/RYZZCHIPSX/ryzzchips/main/beamed%20ware%20script"))();
+      end    
+})
+
+Tab:AddButton({
     Name = "Tạo bàn phím",
     Callback = function()
               loadstring(game:HttpGet("https://raw.githubusercontent.com/tuankiet987/idk/main/Keybind%20creator",true))()
