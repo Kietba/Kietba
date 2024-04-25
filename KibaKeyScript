@@ -63,7 +63,7 @@ end)
 local KeySystem = Instance.new("TextBox")
 KeySystem.Size = UDim2.new(1, 0, 0.5, 0)
 KeySystem.Position = UDim2.new(0, 0, 0, 0)
-KeySystem.Text = "Xác nhận"
+KeySystem.Text = "Nhập"
 KeySystem.TextColor3 = Color3.new(0, 0, 0)
 KeySystem.BackgroundTransparency = 0.5
 KeySystem.BackgroundColor3 = Color3.new(1, 1, 1)
@@ -99,7 +99,7 @@ SubmitButton.MouseButton1Click:Connect(function()
     if KeySystem == "kibaxkabi" then   
 screenGui:Destroy()
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/KiBa script"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/KiBa%20script"))()
   
   end
 end)
