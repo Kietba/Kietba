@@ -3,7 +3,7 @@ local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shl
 local Window = OrionLib:MakeWindow({Name = "Script của Kiệt Bá", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 local Tab = Window:MakeTab({
-    Name = "Script tổng hợp",
+    Name = "Blox fruit tổng hợp script",
     Icon = "rbxassetid://7229442422",
     PremiumOnly = false
 })
@@ -65,13 +65,6 @@ Tab:AddButton({
 })
 
 Tab:AddButton({
-    Name = "X2 Chạy nhanh",
-    Callback = function()
-              loadstring(game:HttpGet("https://raw.githubusercontent.com/H4R7NHacks/Obfuscated/master/Breaking%20Point%20H4R7N%20Hack.lua"))()
-      end    
-})
-
-Tab:AddButton({
     Name = "Chống kick",
     Callback = function()
               loadstring(game:HttpGet("https://raw.githubusercontent.com/tuankiet987/idk/main/anti%20ban"))()()
@@ -82,13 +75,6 @@ Tab:AddButton({
     Name = "Giảm lag",
     Callback = function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/zephyr10101/ignore-touchinterests/main/main",true))()
-      end    
-})
-
-Tab:AddButton({
-    Name = "Dịch chuyển gần người chơi",
-    Callback = function()
-loadstring(game:HttpGet(('https://raw.githubusercontent.com/0Ben1/fe/main/obf_nN0N66DHV2BjPwzYN59M17qSSlvJryM201CSC1sg07czxnZf48h9GHOFGd87G6Hh.lua.txt'),true))()
       end    
 })
 
@@ -106,27 +92,41 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ahmadsgamer2/Speed-Hu
       end    
 })
 
-Tab:AddButton({
-    Name = "Đánh hộp",
-    Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/HITBOX"))()
-      end    
-})
-
 local Tab = Window:MakeTab({
-Name = "Script bình thường",
+Name = "Script khác",
     Icon = "rbxassetid://7229442422",
     PremiumOnly = false
 })
 
 local Section = Tab:AddSection({
-    Name = "Admin"
+    Name = "Script"
 })
 
 Tab:AddButton({
     Name = "Infinite yield",
     Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+      end    
+})
+
+Tab:AddButton({
+    Name = "Dịch chuyển gần người chơi",
+    Callback = function()
+loadstring(game:HttpGet(('https://raw.githubusercontent.com/0Ben1/fe/main/obf_nN0N66DHV2BjPwzYN59M17qSSlvJryM201CSC1sg07czxnZf48h9GHOFGd87G6Hh.lua.txt'),true))()
+      end    
+})
+
+Tab:AddButton({
+    Name = "X2 Chạy nhanh",
+    Callback = function()
+              loadstring(game:HttpGet("https://raw.githubusercontent.com/H4R7NHacks/Obfuscated/master/Breaking%20Point%20H4R7N%20Hack.lua"))()
+      end    
+})
+
+Tab:AddButton({
+    Name = "Đánh hộp",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/HITBOX"))()
       end    
 })
 
@@ -248,5 +248,12 @@ Tab:AddButton({
     Name = "Chạy nhanh : 0.3",
     Callback = function()
 game.StarterGui:SetCore("SendNotification", { Title = "😎Script của Kiệt Bá👇"; Text = "Tốc độ được chỉnh thành 0.3"; Icon = "7229442422"; Duration = 10; }) function isNumber(str) if tonumber(str) ~= nil or str == 'inf' then return true end end local tspeed = 0.3 local hb = game:GetService("RunService").Heartbeat local tpwalking = true local player = game:GetService("Players") local lplr = player.LocalPlayer local chr = lplr.Character local hum = chr and chr:FindFirstChildWhichIsA("Humanoid") while tpwalking and hb:Wait() and chr and hum and hum.Parent do if hum.MoveDirection.Magnitude > 0 then if tspeed and isNumber(tspeed) then chr:TranslateBy(hum.MoveDirection * tonumber(tspeed)) else chr:TranslateBy(hum.MoveDirection) end end end
+      end    
+})
+
+Tab:AddButton({
+    Name = "Đánh sau lưng",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/Blockaura"))()
       end    
 })
