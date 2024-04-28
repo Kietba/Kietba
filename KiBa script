@@ -143,8 +143,8 @@ _G.Tp = false -- Keep false if hold is true
 _G.TpDistance = CFrame.new(0, 0, 2) -- |2 = behind  |-2 = front| less = less distance
 _G.Key = "G"
 _G.ManualSpeedSetupKey = "L"
-_G.Speed = 25 -- Too high will make people know ur exploiting
-_G.NoStun = 0.5 -- For this ammount of time you will have no stun
+_G.Speed = 30 -- Too high will make people know ur exploiting
+_G.NoStun = 1 -- For this ammount of time you will have no stun
 _G.autoSetNormalSpeed = true
 _G.manuallySetNormalSpeed = false -- Press L to set it will copy ur current speed
 _G.normalSpeed = 18 -- Set manually from the script
@@ -157,21 +157,13 @@ local hum = char:WaitForChild("Humanoid")
 local Holding = false
 
 if _G.autoSetNormalSpeed == true then
-
 _G.normalSpeed = hum.WalkSpeed
-
 end
-
 game:GetService("UserInputService").InputBegan:Connect(function(input, typing)
-   
 if typing then
-
 return
-
 else
-   
    if input.KeyCode == Enum.KeyCode[_G.Key] then
-     
       if _G.Tp == false then
        hum.WalkSpeed = _G.Speed
        task.wait(_G.NoStun)
@@ -179,9 +171,7 @@ else
        Holding = true
        print("Hehe")
       else
-   
    char.HumanoidRootPart.CFrame = char.HumanoidRootPart.CFrame * _G.TpDistance
-       
       end
    elseif input.KeyCode == Enum.KeyCode[_G.ManualSpeedSetupKey] then
         if _G.ManualSpeedSetupKey == true then
@@ -192,26 +182,17 @@ else
 end)
 
 game:GetService("UserInputService").InputEnded:Connect(function(input, typing)
-   
 if typing then
-
 return
-
 else
-   
    if input.KeyCode == Enum.KeyCode[_G.Key] then
-     
        Holding = false
-       
       end
    end
 end)
 
-
 while task.wait() do
- 
   if _G.Hold == true and Holding == true then
-     
               hum.WalkSpeed = _G.Speed
              
   elseif Holding == false and _G.Hold == true then
@@ -234,5 +215,22 @@ Tab:AddButton({
     Name = "Super speed : 9",
     Callback = function()
 game.StarterGui:SetCore("SendNotification", { Title = "Script của Kiệt Bá"; Text = "Nhìn coins card"; Icon = ""; Duration = 10; }) function isNumber(str) if tonumber(str) ~= nil or str == 'inf' then return true end end local tspeed = 9 local hb = game:GetService("RunService").Heartbeat local tpwalking = true local player = game:GetService("Players") local lplr = player.LocalPlayer local chr = lplr.Character local hum = chr and chr:FindFirstChildWhichIsA("Humanoid") while tpwalking and hb:Wait() and chr and hum and hum.Parent do if hum.MoveDirection.Magnitude > 0 then if tspeed and isNumber(tspeed) then chr:TranslateBy(hum.MoveDirection * tonumber(tspeed)) else chr:TranslateBy(hum.MoveDirection) end end end
+      end    
+})
+
+local Tab = Window:MakeTab({
+    Name = "Strongest battleground",
+    Icon = "rbxassetid://7229442422",
+    PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+    Name = "Script"
+})
+
+Tab:AddButton({
+    Name = "hawk hub script (key : hacininsalgami)",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/TheHanki/Hawk/main/Loader", true))()
       end    
 })
