@@ -205,16 +205,9 @@ end
 })
 
 Tab:AddButton({
-    Name = "Super speed 0.3",
+    Name = "Chạy nhanh của blox fruit : 9",
     Callback = function()
-game.StarterGui:SetCore("SendNotification", { Title = "Script của Kiệt Bá"; Text = "Nhìn coins card"; Icon = ""; Duration = 10; }) function isNumber(str) if tonumber(str) ~= nil or str == 'inf' then return true end end local tspeed = 0.3 local hb = game:GetService("RunService").Heartbeat local tpwalking = true local player = game:GetService("Players") local lplr = player.LocalPlayer local chr = lplr.Character local hum = chr and chr:FindFirstChildWhichIsA("Humanoid") while tpwalking and hb:Wait() and chr and hum and hum.Parent do if hum.MoveDirection.Magnitude > 0 then if tspeed and isNumber(tspeed) then chr:TranslateBy(hum.MoveDirection * tonumber(tspeed)) else chr:TranslateBy(hum.MoveDirection) end end end
-      end    
-})
-
-Tab:AddButton({
-    Name = "Super speed : 9",
-    Callback = function()
-game.StarterGui:SetCore("SendNotification", { Title = "Script của Kiệt Bá"; Text = "Nhìn coins card"; Icon = ""; Duration = 10; }) function isNumber(str) if tonumber(str) ~= nil or str == 'inf' then return true end end local tspeed = 9 local hb = game:GetService("RunService").Heartbeat local tpwalking = true local player = game:GetService("Players") local lplr = player.LocalPlayer local chr = lplr.Character local hum = chr and chr:FindFirstChildWhichIsA("Humanoid") while tpwalking and hb:Wait() and chr and hum and hum.Parent do if hum.MoveDirection.Magnitude > 0 then if tspeed and isNumber(tspeed) then chr:TranslateBy(hum.MoveDirection * tonumber(tspeed)) else chr:TranslateBy(hum.MoveDirection) end end end
+game.StarterGui:SetCore("SendNotification", { Title = "😎Script của Kiệt Bá👇"; Text = "Tốc độ được chỉnh thành 9"; Icon = "7229442422"; Duration = 10; }) function isNumber(str) if tonumber(str) ~= nil or str == 'inf' then return true end end local tspeed = 9 local hb = game:GetService("RunService").Heartbeat local tpwalking = true local player = game:GetService("Players") local lplr = player.LocalPlayer local chr = lplr.Character local hum = chr and chr:FindFirstChildWhichIsA("Humanoid") while tpwalking and hb:Wait() and chr and hum and hum.Parent do if hum.MoveDirection.Magnitude > 0 then if tspeed and isNumber(tspeed) then chr:TranslateBy(hum.MoveDirection * tonumber(tspeed)) else chr:TranslateBy(hum.MoveDirection) end end end
       end    
 })
 
@@ -229,8 +222,31 @@ local Section = Tab:AddSection({
 })
 
 Tab:AddButton({
-    Name = "hawk hub script (key : hacininsalgami)",
+    Name = "hawk hub script",
     Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/TheHanki/Hawk/main/Loader", true))()
+      end    
+})
+
+Tab:AddButton({
+	Name = "☝️Sao chép chiều khoá☝️",
+	Callback = function()
+      		setclipboard("hacininsalgami")
+  	end    
+}) 
+    
+OrionLib:Init()
+
+Tab:AddButton({
+    Name = "Tự động chắn",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/TheHanki/Hawk/main/Loader", true))()
+      end    
+})
+
+Tab:AddButton({
+    Name = "Chạy nhanh : 0.3",
+    Callback = function()
+game.StarterGui:SetCore("SendNotification", { Title = "😎Script của Kiệt Bá👇"; Text = "Tốc độ được chỉnh thành 0.3"; Icon = "7229442422"; Duration = 10; }) function isNumber(str) if tonumber(str) ~= nil or str == 'inf' then return true end end local tspeed = 0.3 local hb = game:GetService("RunService").Heartbeat local tpwalking = true local player = game:GetService("Players") local lplr = player.LocalPlayer local chr = lplr.Character local hum = chr and chr:FindFirstChildWhichIsA("Humanoid") while tpwalking and hb:Wait() and chr and hum and hum.Parent do if hum.MoveDirection.Magnitude > 0 then if tspeed and isNumber(tspeed) then chr:TranslateBy(hum.MoveDirection * tonumber(tspeed)) else chr:TranslateBy(hum.MoveDirection) end end end
       end    
 })
