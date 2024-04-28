@@ -119,7 +119,7 @@ local function JLXHHH_fake_script() -- BlockAura.BlockAura
 					if (v ~= Usuario and Usuario.Character and Usuario.Character:FindFirstChild("HumanoidRootPart") and v.Character and v.Character:FindFirstChild("HumanoidRootPart")) then
 						local distance = (v.Character.HumanoidRootPart.Position - Usuario.Character.HumanoidRootPart.Position).magnitude
  
-						if (distance < closestDistance and distance <= 17) then -- Verificando se é o jogador mais próximo e se ele está dentro da distância permitida
+						if (distance < closestDistance and distance <= 25) then -- Verificando se é o jogador mais próximo e se ele está dentro da distância permitida
 							closestDistance = distance
 							closestPlayer = v
 						end
