@@ -101,10 +101,10 @@ function allowed(enemy)
 end
 
 local durations = {
-    ["anim" ] = 0.3,
-    ["dodge" ] = 0.9,
-    ["barrage" ] = 0.9,
-    ["ability" ] = 0.6,
+    ["anim" ] = 1.5,
+    ["dodge" ] = 1.5,
+    ["barrage" ] = 1.5,
+    ["ability" ] = 1.5,
 }
 
 function def(action)
