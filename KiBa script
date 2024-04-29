@@ -267,6 +267,13 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/Bl
 })
 
 Tab:AddButton({
+    Name = "Nhìn thấy ult của saitama",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/FFJ1/Roblox-Exploits/main/scripts/TSBUtils.lua"))()
+      end    
+})
+
+Tab:AddButton({
     Name = "test",
     Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Nicuse/RobloxScripts/main/SaitamaBattlegrounds.lua"))()
