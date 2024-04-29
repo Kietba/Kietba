@@ -3,7 +3,7 @@ local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shl
 local Window = OrionLib:MakeWindow({Name = "Script của Kiệt Bá", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 local Tab = Window:MakeTab({
-    Name = "Blox fruit tổng hợp script",
+    Name = "Blox fruit",
     Icon = "rbxassetid://7229442422",
     PremiumOnly = false
 })
@@ -232,6 +232,7 @@ Tab:AddButton({
 	Name = "☝️Sao chép chiều khoá☝️",
 	Callback = function()
       		setclipboard("hacininsalgami")
+game.StarterGui:SetCore("SendNotification", { Title = "Thông báo"; Text = "Đã sao chép"; Icon = ""; Duration = 20; })
   	end    
 }) 
     
@@ -255,5 +256,12 @@ Tab:AddButton({
     Name = "Đánh sau lưng",
     Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/Blockaura"))()
+      end    
+})
+
+Tab:AddButton({
+    Name = "test",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Nicuse/RobloxScripts/main/SaitamaBattlegrounds.lua"))()
       end    
 })
