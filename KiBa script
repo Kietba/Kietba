@@ -44,9 +44,16 @@ Tab:AddButton({
 })
 
 Tab:AddButton({
-    Name = "aimbot vip",
+    Name = "aimbot v1",
     Callback = function()
 loadstring(game:HttpGet("https://rentry.co/n55gmtpi/raw", true))()
+      end    
+})
+
+Tab:AddButton({
+    Name = "aimbot v3",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/Aimbotv2"))()
       end    
 })
 
