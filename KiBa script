@@ -283,14 +283,15 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/FFJ1/Roblox-Exploits/
 Tab:AddButton({
     Name = "Best Gui",
     Callback = function()
-loadstring(game:HttpGet("https://scriptblox.com/raw/BLADE-MASTER-The-Strongest-Battlegrounds-FREE-AND-BEST-GUI-10344"))()
 game.StarterGui:SetCore("SendNotification", { Title = "👇Đọc👇"; Text = "Mỗi ngày cập nhật 1 key của script này (copy key ở dưới)"; Icon = ""; Duration = 120; })
+loadstring(game:HttpGet("https://scriptblox.com/raw/BLADE-MASTER-The-Strongest-Battlegrounds-FREE-AND-BEST-GUI-10344"))()
       end    
 })
 
 Tab:AddButton({
-    Name = "👆Sao chép👆",
+    Name = "👆Sao chép key của script👆",
     Callback = function()
 setclipboard("36d99192158462ba0e531f89a893aaf0e0b1c4dd")
+game.StarterGui:SetCore("SendNotification", { Title = "Thông báo"; Text = "Sao chép thành công"; Icon = ""; Duration = 10; })
       end    
 })
