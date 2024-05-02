@@ -51,7 +51,7 @@ loadstring(game:HttpGet("https://rentry.co/n55gmtpi/raw", true))()
 })
 
 Tab:AddButton({
-    Name = "aimbot v3",
+    Name = "aimbot v2",
     Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/Aimbotv2"))()
       end    
@@ -283,7 +283,6 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/FFJ1/Roblox-Exploits/
 Tab:AddButton({
     Name = "Best Gui",
     Callback = function()
-game.StarterGui:SetCore("SendNotification", { Title = "👇Đọc👇"; Text = "Mỗi ngày cập nhật 1 key của script này (copy key ở dưới)"; Icon = ""; Duration = 120; })
 loadstring(game:HttpGet("https://scriptblox.com/raw/BLADE-MASTER-The-Strongest-Battlegrounds-FREE-AND-BEST-GUI-10344"))()
       end    
 })
