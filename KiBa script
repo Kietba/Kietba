@@ -291,6 +291,6 @@ game.StarterGui:SetCore("SendNotification", { Title = "👇Đọc👇"; Text = "
 Tab:AddButton({
     Name = "👆Sao chép👆",
     Callback = function()
-setclipboard("")
+setclipboard("36d99192158462ba0e531f89a893aaf0e0b1c4dd")
       end    
 })
