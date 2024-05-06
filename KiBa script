@@ -145,7 +145,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/HI
 })
 
 Tab:AddButton({
-    Name = "Xuyên tường,
+    Name = "Xuyên tường",
     Callback = function()
 local Workspace = game:GetService("Workspace")
 local CoreGui = game:GetService("CoreGui")
