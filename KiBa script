@@ -226,3 +226,10 @@ Tab:AddButton({
 loadstring(game:HttpGet("https://scriptblox.com/raw/BLADE-MASTER-The-Strongest-Battlegrounds-FREE-AND-BEST-GUI-10344"))()
       end    
 })
+
+Tab:AddButton({
+    Name = "Giết tất cả",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripterbacon/TSBobfuscator/main/Script.Lua"))()
+      end    
+})
