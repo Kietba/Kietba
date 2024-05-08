@@ -221,11 +221,16 @@ loadstring(game:HttpGet(('https://raw.githubusercontent.com/0Ben1/fe/main/Collis
 })
 
 Tab:AddButton({
-    Name = "Best Gui",
+    Name = "Script trung bình",
     Callback = function()
 loadstring(game:HttpGet("https://scriptblox.com/raw/BLADE-MASTER-The-Strongest-Battlegrounds-FREE-AND-BEST-GUI-10344"))()
       end    
 })
+
+Tab:AddButton({
+    Name = "Script mạnh",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/louismich4el/Zygarde/main/Protected%20zygarde.lua"))()
 
 Tab:AddButton({
     Name = "Giết tất cả",
