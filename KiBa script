@@ -231,6 +231,8 @@ Tab:AddButton({
     Name = "Script mạnh",
     Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/louismich4el/Zygarde/main/Protected%20zygarde.lua"))()
+      end    
+})
 
 Tab:AddButton({
     Name = "Giết tất cả",
