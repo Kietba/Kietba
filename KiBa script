@@ -3,7 +3,7 @@ local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shl
 local Window = OrionLib:MakeWindow({Name = "Script của Kiệt Bá", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 local Tab = Window:MakeTab({
-    Name = "🤜Blox fruit🤛",
+    Name = "Blox fruit",
     Icon = "rbxassetid://7229442422",
     PremiumOnly = false
 })
@@ -30,9 +30,18 @@ loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/3b2169cf53bc61
 })
 
 Tab:AddButton({
-    Name = "W-Azure ( Săn bounty )",
+    Name = "Săn bounty v1 (nên dùng nhưng dễ chết)",
     Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/tuankiet987/idk/main/anti%20ban"))()()
               loadstring(game:HttpGet("https://scriptblox.com/raw/Blox-Fruits-Auto-Bounty-11164"))()
+      end    
+})
+
+Tab:AddButton({
+    Name = "Săn bounty v2 (nên dùng , khó chết)",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/tuankiet987/idk/main/anti%20ban"))()()
+loadstring(game:HttpGet("https://scriptblox.com/raw/Blox-Fruits-auto-bounty-script-12154"))()
       end    
 })
 
@@ -107,7 +116,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ahmadsgamer2/Speed-Hu
 })
 
 local Tab = Window:MakeTab({
-Name = "🗿Script khác🗿",
+Name = "Script khác",
     Icon = "rbxassetid://7229442422",
     PremiumOnly = false
 })
@@ -166,7 +175,7 @@ game.StarterGui:SetCore("SendNotification", { Title = "😎Script của Kiệt B
 })
 
 local Tab = Window:MakeTab({
-    Name = "👑STB👑",
+    Name = "STB",
     Icon = "rbxassetid://7229442422",
     PremiumOnly = false
 })
