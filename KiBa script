@@ -93,6 +93,13 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/joi-droid/MaruHubBF/m
 })
 
 Tab:AddButton({
+    Name = "Maru hub v2",
+    Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/joi-droid/MaruHubBF/main/GOHANSSJ3'))()
+      end    
+})
+
+Tab:AddButton({
     Name = "Speedz hub",
     Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ahmadsgamer2/Speed-Hub-X/main/SpeedHubX", true))()
