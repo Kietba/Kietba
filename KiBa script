@@ -12,6 +12,13 @@ local Section = Tab:AddSection({
     Name = "Script"
 })
 
+OrionLib:MakeNotification({
+	Name = "Chào mừng",
+	Content = "Chào mừng thằng ngu đến với script Kiệt Bá",
+	Image = "rbxassetid://4483345998",
+	Time = 10
+})
+
 Tab:AddButton({
     Name = "Redz hub script",
     Callback = function()
