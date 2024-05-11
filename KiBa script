@@ -39,7 +39,6 @@ loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/3b2169cf53bc61
 Tab:AddButton({
     Name = "Săn bounty v1 (nên dùng nhưng dễ chết)",
     Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/tuankiet987/idk/main/anti%20ban"))()()
               loadstring(game:HttpGet("https://scriptblox.com/raw/Blox-Fruits-Auto-Bounty-11164"))()
       end    
 })
@@ -47,7 +46,6 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/tuankiet987/idk/main/
 Tab:AddButton({
     Name = "Săn bounty v2 (nên dùng , khó chết)",
     Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/tuankiet987/idk/main/anti%20ban"))()()
 loadstring(game:HttpGet("https://scriptblox.com/raw/Blox-Fruits-auto-bounty-script-12154"))()
       end    
 })
@@ -150,6 +148,13 @@ Tab:AddButton({
     Name = "Dịch chuyển gần người chơi",
     Callback = function()
 loadstring(game:HttpGet(('https://raw.githubusercontent.com/0Ben1/fe/main/obf_nN0N66DHV2BjPwzYN59M17qSSlvJryM201CSC1sg07czxnZf48h9GHOFGd87G6Hh.lua.txt'),true))()
+      end    
+})
+
+Tab:AddButton({
+    Name = "Shiftlock trên điện thoại",
+    Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Unknownproootest/Permanent-Shift-Lock-Script/main/PermShiftlock'))()
       end    
 })
 
