@@ -12,33 +12,26 @@ tab1.newLabel("Script của blox fruit")
 tab1.newButton("Redz hub", "Không cần chiều khoá", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/BloxFruits/main/redz9999"))()
 end)
-
 tab1.newButton("Azure", "Thời gian load : 10 giây", function()
     getgenv().FixCrash = true
 getgenv().FixCrash2 = true
 loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/3b2169cf53bc6104dabe8e19562e5cc2.lua"))()
 end)
-
 tab1.newButton("Auto săn bounty v1", "Xịn nhưng dễ chết", function()
     loadstring(game:HttpGet("https://scriptblox.com/raw/Blox-Fruits-Auto-Bounty-11164"))()
 end)
-
 tab1.newButton("Auto săn bounty v2", "Xịn và nên dùng", function()
     loadstring(game:HttpGet("https://scriptblox.com/raw/Blox-Fruits-auto-bounty-script-12154"))()
 end)
-
 tab1.newButton("Maru hub v1", "Không cần chiều khoá", function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/joi-droid/MaruHubBF/main/GOHANSSJ3'))()
 end)
-
 tab1.newButton("Maru hub v2", "Không cần chiều khoá", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/ahmadsgamer2/Zekrom-Hub-X/main/Blox-Fruit.lua"))()
 end)
-
 tab1.newButton("Speedz hub script", "Không cần chiều khoá", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/ahmadsgamer2/Speed-Hub-X/main/SpeedHubX", true))()
 end)
-
 tab1.newButton("Chạy cực nhanh, "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/Speed 0.9"))()
 end)
@@ -51,15 +44,12 @@ tab2.newLabel("Script aimbot")
 tab2.newButton("Aimbot v1", "Luôn nhìn người khác", function()
     loadstring(game:HttpGet("https://rentry.co/n55gmtpi/raw", true))()
 end)
-
 tab2.newButton("Aimbot v2", "Luôn nhìn người khác", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/Aimbotv2"))()
 end)
-
 tab2.newButton("Nyuchan", "Luôn nhìn người khác", function()
     loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/nyulachan/nyula/main/nyuladhm"))()
 end)
-
 tab2.newButton("Ware camlock", "Luôn nhìn người khác", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/RYZZCHIPSX/ryzzchips/main/beamed%20ware%20script"))();
 end)
@@ -71,31 +61,24 @@ tab3.newLabel("Các script bình thường")
 tab3.newButton("Định vị", "Nhìn thấy tất cả người chơi", function()
     loadstring(game:HttpGet(('https://raw.githubusercontent.com/cool83birdcarfly02six/UNIVERSALESPLTX/main/README.md'),true))()
 end)
-
 tab3.newButton("Chống kick", "Tránh bị thằng admin quật", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/tuankiet987/idk/main/anti%20ban"))()()
 end)
-
 tab3.newButton("Shiftlock", "Trên điện thoại", function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/Unknownproootest/Permanent-Shift-Lock-Script/main/PermShiftlock'))()
 end)
-
 tab3.newButton("Chạy nhanh gấp đôi", "1 nhấn sẽ tăng thêm tốc độ chạy", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/H4R7NHacks/Obfuscated/master/Breaking%20Point%20H4R7N%20Hack.lua"))()
 end)
-
 tab3.newButton("Đánh hộp", "Đánh từ xa", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/HITBOX"))()
 end)
-
 tab3.newButton("Tạo bàn phím", "Dùng để mở hoặc đóng hack", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/tuankiet987/idk/main/Keybind%20creator",true))()
 end)
-
 tab3.newButton("Lệnh", "Dùng lệnh của bản thân", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
 end)
-
 tab3.newButton("Xuyên tường", "Chạy xuyên tường", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/Noclip"))()
 end)
@@ -107,15 +90,12 @@ tab4.newLabel("Script của strongest battleground")
 tab4.newButton("Tự động chắn", "Tự động chắn khi đối thủ đánh bạn", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/autoblock"))()
 end)
-
 tab4.newButton("Chạy nhanh 0.3", "Chạy nhanh hơn bình thường", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/Speed 0.3"))()
 end)
-
 tab4.newButton("Nhìn thấy ult", "Nhìn thấy ult của saitama và ult khác", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/FFJ1/Roblox-Exploits/main/scripts/TSBUtils.lua"))()
 end)
-
 tab4.newButton("Giết tất cả", "Giết tất cả và giết người bạn muốn", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripterbacon/TSBobfuscator/main/Script.Lua"))()
 end)
