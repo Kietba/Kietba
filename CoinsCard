@@ -40,7 +40,7 @@ tab1.newButton("Speedz hub script", "Không cần chiều khoá", function()
 end)
 
 tab1.newButton("Chạy cực nhanh, "", function()
-    game.StarterGui:SetCore("SendNotification", { Title = "Thông báo : 👇"; Text = "Tốc độ được chỉnh 9"; Icon = ""; Duration = 20; }) function isNumber(str) if tonumber(str) ~= nil or str == 'inf' then return true end end local tspeed = 9 local hb = game:GetService("RunService").Heartbeat local tpwalking = true local player = game:GetService("Players") local lplr = player.LocalPlayer local chr = lplr.Character local hum = chr and chr:FindFirstChildWhichIsA("Humanoid") while tpwalking and hb:Wait() and chr and hum and hum.Parent do if hum.MoveDirection.Magnitude > 0 then if tspeed and isNumber(tspeed) then chr:TranslateBy(hum.MoveDirection * tonumber(tspeed)) else chr:TranslateBy(hum.MoveDirection) end end end
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/Speed 0.9"))()
 end)
 
 -- Create the second tab with a different image ID
@@ -109,7 +109,7 @@ tab4.newButton("Tự động chắn", "Tự động chắn khi đối thủ đá
 end)
 
 tab4.newButton("Chạy nhanh 0.3", "Chạy nhanh hơn bình thường", function()
-    game.StarterGui:SetCore("SendNotification", { Title = "Thông báo : 👇"; Text = "Tốc độ được chỉnh 0.3"; Icon = ""; Duration = 20; }) function isNumber(str) if tonumber(str) ~= nil or str == 'inf' then return true end end local tspeed = 0.3 local hb = game:GetService("RunService").Heartbeat local tpwalking = true local player = game:GetService("Players") local lplr = player.LocalPlayer local chr = lplr.Character local hum = chr and chr:FindFirstChildWhichIsA("Humanoid") while tpwalking and hb:Wait() and chr and hum and hum.Parent do if hum.MoveDirection.Magnitude > 0 then if tspeed and isNumber(tspeed) then chr:TranslateBy(hum.MoveDirection * tonumber(tspeed)) else chr:TranslateBy(hum.MoveDirection) end end end
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/Speed 0.3"))()
 end)
 
 tab4.newButton("Nhìn thấy ult", "Nhìn thấy ult của saitama và ult khác", function()
