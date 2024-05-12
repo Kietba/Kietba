@@ -1,8 +1,14 @@
+-- Load the DrRay library from the GitHub repository Library
 local DrRayLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/DrRay-UI-Library/main/DrRay.lua"))()
-local window = DrRayLibrary:Load("DrRay", "Default")
 
-local tab1 = DrRayLibrary.newTab("Blox fruit", "0")
+-- Create a new window and set its title and theme
+local window = DrRayLibrary:Load("Kiệt Bá", "Default")
 
+-- Create the first tab with an image ID
+local tab1 = DrRayLibrary.newTab("Blox fruit", "ImageIdHere")
+
+-- Add elements to the first tab
+tab1.newLabel("Script của blox fruit")
 tab1.newButton("Redz hub", "Không cần chiều khoá", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/BloxFruits/main/redz9999"))()
 end)
@@ -37,9 +43,11 @@ tab1.newButton("Chạy cực nhanh, "", function()
     game.StarterGui:SetCore("SendNotification", { Title = "Thông báo : 👇"; Text = "Tốc độ được chỉnh 9"; Icon = ""; Duration = 20; }) function isNumber(str) if tonumber(str) ~= nil or str == 'inf' then return true end end local tspeed = 9 local hb = game:GetService("RunService").Heartbeat local tpwalking = true local player = game:GetService("Players") local lplr = player.LocalPlayer local chr = lplr.Character local hum = chr and chr:FindFirstChildWhichIsA("Humanoid") while tpwalking and hb:Wait() and chr and hum and hum.Parent do if hum.MoveDirection.Magnitude > 0 then if tspeed and isNumber(tspeed) then chr:TranslateBy(hum.MoveDirection * tonumber(tspeed)) else chr:TranslateBy(hum.MoveDirection) end end end
 end)
 
+-- Create the second tab with a different image ID
+local tab2 = DrRayLibrary.newTab("Aimbot", "ImageIdLogoHere")
 
-local tab2 = DrRayLibrary.newTab("Aimbot", "0")
-
+-- Add elements to the second tab
+tab2.newLabel("Script aimbot")
 tab2.newButton("Aimbot v1", "Luôn nhìn người khác", function()
     loadstring(game:HttpGet("https://rentry.co/n55gmtpi/raw", true))()
 end)
@@ -56,8 +64,10 @@ tab2.newButton("Ware camlock", "Luôn nhìn người khác", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/RYZZCHIPSX/ryzzchips/main/beamed%20ware%20script"))();
 end)
 
-local tab3 = DrRayLibrary.newTab("Script thường", "0")
+local tab3 = DrRayLibrary.newTab("Script bìn thường", "ImageIdLogoHere")
 
+-- Add elements to the second tab
+tab3.newLabel("Các script bình thường")
 tab3.newButton("Định vị", "Nhìn thấy tất cả người chơi", function()
     loadstring(game:HttpGet(('https://raw.githubusercontent.com/cool83birdcarfly02six/UNIVERSALESPLTX/main/README.md'),true))()
 end)
@@ -83,27 +93,29 @@ tab3.newButton("Tạo bàn phím", "Dùng để mở hoặc đóng hack", functi
 end)
 
 tab3.newButton("Lệnh", "Dùng lệnh của bản thân", function()
-    print('Hello!')
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
 end)
 
 tab3.newButton("Xuyên tường", "Chạy xuyên tường", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/Noclip"))()
 end)
 
-local tab3 = DrRayLibrary.newTab("STB", "0")
+local tab4 = DrRayLibrary.newTab("STB", "ImageIdLogoHere")
 
-tab3.newButton("Tự động chắn", "Tự động chắn khi đối thủ đánh bạn", function()
+-- Add elements to the second tab
+tab4.newLabel("Script của strongest battleground")
+tab4.newButton("Tự động chắn", "Tự động chắn khi đối thủ đánh bạn", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/autoblock"))()
 end)
 
-tab3.newButton("Chạy nhanh 0.3", "Chạy nhanh hơn bình thường", function()
+tab4.newButton("Chạy nhanh 0.3", "Chạy nhanh hơn bình thường", function()
     game.StarterGui:SetCore("SendNotification", { Title = "Thông báo : 👇"; Text = "Tốc độ được chỉnh 0.3"; Icon = ""; Duration = 20; }) function isNumber(str) if tonumber(str) ~= nil or str == 'inf' then return true end end local tspeed = 0.3 local hb = game:GetService("RunService").Heartbeat local tpwalking = true local player = game:GetService("Players") local lplr = player.LocalPlayer local chr = lplr.Character local hum = chr and chr:FindFirstChildWhichIsA("Humanoid") while tpwalking and hb:Wait() and chr and hum and hum.Parent do if hum.MoveDirection.Magnitude > 0 then if tspeed and isNumber(tspeed) then chr:TranslateBy(hum.MoveDirection * tonumber(tspeed)) else chr:TranslateBy(hum.MoveDirection) end end end
 end)
 
-tab3.newButton("Nhìn thấy ult", "Nhìn thấy ult của saitama và ult khác", function()
+tab4.newButton("Nhìn thấy ult", "Nhìn thấy ult của saitama và ult khác", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/FFJ1/Roblox-Exploits/main/scripts/TSBUtils.lua"))()
 end)
 
-tab3.newButton("Giết tất cả", "Giết tất cả và giết người bạn muốn", function()
+tab4.newButton("Giết tất cả", "Giết tất cả và giết người bạn muốn", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripterbacon/TSBobfuscator/main/Script.Lua"))()
 end)
