@@ -21,23 +21,19 @@ tab1.newButton("Auto săn bounty v1", "", function()
     loadstring(game:HttpGet("https://scriptblox.com/raw/Blox-Fruits-Auto-Bounty-11164"))()
 end)
 
-tab1.newButton("Auto săn bounty v2", "Xịn và nên dùng", function()
+tab1.newButton("Auto săn bounty v2", "", function()
     loadstring(game:HttpGet("https://scriptblox.com/raw/Blox-Fruits-auto-bounty-script-12154"))()
 end)
 
-tab1.newButton("Maru hub v1", "Không cần chiều khoá", function()
+tab1.newButton("Maru hub v1", "", function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/joi-droid/MaruHubBF/main/GOHANSSJ3'))()
 end)
 
-tab1.newButton("Maru hub v2", "Không cần chiều khoá", function()
+tab1.newButton("Maru hub v2", "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/ahmadsgamer2/Zekrom-Hub-X/main/Blox-Fruit.lua"))()
 end)
 
-local tab2 = DrRayLibrary.newTab("Trang 2", "ImageIdLogoHere")
-
--- Add elements to the second tab
-tab2.newLabel("Trang thứ 2 của blox fruit")
-tab2.newButton("Chạy cực nhanh, "", function()
+tab1.newButton("Chạy cực nhanh", "", function()
     game.StarterGui:SetCore("SendNotification", { Title = "Thông báo : 👇"; Text = "Tốc độ được chỉnh 0.9"; Icon = ""; Duration = 20; }) function isNumber(str) if tonumber(str) ~= nil or str == 'inf' then return true end end local tspeed = 0.9 local hb = game:GetService("RunService").Heartbeat local tpwalking = true local player = game:GetService("Players") local lplr = player.LocalPlayer local chr = lplr.Character local hum = chr and chr:FindFirstChildWhichIsA("Humanoid") while tpwalking and hb:Wait() and chr and hum and hum.Parent do if hum.MoveDirection.Magnitude > 0 then if tspeed and isNumber(tspeed) then chr:TranslateBy(hum.MoveDirection * tonumber(tspeed)) else chr:TranslateBy(hum.MoveDirection) end end end
 end)
 
@@ -82,15 +78,15 @@ tab4.newButton("Chạy nhanh gấp đôi", "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/H4R7NHacks/Obfuscated/master/Breaking%20Point%20H4R7N%20Hack.lua"))()
 end)
 
-tab4.newButton("Đánh hộp", "Đánh từ xa", function()
+tab4.newButton("Đánh hộp", "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/HITBOX"))()
 end)
 
-tab4.newButton("Tạo bàn phím", "Dùng để mở hoặc đóng hack", function()
+tab4.newButton("Tạo bàn phím", "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/tuankiet987/idk/main/Keybind%20creator",true))()
 end)
 
-tab4.newButton("Lệnh", "Dùng lệnh của bản thân", function()
+tab4.newButton("Lệnh", "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
 end)
 
@@ -98,18 +94,18 @@ local tab5 = DrRayLibrary.newTab("STB", "ImageIdLogoHere")
 
 -- Add elements to the second tab
 tab5.newLabel("Script của strongest battleground")
-tab5.newButton("Tự động chắn", "Tự động chắn khi đối thủ đánh bạn", function()
+tab5.newButton("Tự động chắn", "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/autoblock"))()
 end)
 
-tab5.newButton("Chạy nhanh 0.3", "Chạy nhanh hơn bình thường", function()
+tab5.newButton("Chạy nhanh 0.3", "", function()
     game.StarterGui:SetCore("SendNotification", { Title = "Thông báo : 👇"; Text = "Tốc độ được chỉnh 0.3"; Icon = ""; Duration = 20; }) function isNumber(str) if tonumber(str) ~= nil or str == 'inf' then return true end end local tspeed = 0.3 local hb = game:GetService("RunService").Heartbeat local tpwalking = true local player = game:GetService("Players") local lplr = player.LocalPlayer local chr = lplr.Character local hum = chr and chr:FindFirstChildWhichIsA("Humanoid") while tpwalking and hb:Wait() and chr and hum and hum.Parent do if hum.MoveDirection.Magnitude > 0 then if tspeed and isNumber(tspeed) then chr:TranslateBy(hum.MoveDirection * tonumber(tspeed)) else chr:TranslateBy(hum.MoveDirection) end end end
 end)
 
-tab5.newButton("Nhìn thấy ult", "Nhìn thấy ult của saitama và ult khác", function()
+tab5.newButton("Nhìn thấy ult", "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/FFJ1/Roblox-Exploits/main/scripts/TSBUtils.lua"))()
 end)
 
-tab5.newButton("Giết tất cả", "Giết tất cả và giết người bạn muốn", function()
+tab5.newButton("Giết tất cả", "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripterbacon/TSBobfuscator/main/Script.Lua"))()
 end)
