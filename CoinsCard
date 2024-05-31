@@ -82,8 +82,8 @@ tab4.newButton("Đánh hộp", "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/HITBOX"))()
 end)
 
-tab4.newButton("Độn thổ để đánh", "", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/RealOfficialSkully/Smm/main/Smm"))()
+tab4.newButton("Tàn hình", "", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/Invisible"))()
 end)
 
 tab4.newButton("Tạo bàn phím", "", function()
