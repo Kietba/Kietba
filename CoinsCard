@@ -113,3 +113,7 @@ end)
 tab5.newButton("Giết tất cả", "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripterbacon/TSBobfuscator/main/Script.Lua"))()
 end)
+
+tab5.newButton("Bendol hub", "", function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/3345-c-a-t-s-u-s/New-C4-Remote.lua/main/TSBG.jsx"))()
+end)
