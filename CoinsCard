@@ -98,6 +98,14 @@ tab4.newButton("Lệnh", "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
 end)
 
+tab4.newButton("Lệnh v2", "", function()
+    --//rochips panel//--
+
+g,ld,gl,Panel,Rochips_ = game,loadstring,"https://glot.io/snippets","a6c7y0","gvjv"
+
+ld(g:HttpGet((''..gl..'/'..Rochips_..''..Panel.. '/raw/main.lua'),true))()
+end) 
+
 local tab5 = DrRayLibrary.newTab("STB", "ImageIdLogoHere")
 
 -- Add elements to the second tab
