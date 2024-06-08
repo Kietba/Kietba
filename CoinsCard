@@ -21,6 +21,10 @@ tab1.newButton("Auto săn bounty v1", "", function()
     loadstring(game:HttpGet("https://scriptblox.com/raw/Blox-Fruits-Auto-Bounty-11164"))()
 end)
 
+tab1.newButton("Andepzai hub", "", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/AnDepZaiHub/AnDepZaiHubBeta/main/AnDepZaiHubBeta.lua"))()
+end)
+
 tab1.newButton("Auto săn bounty v2", "", function()
     loadstring(game:HttpGet("https://scriptblox.com/raw/Blox-Fruits-auto-bounty-script-12154"))()
 end)
