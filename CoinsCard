@@ -98,6 +98,10 @@ tab4.newButton("Nhảy 2 lần", "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/Double-jump"))()
 end)
 
+tab4.newButton("Nhảy 2 lần", "", function()
+    loadstring(game:HttpGet("https://scriptblox.com/raw/Universal-Script-Multi-Scripter-X-V3-8559"))()
+end)
+
 tab4.newButton("Lệnh", "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
 end)
