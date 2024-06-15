@@ -59,6 +59,10 @@ tab3.newButton("Aimbot v2", "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/Aimbotv2"))()
 end)
 
+tab3.newButton("Aimbot v3", "", function()
+    Loadstring(game:HttpGet("https://raw.githubusercontent.com/louismich4el/ItsLouisPlayz-Scripts/main/Universal%20Camlock.lua"))()
+end)
+
 tab3.newButton("Nyuchan", "", function()
     loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/nyulachan/nyula/main/nyuladhm"))()
 end)
