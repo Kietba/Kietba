@@ -123,6 +123,10 @@ g,ld,gl,Panel,Rochips_ = game,loadstring,"https://glot.io/snippets","a6c7y0","gv
 ld(g:HttpGet((''..gl..'/'..Rochips_..''..Panel.. '/raw/main.lua'),true))()
 end) 
 
+tab4.newButton("mm2", "", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Joystickplays/psychic-octo-invention/main/yarhm.lua", false))()
+end) 
+
 local tab5 = DrRayLibrary.newTab("STB", "ImageIdLogoHere")
 
 -- Add elements to the second tab
