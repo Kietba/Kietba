@@ -46,6 +46,11 @@ tab1.newButton("Hub fruit test", "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/Bloxfruitpc"))()
 end)
 
+tab1.newButton("NIGHTHUBOBTOP hub", "", function()
+    getgenv().Team = "Pirates" -- Pirates / Marines
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NIGHTHUBONTOP/Main/main/LoaderScript.lua"))()
+end) 
+
 -- Create the second tab with a different image ID
 local tab3 = DrRayLibrary.newTab("Aimbot", "ImageIdLogoHere")
 
