@@ -156,6 +156,11 @@ tab5.newButton("Bedol hub", "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/3345-c-a-t-s-u-s/New-C4-Remote.lua/main/TSBG.jsx"))()
 end)
 
+tab5.newButton("Kill", "", function()
+setclipboard("RoscriptsOnTop")
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/RealOfficialSkully/Smm/main/Smm"))()
+end)
+
 tab5.newButton("Lightux ( script khủng )", "", function()
 setclipboard("h5Inj8D7fLfE3Sl")
 loadstring(game:HttpGet(('https://raw.githubusercontent.com/cool83birdcarfly02six/Lightux/main/README.md'),true))()
