@@ -166,6 +166,10 @@ setclipboard("h5Inj8D7fLfE3Sl")
 loadstring(game:HttpGet(('https://raw.githubusercontent.com/cool83birdcarfly02six/Lightux/main/README.md'),true))()
 end)
 
+tab5.newButton("Thử nghiệm", "", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/l0ckerV5/Roblox-Scripts/main/The%20Strongest%20Battlegrounds/Custom%20Character/A-Train"))()
+end) 
+
 tab5.newButton("Fix lag", "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/louismich4el/ItsLouisPlayz-Scripts/main/TSB Anti Lag.lua"))()
 end)
