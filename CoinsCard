@@ -161,10 +161,9 @@ setclipboard("RoscriptsOnTop")
     loadstring(game:HttpGet("https://raw.githubusercontent.com/RealOfficialSkully/Smm/main/Smm"))()
 end)
 
-tab5.newButton("Lightux ( script khủng )", "", function()
-setclipboard("h5Inj8D7fLfE3Sl")
-loadstring(game:HttpGet(('https://raw.githubusercontent.com/cool83birdcarfly02six/Lightux/main/README.md'),true))()
-end)
+tab5.newButton("Nhân bản skill khi bật ult", "", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/FuckYou"))()
+end) 
 
 tab5.newButton("Thử nghiệm", "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/l0ckerV5/Roblox-Scripts/main/The%20Strongest%20Battlegrounds/Custom%20Character/A-Train"))()
