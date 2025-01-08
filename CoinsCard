@@ -68,6 +68,14 @@ tab3.newButton("Aimbot v3", "", function()
     Loadstring(game:HttpGet("https://raw.githubusercontent.com/louismich4el/ItsLouisPlayz-Scripts/main/Universal%20Camlock.lua"))()
 end)
 
+tab3.newButton("Aimbot v4", "", function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Totocoems/Ace/main/Ace"))()
+end)
+
+tab3.newButton("Auto lock player", "", function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/zephyr10101/PlayerLock/main/Script",true))()
+end)
+
 tab3.newButton("Nyuchan", "", function()
     loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/nyulachan/nyula/main/nyuladhm"))()
 end)
@@ -152,27 +160,50 @@ tab5.newButton("Giết tất cả", "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Scripterbacon/TSBobfuscator/main/Script.Lua"))()
 end)
 
-tab5.newButton("Bedol hub", "", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/3345-c-a-t-s-u-s/New-C4-Remote.lua/main/TSBG.jsx"))()
+tab5.newButton("Auto kyoto v1", "", function()
+    loadstring(game:HttpGet("https://pastefy.app/A0j3KKfK/raw"))()
 end)
 
-tab5.newButton("Kill", "", function()
-setclipboard("RoscriptsOnTop")
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/RealOfficialSkully/Smm/main/Smm"))()
+tab5.newButton("Auto kyoto v2", "", function()
+loadstring(game:HttpGet("https://pastebin.com/raw/vAgnYcSh"))()
 end)
 
-tab5.newButton("Nhân bản skill khi bật ult", "", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/main/FuckYou"))()
-end) 
+tab5.newButton("Auto block v1", "", function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Cyborg883/TSB/refs/heads/main/CombatGui"))()
+end)
 
-tab5.newButton("Thử nghiệm", "", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/l0ckerV5/Roblox-Scripts/main/The%20Strongest%20Battlegrounds/Custom%20Character/A-Train"))()
-end) 
+tab5.newButton("Auto block v2", "", function()
+loadstring(game:HttpGet("https://github.com/l0ckerV5/Roblox-Scripts/raw/main/The%20Strongest%20Battlegrounds/Auto%20Block"))()
+end)
 
-tab5.newButton("Thử nghiệm 2", "", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/OhhMyGehlee/wdas/main/78"))()
+tab5.newButton("Auto block v3", "", function()
+getgenv().GeneralDistance = 14 -- Close range attacks
+getgenv().SpecialDistance = 30 -- Long range attacks
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Cyborg883/AutoBlock/refs/heads/main/Notpaki"))()
+end)
+
+tab5.newButton("Auto block v4", "", function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/louismich4el/Zygarde/refs/heads/main/ZygardeV1.txt"))()
+end)
+
+tab5.newButton("Saitama to gojo", "", function()
+_G.settings = {
+    ["RedStartupId"] = "rbxassetid://1177475221",
+    ["RedHitId"] = "rbxassetid://8625377966",
+}
+loadstring(game:HttpGet("https://raw.githubusercontent.com/skibiditoiletfan2007/BaldyToSorcerer/main/Latest.lua"))()
 end)
 
 tab5.newButton("Gojo hub", "", function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/Sakupenny/Main/main/GojoHub.lua'))()
-end(
+end)
+
+tab5.newButton("Auto fighter bot", "", function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/jimmyscriptsroblox/Hello/main/BotScriptForTSBG", true))()
+end)
+
+tab5.newButton("TSB phanstam hub", "", function()
+getgenv().ToggleKeybind = Enum.KeyCode.RightControl
+getgenv().FreeEmotesTab = false
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ATrainz/main/main/Phantasm-Loader.lua"))()
+end)
