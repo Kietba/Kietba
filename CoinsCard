@@ -202,6 +202,10 @@ tab5.newButton("Auto fighter bot", "", function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/jimmyscriptsroblox/Hello/main/BotScriptForTSBG", true))()
 end)
 
+tab5.newButton("Saitama to chara", "", function()
+loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-GT-Chara-Moveset-22453"))()
+end) 
+
 tab5.newButton("TSB phanstam hub", "", function()
 getgenv().ToggleKeybind = Enum.KeyCode.RightControl
 getgenv().FreeEmotesTab = false
