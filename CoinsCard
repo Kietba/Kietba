@@ -213,5 +213,5 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ATrainz/main/main/Pha
 end)
 
 tab5.newButton("Dash", "", function()
-loadstring(game:HttpGet("https://pastefy.app/ZhKVgCK3/raw"))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Mautiku/ehh/main/FE%20DASH.txt'))()
 end)
