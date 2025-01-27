@@ -141,6 +141,10 @@ tab4.newButton("mm2", "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Joystickplays/psychic-octo-invention/main/yarhm.lua", false))()
 end) 
 
+tab4.newButton("Crosshair", "", function()
+loadstring(game:HttpGet("https://rawscripts.net/raw/Simple-Customizable-Lightweight-Crosshair-Open-Source_430"))()
+end) 
+
 local tab5 = DrRayLibrary.newTab("STB", "ImageIdLogoHere")
 
 -- Add elements to the second tab
