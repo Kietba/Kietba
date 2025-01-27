@@ -145,6 +145,10 @@ tab4.newButton("Crosshair", "", function()
 loadstring(game:HttpGet("https://rawscripts.net/raw/Simple-Customizable-Lightweight-Crosshair-Open-Source_430"))()
 end) 
 
+tab4.newButton("Control NPC", "", function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/randomstring0/Qwerty/refs/heads/main/qwerty23.lua"))()
+end) 
+
 local tab5 = DrRayLibrary.newTab("STB", "ImageIdLogoHere")
 
 -- Add elements to the second tab
