@@ -204,7 +204,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/skibiditoiletfan2007/
 end)
 
 tab5.newButton("Gojo hub", "", function()
-    loadstring(game:HttpGet('https://raw.githubusercontent.com/Sakupenny/Main/main/GojoHub.lua'))()
+    loadstring(game:HttpGet"https://raw.githubusercontent.com/tamarixr/tamhub/main/bettertamhub.lua")()
 end)
 
 tab5.newButton("Auto fighter bot", "", function()
