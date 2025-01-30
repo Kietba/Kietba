@@ -228,3 +228,7 @@ end)
 tab5.newButton("Dash", "", function()
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Mautiku/ehh/main/FE%20DASH.txt'))()
 end)
+
+tab5.newButton("Jun", "", function()
+loadstring(game:HttpGet("https://rawscripts.net/raw/KJ-The-Strongest-Battlegrounds-Saitama-X-Jun-27777"))()
+end)
