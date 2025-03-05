@@ -1,0 +1,47 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local LocalPlayer = Players.LocalPlayer
+
+function createESP(player)
+    if player == LocalPlayer then return end -- Don't ESP yourself
+
+    local billboard = Instance.new("BillboardGui")
+    billboard.Size = UDim2.new(0, 200, 0, 50)
+    billboard.StudsOffset = Vector3.new(0, 2, 0)
+    billboard.Adornee = player.Character and player.Character:FindFirstChild("Head")
+    billboard.Parent = player.Character and player.Character:FindFirstChild("Head")
+    
+    local textLabel = Instance.new("TextLabel")
+    textLabel.Size = UDim2.new(1, 0, 1, 0)
+    textLabel.BackgroundTransparency = 1
+    textLabel.TextScaled = true
+    textLabel.TextColor3 = Color3.new(1, 0, 0) -- Red color for enemies
+    textLabel.TextStrokeTransparency = 0
+    textLabel.Parent = billboard
+
+    local function updateESP()
+        while player.Character and player.Character:FindFirstChild("Humanoid") do
+            local health = player.Character.Humanoid.Health
+            textLabel.Text = player.Name .. " | HP: " .. math.floor(health)
+            wait(0.2) -- Updates every 200ms
+        end
+        billboard:Destroy()
+    end
+
+    spawn(updateESP)
+end
+
+-- Add ESP to all players
+for _, player in pairs(Players:GetPlayers()) do
+    if player ~= LocalPlayer then
+        createESP(player)
+    end
+end
+
+-- ESP Updates on Player Join
+Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function()
+        createESP(player)
+    end)
+end)
