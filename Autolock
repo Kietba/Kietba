@@ -1,1 +1,50 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
 
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+local lockedTarget = nil -- The target to lock on
+
+-- Function to find the closest player
+local function findClosestPlayer()
+    local closestPlayer = nil
+    local shortestDistance = math.huge
+
+    for _, otherPlayer in pairs(Players:GetPlayers()) do
+        if otherPlayer ~= player and otherPlayer.Character then
+            local otherRoot = otherPlayer.Character:FindFirstChild("HumanoidRootPart")
+            if otherRoot then
+                local distance = (humanoidRootPart.Position - otherRoot.Position).Magnitude
+                if distance < shortestDistance and distance < 30 then -- 30 studs range
+                    closestPlayer = otherRoot
+                    shortestDistance = distance
+                end
+            end
+        end
+    end
+
+    return closestPlayer
+end
+
+-- Function to enable silent lock
+local function enableSilentLock()
+    lockedTarget = findClosestPlayer()
+end
+
+-- Auto-adjust attacks to hit locked target
+RunService.RenderStepped:Connect(function()
+    if lockedTarget then
+        humanoidRootPart.CFrame = CFrame.lookAt(humanoidRootPart.Position, lockedTarget.Position)
+    end
+end)
+
+-- Detect mobile tap to activate silent lock
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    if input.UserInputType == Enum.UserInputType.Touch then
+        enableSilentLock()
+    end
+end)
