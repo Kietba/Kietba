@@ -144,7 +144,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/he
 })
 
 Tab:AddButton({
-	Name = "Remote spy (Không hiểu thì đừng bấm",
+	Name = "Remote spy (Không hiểu thì đừng bấm)",
 	Callback = function()
       		loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/SimpleSpy.lua"))()
   	end    
