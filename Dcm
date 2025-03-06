@@ -48,6 +48,14 @@ local Tab = Window:MakeTab({
 Tab:AddLabel("Blox fruit")
 
 Tab:AddButton({
+	Name = "Min gamming",
+	Callback = function()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/Min/refs/heads/main/MinCE"))()
+
+  	end    
+})
+
+Tab:AddButton({
 	Name = "Auto find fruit",
 	Callback = function()
       		_G. FruitFinder = true;
