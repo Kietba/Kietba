@@ -2,6 +2,13 @@ local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/jen
 
 local Window = OrionLib:MakeWindow({Name = "KIBA", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
+OrionLib:MakeNotification({
+	Name = "Loading KIBA Hub...",
+	Content = "Nhìn cái đéo gì?",
+	Image = "rbxassetid://100848983966706",
+	Time = 15
+})
+
 local Tab = Window:MakeTab({
     Name = "TSB",
     Icon = "rbxassetid://4483345998",
