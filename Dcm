@@ -53,6 +53,13 @@ Tab:AddButton({
   	end    
 })
 
+Tab:AddButton({
+	Name = "Tạo bàn phím",
+	Callback = function()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/tuankiet987/idk/main/Keybind%20creator",true))()
+  	end    
+})
+
 local Tab = Window:MakeTab({
     Name = "Blox fruit",
     Icon = "rbxassetid://4483345998",
