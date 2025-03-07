@@ -46,6 +46,13 @@ Tab:AddButton({
   	end    
 })
 
+Tab:AddButton({
+	Name = "Auto tech",
+	Callback = function()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Cyborg883/NewAutoTech/refs/heads/main/Protected_6389347658054908.lua"))()
+  	end    
+})
+
 local Tab = Window:MakeTab({
     Name = "Blox fruit",
     Icon = "rbxassetid://4483345998",
