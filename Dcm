@@ -64,6 +64,13 @@ loadstring(game:HttpGet("https://scripts.alchemyhub.xyz"))()
 })
 
 Tab:AddButton({
+	Name = "Auto tìm server",
+	Callback = function()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/skibiditoiletgojo/Haidepzai/refs/heads/main/Teddy-Premium"))()
+  	end    
+})
+
+Tab:AddButton({
 	Name = "Redz hub",
 	Callback = function()
       		local Settings = {
