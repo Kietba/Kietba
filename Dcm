@@ -18,6 +18,13 @@ local Tab = Window:MakeTab({
 Tab:AddLabel("The Strongest Battleground")
 
 Tab:AddButton({
+	Name = "Vexon",
+	Callback = function()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/DiosDi/VexonHub/refs/heads/main/VexonHub"))()
+  	end    
+})
+
+Tab:AddButton({
 	Name = "Dùng thùng rác kill",
 	Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/yes1nt/yes/refs/heads/main/Trashcan%20Man", true))()
