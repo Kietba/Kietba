@@ -185,3 +185,10 @@ Tab:AddButton({
       		loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/speeeddddddd.lua"))()
   	end    
 })
+
+Tab:AddButton({
+	Name = "Aimbot v1",
+	Callback = function()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/yzeedw/Mortalv2-main/main/UNIVERSAL%20AIMBOT%20V2"))()
+  	end    
+})
