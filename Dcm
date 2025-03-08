@@ -1,256 +1,199 @@
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/jensonhirst/Orion/main/source')))()
+debugX = true
 
-local Window = OrionLib:MakeWindow({Name = "KIBA", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
-OrionLib:MakeNotification({
-	Name = "Loading KIBA Hub...",
-	Content = "Nhìn cái đéo gì?",
-	Image = "rbxassetid://100848983966706",
-	Time = 15
+local Window = Rayfield:CreateWindow({
+   Name = "👈",
+   Icon = 100848983966706, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+   LoadingTitle = "Được Tạo Bởi Kiệt Bá",
+   LoadingSubtitle = "Nhìn Đầu Buồi",
+   Theme = "Bloom", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+
+   DisableRayfieldPrompts = false,
+   DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
+
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = nil, -- Create a custom folder for your hub/game
+      FileName = "L Ồ N"
+   },
+
+Discord = {
+      Enabled = false, -- Prompt the user to join your Discord server if their executor supports it
+      Invite = "Fuck", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
+      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+   },
+
+   KeySystem = false, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "Untitled",
+      Subtitle = "Key System",
+      Note = "No method of obtaining the key is provided", -- Use this to tell the user how to get a key
+      FileName = "KIBA", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   }
 })
 
-local Tab = Window:MakeTab({
-    Name = "TSB",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
+-- The Strongest Battlegrounds
+
+local Tab = Window:CreateTab("TSB", 4483362458) -- Title, Image
+
+local Section = Tab:CreateSection("The Strongest Battlegrounds")
+
+local Button = Tab:CreateButton({
+   Name = "Vexon",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/DiosDi/VexonHub/refs/heads/main/VexonHub"))()
+   end,
 })
 
-Tab:AddLabel("The Strongest Battleground")
-
-Tab:AddButton({
-	Name = "Vexon",
-	Callback = function()
-      		loadstring(game:HttpGet("https://raw.githubusercontent.com/DiosDi/VexonHub/refs/heads/main/VexonHub"))()
-  	end    
+local Button = Tab:CreateButton({
+   Name = "Trash tool",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/yes1nt/yes/refs/heads/main/Trashcan%20Man", true))()
+   end,
 })
 
-Tab:AddButton({
-	Name = "Dùng thùng rác kill",
-	Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/yes1nt/yes/refs/heads/main/Trashcan%20Man", true))()
-  	end    
+local Button = Tab:CreateButton({
+   Name = "Auto BackDash",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/Cyborg883/BackDashCancel/refs/heads/main/Protected_8787792836664625.lua"))()
+   end,
 })
 
-Tab:AddButton({
-	Name = "Auto backdash",
-	Callback = function()
-      		getgenv().keybind = "E" -- For PC users, set this to any key you want
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Cyborg883/BackDashCancel/refs/heads/main/Protected_8787792836664625.lua"))()
-  	end    
+local Button = Tab:CreateButton({
+   Name = "Auto Block + Aimbot",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/Cyborg883/TSB/refs/heads/main/CombatGui"))()
+   end,
 })
 
-Tab:AddButton({
-	Name = "Auto twisted combo",
-	Callback = function()
-      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Cyborg883/AutoComboNoM1/refs/heads/main/Script"))()
-  	end    
+local Button = Tab:CreateButton({
+   Name = "Auto Tech",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/Cyborg883/NewAutoTech/refs/heads/main/Protected_6389347658054908.lua"))()
+   end,
 })
 
-Tab:AddButton({
-	Name = "Auto block + aimbot",
-	Callback = function()
-      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Cyborg883/TSB/refs/heads/main/CombatGui"))()
-  	end    
+local Button = Tab:CreateButton({
+   Name = "Create keyboard",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/tuankiet987/idk/main/Keybind%20creator",true))()
+   end,
 })
 
-Tab:AddButton({
-	Name = "Auto tech",
-	Callback = function()
-      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Cyborg883/NewAutoTech/refs/heads/main/Protected_6389347658054908.lua"))()
-  	end    
-})
+-- Blox fruit
 
-Tab:AddButton({
-	Name = "Tạo bàn phím",
-	Callback = function()
-      		loadstring(game:HttpGet("https://raw.githubusercontent.com/tuankiet987/idk/main/Keybind%20creator",true))()
-  	end    
-})
+local Tab = Window:CreateTab("Blox Fruit", 4483362458) -- Title, Image
 
-local Tab = Window:MakeTab({
-    Name = "Blox fruit",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
-})
+local Section = Tab:CreateSection("Blox Kid")
 
-Tab:AddLabel("Blox fruit")
-
-Tab:AddButton({
-	Name = "Quay Trái ( level 2600 : $414,850 )",
-	Callback = function()
-      		-- Script generated by SimpleSpy - credits to exx#9394
-
-local args = {
+local Button = Tab:CreateButton({
+   Name = "Spin Fruit ( level 2600 : $414,850 )",
+   Callback = function()
+   local args = {
     [1] = "Cousin",
     [2] = "Buy"
 }
 
 game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-
-  	end    
+   end,
 })
 
-Tab:AddButton({
-	Name = "Min gamming",
-	Callback = function()
-      		loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/Min/refs/heads/main/MinCE"))()
-
-  	end    
+local Button = Tab:CreateButton({
+   Name = "Min Gaming",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/Min/refs/heads/main/MinCE"))()
+   end,
 })
 
-Tab:AddButton({
-	Name = "Auto find fruit",
-	Callback = function()
-      		_G. FruitFinder = true;
-loadstring(game:HttpGet("https://scripts.alchemyhub.xyz"))()
-  	end    
-})
-
-Tab:AddButton({
-	Name = "Auto tìm server",
-	Callback = function()
-      		loadstring(game:HttpGet("https://raw.githubusercontent.com/skibiditoiletgojo/Haidepzai/refs/heads/main/Teddy-Premium"))()
-  	end    
-})
-
-Tab:AddButton({
-	Name = "Redz hub",
-	Callback = function()
-      		local Settings = {
-JoinTeam = "Pirates"; -- Pirates/Marines
-Translator = true; -- true/false
-}
+local Button = Tab:CreateButton({
+   Name = "Redz Hub",
+   Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/realredz/BloxFruits/refs/heads/main/Source.lua"))(Settings)
-  	end    
+   end,
 })
 
-local Tab = Window:MakeTab({
-    Name = "CBW",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
+local Button = Tab:CreateButton({
+   Name = "Auto Find Fruit",
+   Callback = function()
+   loadstring(game:HttpGet("https://scripts.alchemyhub.xyz"))()
+   end,
 })
 
-Tab:AddLabel("Combat Warrior")
-
-Tab:AddButton({
-	Name = "Auto parry and more",
-	Callback = function()
-      		loadstring(game:HttpGet("https://infernium.xyz/cwfree.lua",true))()
-  	end    
+local Button = Tab:CreateButton({
+   Name = "Auto Find Server",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/skibiditoiletgojo/Haidepzai/refs/heads/main/Teddy-Premium"))()
+   end,
 })
 
-local Tab = Window:MakeTab({
-    Name = "local",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
+-- Misc
+
+local Tab = Window:CreateTab("Misc", 4483362458) -- Title, Image
+
+local Section = Tab:CreateSection("Script")
+
+local Button = Tab:CreateButton({
+   Name = "Bay",
+   Callback = function()
+   loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\40\39\104\116\116\112\115\58\47\47\103\105\115\116\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\109\101\111\122\111\110\101\89\84\47\98\102\48\51\55\100\102\102\57\102\48\97\55\48\48\49\55\51\48\52\100\100\100\54\55\102\100\99\100\51\55\48\47\114\97\119\47\101\49\52\101\55\52\102\52\50\53\98\48\54\48\100\102\53\50\51\51\52\51\99\102\51\48\98\55\56\55\48\55\52\101\98\51\99\53\100\50\47\97\114\99\101\117\115\37\50\53\50\48\120\37\50\53\50\48\102\108\121\37\50\53\50\48\50\37\50\53\50\48\111\98\102\108\117\99\97\116\111\114\39\41\44\116\114\117\101\41\41\40\41\10\10")()
+   end,
 })
 
-Tab:AddLabel("Dùng lệnh cho bản thân + người chơi")
-
-Tab:AddButton({
-    Name = "Bay",
-    Callback = function()
---ARCEUS X FLY V2 SCRIPT
-loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\40\39\104\116\116\112\115\58\47\47\103\105\115\116\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\109\101\111\122\111\110\101\89\84\47\98\102\48\51\55\100\102\102\57\102\48\97\55\48\48\49\55\51\48\52\100\100\100\54\55\102\100\99\100\51\55\48\47\114\97\119\47\101\49\52\101\55\52\102\52\50\53\98\48\54\48\100\102\53\50\51\51\52\51\99\102\51\48\98\55\56\55\48\55\52\101\98\51\99\53\100\50\47\97\114\99\101\117\115\37\50\53\50\48\120\37\50\53\50\48\102\108\121\37\50\53\50\48\50\37\50\53\50\48\111\98\102\108\117\99\97\116\111\114\39\41\44\116\114\117\101\41\41\40\41\10\10")()
-      end
+local Button = Tab:CreateButton({
+   Name = "Remote Spy",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/SimpleSpy.lua"))()
+   end,
 })
 
-Tab:AddButton({
-	Name = "Hitbox (Head)",
-	Callback = function()
-_G.HeadSize = 15
-_G.Disabled = true
-game:GetService('RunService').RenderStepped:connect(function()
-if _G.Disabled then
-for i,v in next, game:GetService('Players'):GetPlayers() do
-if v.Name ~= game:GetService('Players').LocalPlayer.Name then
-pcall(function()
-v.Character.Head.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
-v.Character.Head.Transparency = 1
-v.Character.Head.BrickColor = BrickColor.new("Red")
-v.Character.Head.Material = "Neon"
-v.Character.Head.CanCollide = false
-v.Character.Head.Massless = true
-end)
-end
-end
-end
-end)
-  	end    
-})
-
-Tab:AddButton({
-	Name = "Định vị",
-	Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Esp"))()
-  	end    
-})
-
-Tab:AddButton({
-	Name = "Auto lock",
-	Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Autolock"))
-  	end    
-})
-
-Tab:AddButton({
-	Name = "Remote spy (Không hiểu thì đừng bấm)",
-	Callback = function()
-      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/SimpleSpy.lua"))()
-  	end    
-})
-
-Tab:AddButton({
-	Name = "Nhảy vô hạn",
-	Callback = function()
-      		--[[
-	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
-]]
-local InfiniteJumpEnabled = true
+local Button = Tab:CreateButton({
+   Name = "Infinite Jump",
+   Callback = function()
+   local InfiniteJumpEnabled = true
 game:GetService("UserInputService").JumpRequest:connect(function()
 	if InfiniteJumpEnabled then
 		game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
 	end
 end)
-  	end    
+   end,
 })
 
-Tab:AddButton({
-	Name = "Speed",
-	Callback = function()
-      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/speeeddddddd.lua"))()
-  	end    
+local Button = Tab:CreateButton({
+   Name = "Speed",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/speeeddddddd.lua"))()
+   end,
 })
 
-Tab:AddButton({
-	Name = "Dịch chuyển đến người chơi",
-	Callback = function()
-      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Toolbox231/Toolbox231/refs/heads/main/xz.txt"))()
-  	end    
+local Button = Tab:CreateButton({
+   Name = "Teleport To People",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/Toolbox231/Toolbox231/refs/heads/main/xz.txt"))()
+   end,
 })
 
-Tab:AddButton({
-	Name = "Teleport tools",
-	Callback = function()
-      		--[[
-	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
-]]
-mouse = game.Players.LocalPlayer:GetMouse()
-tool = Instance.new("Tool")
-tool.RequiresHandle = false
-tool.Name = "Dịch Chuyển"
-tool.Activated:connect(function()
-local pos = mouse.Hit+Vector3.new(0,2.5,0)
-pos = CFrame.new(pos.X,pos.Y,pos.Z)
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
-end)
-tool.Parent = game.Players.LocalPlayer.Backpack
-  	end    
+local Button = Tab:CreateButton({
+   Name = "Aimbot v1",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/yzeedw/Mortalv2-main/main/UNIVERSAL%20AIMBOT%20V2"))()
+   end,
 })
 
-Tab:AddButton({
-	Name = "Aimbot v1",
-	Callback = function()
-      		loadstring(game:HttpGet("https://raw.githubusercontent.com/yzeedw/Mortalv2-main/main/UNIVERSAL%20AIMBOT%20V2"))()
-  	end    
+-- Dead rails
+
+local Tab = Window:CreateTab("Dead rails", 4483362458) -- Title, Image
+
+local Section = Tab:CreateSection("Dead rails")
+
+local Button = Tab:CreateButton({
+   Name = "Esp Mob , kill aura v.v",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/thiennrb7/Script/refs/heads/main/Bringall"))()
+   end,
 })
+
+Rayfield:LoadConfiguration()
