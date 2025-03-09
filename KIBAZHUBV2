@@ -220,4 +220,11 @@ local Button = Tab:CreateButton({
    end,
 })
 
+local Button = Tab:CreateButton({
+   Name = "Auto farm bond",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/Emplic/deathrails/refs/heads/main/bond"))()
+   end,
+})
+
 Rayfield:LoadConfiguration()
