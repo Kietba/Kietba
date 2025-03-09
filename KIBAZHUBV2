@@ -203,4 +203,14 @@ local Button = Tab:CreateButton({
    end,
 })
 
+local Button = Tab:CreateButton({
+   Name = "Fe kill player",
+   Callback = function()
+   --[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+loadstring(game:HttpGet("https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/Fe_Kill_Player_DeadRails"))()
+   end,
+})
+
 Rayfield:LoadConfiguration()
