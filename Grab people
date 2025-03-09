@@ -1,0 +1,53 @@
+local player = game.Players.LocalPlayer  
+local screenGui = Instance.new("ScreenGui")  
+local frame = Instance.new("Frame")  
+local button = Instance.new("TextButton")  
+  
+screenGui.Parent = player:FindFirstChildOfClass("PlayerGui")  
+screenGui.ResetOnSpawn = false  
+  
+frame.Size = UDim2.new(0, 200, 0, 100)  
+frame.Position = UDim2.new(0.5, -100, 0.5, -50)  
+frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)  
+frame.Active = true  
+frame.Draggable = true  
+frame.Parent = screenGui  
+  
+button.Size = UDim2.new(0, 150, 0, 50)  
+button.Position = UDim2.new(0.5, -75, 0.5, -25)  
+button.BackgroundColor3 = Color3.fromRGB(0, 255, 0)  
+button.Text = "DRAG"  
+button.Parent = frame  
+  
+local replicatedStorage = game:GetService("ReplicatedStorage")  
+local remote = replicatedStorage:WaitForChild("Shared"):WaitForChild("Remotes"):WaitForChild("RequestStartDrag")  
+
+local function getNearestCharacter()  
+    local nearestCharacter = nil  
+    local shortestDistance = math.huge  
+
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then  
+        local playerPosition = player.Character.HumanoidRootPart.Position  
+
+        for _, otherPlayer in ipairs(game.Players:GetPlayers()) do  
+            if otherPlayer ~= player and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") then  
+                local targetHRP = otherPlayer.Character.HumanoidRootPart  
+                local distance = (targetHRP.Position - playerPosition).Magnitude  
+
+                if distance < shortestDistance then  
+                    shortestDistance = distance  
+                    nearestCharacter = otherPlayer.Character  
+                end  
+            end  
+        end  
+    end  
+
+    return nearestCharacter  
+end  
+
+button.MouseButton1Click:Connect(function()  
+    local nearestCharacter = getNearestCharacter()  
+    if nearestCharacter then  
+        remote:FireServer(nearestCharacter)  
+    end  
+end)
