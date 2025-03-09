@@ -183,6 +183,13 @@ local Button = Tab:CreateButton({
    end,
 })
 
+local Button = Tab:CreateButton({
+   Name = "Hitbox Npc",
+   Callback = function()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/coqs/npc-hitbox-expander/refs/heads/main/oreo"))()
+   end,
+})
+
 -- Dead rails
 
 local Tab = Window:CreateTab("Dead rails", 4483362458) -- Title, Image
