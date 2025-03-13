@@ -243,9 +243,9 @@ local Button = Tab:CreateButton({
 })
 
 local Button = Tab:CreateButton({
-   Name = "Free camera (can shot zombie )",
+   Name = "Free camera",
    Callback = function()
-   https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Freecam
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Freecam"))()
    end,
 })
 
