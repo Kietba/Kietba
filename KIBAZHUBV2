@@ -93,6 +93,13 @@ end
 })
 
 local Button = Tab:CreateButton({
+   Name = "Slient aim",
+   Callback = function()
+   loadstring(game:HttpGet("https://pastefy.app/dw8GA6B8/raw"))()
+   end,
+})
+
+local Button = Tab:CreateButton({
    Name = "KeyBoard",
    Callback = function()
    loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/Delta-Scripts/refs/heads/main/MobileKeyboard.txt"))()
