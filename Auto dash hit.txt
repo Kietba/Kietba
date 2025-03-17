@@ -28,7 +28,7 @@ end
 local function swipeCamera(swipeSpeed)
     local camera = game.Workspace.CurrentCamera
     local originalPosition = camera.CFrame.Position
-    local targetPosition = originalPosition + camera.CFrame.RightVector * swipeSpeed
+    local targetPosition = originalPosition + camera.CFrame.LeftVector * swipeSpeed
     camera.CFrame = CFrame.new(targetPosition, camera.CFrame.Position + camera.CFrame.LookVector)
 end
 
