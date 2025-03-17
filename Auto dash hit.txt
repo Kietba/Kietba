@@ -1,0 +1,61 @@
+local plr = game.Players.LocalPlayer
+local gui = Instance.new("ScreenGui", plr.PlayerGui)
+gui.Name = "AutoKyotoGUI"
+local plr = game.Players.LocalPlayer
+gui.ResetOnSpawn = false
+
+local button = Instance.new("TextButton", gui)
+button.Position = UDim2.new(0, 10, 0.1, 0)  -- Position it on the left side of the screen
+button.Size = UDim2.new(0, 200, 0, 50)
+button.Text = "Auto dash"
+button.TextScaled = true
+button.BackgroundColor3 = Color3.fromRGB(0, 18, 0.5)  -- Blue background
+button.TextColor3 = Color3.fromRGB(255, 55, 25)  -- White text
+
+
+
+local function fireServer(args)
+    game:GetService("Players").LocalPlayer.Character.Communicate:FireServer(unpack(args))
+end
+
+
+local function sendKeyEvent(isPressed, key)
+    local VIM = game:GetService('VirtualInputManager')
+    VIM:SendKeyEvent(isPressed, key, false, game)
+end
+
+
+local function swipeCamera(swipeSpeed)
+    local camera = game.Workspace.CurrentCamera
+    local originalPosition = camera.CFrame.Position
+    local targetPosition = originalPosition + camera.CFrame.RightVector * swipeSpeed
+    camera.CFrame = CFrame.new(targetPosition, camera.CFrame.Position + camera.CFrame.LookVector)
+end
+
+
+button.MouseButton1Click:Connect(function()
+    print("Auto Kyoto sequence started...")
+    
+    sendKeyEvent(true, Enum.KeyCode.D)
+    
+    sendKeyEvent(false, Enum.KeyCode.Q)
+
+    sendKeyEvent(true, Enum.KeyCode.Q)
+    
+    sendKeyEvent(false, Enum.KeyCode.D)
+
+   
+    swipeCamera(16)
+
+   
+    wait(0.001)
+   
+ 
+    sendKeyEvent(true, Enum.KeyCode.D)
+    
+    sendKeyEvent(false, Enum.KeyCode.Q)
+
+    
+    swipeCamera(10)
+
+end)
