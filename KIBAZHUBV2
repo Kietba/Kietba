@@ -50,6 +50,13 @@ local Button = Tab:CreateButton({
 })
 
 local Button = Tab:CreateButton({
+   Name = "Auto slide dash",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Auto%20dash%20hit.txt"))()
+   end,
+})
+
+local Button = Tab:CreateButton({
    Name = "Trash tool",
    Callback = function()
    loadstring(game:HttpGet("https://raw.githubusercontent.com/yes1nt/yes/refs/heads/main/Trashcan%20Man", true))()
