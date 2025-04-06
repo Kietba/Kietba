@@ -208,7 +208,7 @@ local Button = Tab:CreateButton({
 local Button = Tab:CreateButton({
    Name = "Upside script",
    Callback = function()
-   loadstring(game:HttpGet)"https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/fe-upside-down.txt"))()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/fe-upside-down.txt"))()
    end,
 })
 
