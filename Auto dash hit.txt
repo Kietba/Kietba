@@ -11,7 +11,8 @@ button.Text = "Auto dash"
 button.TextScaled = true
 button.BackgroundColor3 = Color3.fromRGB(0, 18, 0.5)  -- Blue background
 button.TextColor3 = Color3.fromRGB(255, 55, 25)  -- White text
-
+button.Active = true
+button.Draggable = true
 
 
 local function fireServer(args)
@@ -43,19 +44,4 @@ button.MouseButton1Click:Connect(function()
     sendKeyEvent(true, Enum.KeyCode.Q)
     
     sendKeyEvent(false, Enum.KeyCode.D)
-
-   
-    swipeCamera(16)
-
-   
-    wait(0.001)
-   
- 
-    sendKeyEvent(true, Enum.KeyCode.D)
-    
-    sendKeyEvent(false, Enum.KeyCode.Q)
-
-    
-    swipeCamera(10)
-
 end)
