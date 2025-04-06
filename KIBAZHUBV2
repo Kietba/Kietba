@@ -206,6 +206,13 @@ local Button = Tab:CreateButton({
 })
 
 local Button = Tab:CreateButton({
+   Name = "Upside script",
+   Callback = function()
+   loadstring(game:HttpGet)"https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/fe-upside-down.txt"))()
+   end,
+})
+
+local Button = Tab:CreateButton({
    Name = "Aimbot v1",
    Callback = function()
    loadstring(game:HttpGet("https://raw.githubusercontent.com/yzeedw/Mortalv2-main/main/UNIVERSAL%20AIMBOT%20V2"))()
