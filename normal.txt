@@ -1,0 +1,63 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local camera = workspace.CurrentCamera
+
+local orbiting = false
+local orbitRadius = 5
+local orbitSpeed = 10
+local angle = 0
+local targetPlayer
+
+-- GUI Setup
+local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+screenGui.ResetOnSpawn = false
+
+local toggleButton = Instance.new("TextButton")
+toggleButton.Size = UDim2.new(0, 120, 0, 50)
+toggleButton.Position = UDim2.new(0.5, -60, 1, -60)
+toggleButton.Text = "Normal: OFF"
+toggleButton.BackgroundColor3 = Color3.fromRGB(50, 150, 255)
+toggleButton.TextColor3 = Color3.new(1, 1, 1)
+toggleButton.Parent = screenGui
+toggleButton.Active = true
+toggleButton.Draggable = true
+
+-- Find nearest player
+local function getNearestPlayer()
+	local closest, shortest = nil, math.huge
+	for _, other in pairs(Players:GetPlayers()) do
+		if other ~= player and other.Character and other.Character:FindFirstChild("HumanoidRootPart") then
+			local dist = (character.HumanoidRootPart.Position - other.Character.HumanoidRootPart.Position).Magnitude
+			if dist < shortest then
+				shortest = dist
+				closest = other
+			end
+		end
+	end
+	return closest
+end
+
+-- Toggle logic
+toggleButton.MouseButton1Click:Connect(function()
+	orbiting = not orbiting
+	toggleButton.Text = orbiting and "Normal: ON" or "Normal: OFF"
+	if orbiting then
+		targetPlayer = getNearestPlayer()
+	end
+end)
+
+-- Orbit logic
+RunService.RenderStepped:Connect(function(dt)
+	if orbiting and targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+		angle += orbitSpeed * dt
+		local targetPos = targetPlayer.Character.HumanoidRootPart.Position
+		local newX = targetPos.X + math.cos(angle) * orbitRadius
+		local newZ = targetPos.Z + math.sin(angle) * orbitRadius
+		local newY = targetPos.Y
+
+		character:MoveTo(Vector3.new(newX, newY, newZ))
+	end
+end)
