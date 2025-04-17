@@ -328,7 +328,7 @@ local Button = Tab:CreateButton({
 })
 
 local Button = Tab:CreateButton({
-   Name = "God mode just try it probably won't work ",
+   Name = "God mode i dont think work",
    Callback = function()
    -- GOD MODE SCRIPT (Basic concept)
 local player = game.Players.LocalPlayer
