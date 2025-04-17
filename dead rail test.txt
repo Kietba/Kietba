@@ -323,26 +323,14 @@ end)
 local Button = Tab:CreateButton({
    Name = "Bypass anti cheat",
    Callback = function()
-   loadstring(game:HttpGet("https://raw.githubusercontent.com/AmareScripts/DeadRails/refs/heads/main/Bypass%25AntiCheat.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/AmareScripts/DeadRails/refs/heads/main/Bypass%25AntiCheat.lua"))()
    end,
 })
 
 local Button = Tab:CreateButton({
    Name = "God mode i dont think work",
    Callback = function()
-   -- GOD MODE SCRIPT (Basic concept)
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-
-character:WaitForChild("Humanoid").Health = math.huge
-character:WaitForChild("Humanoid").MaxHealth = math.huge
-
--- Prevent death from entities like Rush or Ambush
-local function preventDamage()
-    character:WaitForChild("Humanoid").Health = math.huge
-end
-
-character.Humanoid:GetPropertyChangedSignal("Health"):Connect(preventDamage)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Godmode"))()
    end,
 })
 
