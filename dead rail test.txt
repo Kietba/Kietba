@@ -169,9 +169,9 @@ local function addESP(player)
 	local function onCharacterAdded(character)
 		local highlight = Instance.new("Highlight")
 		highlight.Name = "ESP_Highlight"
-		highlight.FillColor = Color3.fromRGB(0, 0, 0) -- Blue
+		highlight.FillColor = Color3.fromRGB(0.5, 0, 0.5) -- Blue
 		highlight.OutlineColor = Color3.fromRGB(0.5, 0, 0.5)
-		highlight.OutlineTransparency = 0
+		highlight.OutlineTransparency = 0.5
 		highlight.FillTransparency = 1
 		highlight.Adornee = character
 		highlight.Parent = character
