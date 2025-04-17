@@ -1,0 +1,13 @@
+-- GOD MODE SCRIPT (Basic concept)
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+character:WaitForChild("Humanoid").Health = math.huge
+character:WaitForChild("Humanoid").MaxHealth = math.huge
+
+-- Prevent death from entities like Rush or Ambush
+local function preventDamage()
+    character:WaitForChild("Humanoid").Health = math.huge
+end
+
+character.Humanoid:GetPropertyChangedSignal("Health"):Connect(preventDamage)
