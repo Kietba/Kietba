@@ -104,6 +104,68 @@ end)
 })
 
 local Button = Tab:CreateButton({
+   Name = "Full bright",
+   Callback = function()
+   -- FullBright Script (works on mobile too)
+local lighting = game:GetService("Lighting")
+
+-- Save original settings (optional if you want to toggle later)
+local originalBrightness = lighting.Brightness
+local originalTimeOfDay = lighting.TimeOfDay
+local originalFogEnd = lighting.FogEnd
+local originalAmbient = lighting.Ambient
+
+-- Apply FullBright settings
+lighting.Brightness = 2
+lighting.ClockTime = 12 -- Noon
+lighting.FogEnd = 1000000
+lighting.GlobalShadows = false
+lighting.OutdoorAmbient = Color3.new(1, 1, 1)
+lighting.Ambient = Color3.new(1, 1, 1)
+
+-- Optional: Prevent future changes (anti-darkness)
+lighting:GetPropertyChangedSignal("ClockTime"):Connect(function()
+	lighting.ClockTime = 12
+end)
+
+lighting:GetPropertyChangedSignal("FogEnd"):Connect(function()
+	lighting.FogEnd = 1000000
+end)
+
+lighting:GetPropertyChangedSignal("Brightness"):Connect(function()
+	lighting.Brightness = 2
+end)
+
+lighting:GetPropertyChangedSignal("Ambient"):Connect(function()
+	lighting.Ambient = Color3.new(1, 1, 1)
+end)
+
+lighting:GetPropertyChangedSignal("OutdoorAmbient"):Connect(function()
+	lighting.OutdoorAmbient = Color3.new(1, 1, 1)
+end)
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Anti lag light",
+   Callback = function()
+   -- Anti-Lag Light Script for Roblox (Mobile Friendly)
+for _, light in pairs(workspace:GetDescendants()) do
+    if light:IsA("PointLight") or light:IsA("SpotLight") or light:IsA("SurfaceLight") then
+        light.Enabled = false
+    end
+end
+
+-- Optional: continuously disable new lights added
+workspace.DescendantAdded:Connect(function(descendant)
+    if descendant:IsA("PointLight") or descendant:IsA("SpotLight") or descendant:IsA("SurfaceLight") then
+        descendant.Enabled = false
+    end
+end)
+   end,
+})
+
+local Button = Tab:CreateButton({
    Name = "Fe kill player",
    Callback = function()
    --[[
