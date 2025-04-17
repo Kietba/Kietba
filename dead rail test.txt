@@ -198,6 +198,10 @@ local Button = Tab:CreateButton({
    end,
 })
 
+local Tab = Window:CreateTab("Misc", 4483362458) -- Title, Image
+
+local Section = Tab:CreateSection("Misc")
+
 local Button = Tab:CreateButton({
    Name = "Bypass anti cheat ( use infinite yield or nameless admin to fly )",
    Callback = function()
