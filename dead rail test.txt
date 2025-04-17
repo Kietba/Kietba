@@ -157,6 +157,67 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/caomod2077/Script/ref
 })
 
 local Button = Tab:CreateButton({
+   Name = "Esp player",
+   Callback = function()
+   local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- Function to add ESP to a player
+local function addESP(player)
+	if player == LocalPlayer then return end
+
+	local function onCharacterAdded(character)
+		local highlight = Instance.new("Highlight")
+		highlight.Name = "ESP_Highlight"
+		highlight.FillColor = Color3.fromRGB(0, 0, 0) -- Blue
+		highlight.OutlineColor = Color3.fromRGB(0, 0, 1)
+		highlight.OutlineTransparency = 0
+		highlight.FillTransparency = 1
+		highlight.Adornee = character
+		highlight.Parent = character
+
+		local head = character:WaitForChild("Head", 5)
+		if head then
+			local billboard = Instance.new("BillboardGui")
+			billboard.Name = "ESP_Name"
+			billboard.Size = UDim2.new(0, 100, 0, 30)
+			billboard.StudsOffset = Vector3.new(0, 2, 0)
+			billboard.AlwaysOnTop = true
+			billboard.Adornee = head
+			billboard.Parent = head
+
+			local nameLabel = Instance.new("TextLabel")
+			nameLabel.Size = UDim2.new(1, 0, 1, 0)
+			nameLabel.BackgroundTransparency = 1
+			nameLabel.Text = player.Name
+			nameLabel.TextColor3 = Color3.fromRGB(0, 170, 255)
+			nameLabel.TextStrokeTransparency = 0.5
+			nameLabel.TextScaled = true
+			nameLabel.Font = Enum.Font.SourceSansBold
+			nameLabel.Parent = billboard
+		end
+	end
+
+	-- Handle character spawn
+	if player.Character then
+		onCharacterAdded(player.Character)
+	end
+	player.CharacterAdded:Connect(onCharacterAdded)
+end
+
+-- Add ESP to all players
+for _, player in pairs(Players:GetPlayers()) do
+	addESP(player)
+end
+
+-- Add ESP to new players
+Players.PlayerAdded:Connect(function(player)
+	addESP(player)
+end)
+   end,
+})
+
+local Button = Tab:CreateButton({
    Name = "Fe Grab people",
    Callback = function()
    loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Grab%20people"))()
@@ -260,7 +321,7 @@ end)
 })
 
 local Button = Tab:CreateButton({
-   Name = "Bypass anti cheat ( use infinite yield or nameless admin to fly )",
+   Name = "Bypass anti cheat",
    Callback = function()
    loadstring(game:HttpGet("https://raw.githubusercontent.com/AmareScripts/DeadRails/refs/heads/main/Bypass%25AntiCheat.lua"))()
    end,
