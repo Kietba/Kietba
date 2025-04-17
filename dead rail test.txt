@@ -244,6 +244,22 @@ ContextActionService:BindAction('Noclip', Noclipping, true, Enum.KeyCode[NoclipK
 })
 
 local Button = Tab:CreateButton({
+   Name = "Infitnite jumppower",
+   Callback = function()
+   -- Infinite Jump Script for Roblox (Mobile Friendly)
+local UserInputService = game:GetService("UserInputService")
+local player = game.Players.LocalPlayer
+local jumping = false
+
+UserInputService.JumpRequest:Connect(function()
+    if player.Character and player.Character:FindFirstChild("Humanoid") then
+        player.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+    end
+end)
+   end,
+})
+
+local Button = Tab:CreateButton({
    Name = "Bypass anti cheat ( use infinite yield or nameless admin to fly )",
    Callback = function()
    loadstring(game:HttpGet("https://raw.githubusercontent.com/AmareScripts/DeadRails/refs/heads/main/Bypass%25AntiCheat.lua"))()
