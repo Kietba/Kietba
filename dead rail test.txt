@@ -147,25 +147,6 @@ end)
 })
 
 local Button = Tab:CreateButton({
-   Name = "Anti lag light",
-   Callback = function()
-   -- Anti-Lag Light Script for Roblox (Mobile Friendly)
-for _, light in pairs(workspace:GetDescendants()) do
-    if light:IsA("PointLight") or light:IsA("SpotLight") or light:IsA("SurfaceLight") then
-        light.Enabled = false
-    end
-end
-
--- Optional: continuously disable new lights added
-workspace.DescendantAdded:Connect(function(descendant)
-    if descendant:IsA("PointLight") or descendant:IsA("SpotLight") or descendant:IsA("SurfaceLight") then
-        descendant.Enabled = false
-    end
-end)
-   end,
-})
-
-local Button = Tab:CreateButton({
    Name = "Fe kill player",
    Callback = function()
    --[[
