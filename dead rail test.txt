@@ -198,4 +198,11 @@ local Button = Tab:CreateButton({
    end,
 })
 
+local Button = Tab:CreateButton({
+   Name = "Bypass anti cheat ( use infinite yield or nameless admin to fly )",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/AmareScripts/DeadRails/refs/heads/main/Bypass%25AntiCheat.lua"))()
+   end,
+})
+
 Rayfield:LoadConfiguration()
