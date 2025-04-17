@@ -1,0 +1,158 @@
+debugX = true
+
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "👈",
+   Icon = 100848983966706, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+   LoadingTitle = "Được Tạo Bởi Kiệt Bá",
+   LoadingSubtitle = "SUBSCRIBE KIBA",
+   Theme = "Bloom", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+
+   DisableRayfieldPrompts = false,
+   DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
+
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = nil, -- Create a custom folder for your hub/game
+      FileName = "L Ồ N"
+   },
+
+Discord = {
+      Enabled = false, -- Prompt the user to join your Discord server if their executor supports it
+      Invite = "Fuck", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
+      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+   },
+
+   KeySystem = false, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "Untitled",
+      Subtitle = "Key System",
+      Note = "No method of obtaining the key is provided", -- Use this to tell the user how to get a key
+      FileName = "KIBA", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   }
+})
+
+-- Dead rail
+
+local Tab = Window:CreateTab("Dead rail", 4483362458) -- Title, Image
+
+local Section = Tab:CreateSection("Dead rails")
+
+local Button = Tab:CreateButton({
+   Name = "Instant Interact",
+   Callback = function()
+   -- LocalScript (place in StarterPlayer > StarterPlayerScripts)
+
+local Players = game:GetService("Players")
+local ProximityPromptService = game:GetService("ProximityPromptService")
+
+-- Make all proximity prompts instantly interact
+ProximityPromptService.PromptShown:Connect(function(prompt)
+	prompt.HoldDuration = 0 -- Instantly interact when touched
+end)
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "interact through object",
+   Callback = function()
+   -- LocalScript (place in StarterPlayer > StarterPlayerScripts)
+
+local ProximityPromptService = game:GetService("ProximityPromptService")
+
+-- Allow interaction through walls or transparent objects
+ProximityPromptService.PromptButtonHoldBegan:Connect(function(prompt)
+	-- Force interaction regardless of obstructions
+	prompt.MaxActivationDistance = math.huge -- Makes it interactable from any distance
+end)
+
+-- Optionally, change this globally for all prompts as soon as they appear
+ProximityPromptService.PromptShown:Connect(function(prompt)
+	prompt.RequiresLineOfSight = false -- Let it be triggered through objects
+end)
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Max interact",
+   Callback = function()
+   -- LocalScript (place in StarterPlayer > StarterPlayerScripts)
+
+local ProximityPromptService = game:GetService("ProximityPromptService")
+
+-- Function to max out interaction range for new prompts
+local function upgradePrompt(prompt)
+	prompt.MaxActivationDistance = 500 -- Adjust as needed (1000 = super far)
+end
+
+-- Modify all existing prompts in the game
+for _, prompt in pairs(workspace:GetDescendants()) do
+	if prompt:IsA("ProximityPrompt") then
+		upgradePrompt(prompt)
+	end
+end
+
+-- Apply to future prompts that appear
+ProximityPromptService.PromptShown:Connect(function(prompt)
+	upgradePrompt(prompt)
+end)
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Fe kill player",
+   Callback = function()
+   --[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+loadstring(game:HttpGet("https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/Fe_Kill_Player_DeadRails"))()
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Fe Grab people",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Grab%20people"))()
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Free camera",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Freecam"))()
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Null fire hub",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/InfernusScripts/Null-Fire/main/Loader"))()
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Vfly ( Need horse )",
+   Callback = function()
+   loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Vfly-script-by-me-11871"))()
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Npc lock",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Lock%20script%20kibaz"))()
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Any teleport",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/JonasThePogi/DeadRails/refs/heads/main/newloadstring"))()
+   end,
+})
+
+Rayfield:LoadConfiguration()
