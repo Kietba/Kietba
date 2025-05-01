@@ -1,0 +1,484 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/jensonhirst/Orion/main/source')))()
+
+local Window = OrionLib:MakeWindow({Name = "KIBAZ HUB", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+
+local Tab = Window:MakeTab({
+	Name = "Esp item",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+	Name = "Highlight Key",
+	Callback = function()
+      		-- Low-Lag, Auto-Refreshing Purple ESP for Keys (Mobile Safe)
+
+local function createPurpleESP(model)
+    if model:FindFirstChild("Highlight") then return end
+
+    local highlight = Instance.new("Highlight")
+    highlight.Name = "Highlight"
+    highlight.Adornee = model
+    highlight.FillColor = Color3.fromRGB(170, 0, 0) -- Purple
+    highlight.OutlineColor = Color3.fromRGB(250, 255, 255)
+    highlight.FillTransparency = 0.3
+    highlight.OutlineTransparency = 0.1
+    highlight.Parent = model
+end
+
+local function scanForKeys()
+    for _, obj in ipairs(workspace:GetDescendants()) do
+        if obj:IsA("Model") and obj.Name == "KeyObtain" then
+            createPurpleESP(obj)
+        end
+    end
+end
+
+-- First scan
+scanForKeys()
+
+-- Auto refresh every 5 seconds (lag-free)
+while true do
+    task.wait(5)
+    pcall(scanForKeys)
+end
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Esp Real Door",
+	Callback = function()
+-- Made by mrpopcat14
+local RunService = game:GetService("RunService")
+local CollectionService = game:GetService("CollectionService")
+
+-- Table to keep track of highlighted objects
+local highlightedObjects = {}
+
+local function handleNewObject(obj)
+    if obj:IsA('MeshPart') and obj.Parent and obj.Parent:IsA('Model') and obj.Parent.Name == 'Door' then
+        -- Check if the object is not already highlighted
+        if not highlightedObjects[obj] then
+            if not obj.Parent:FindFirstChildOfClass('BillboardGui') then
+                local BillboardGui = Instance.new('BillboardGui')
+                local TextLabel = Instance.new('TextLabel')
+
+                BillboardGui.Parent = obj.Parent
+                BillboardGui.AlwaysOnTop = true
+                BillboardGui.Size = UDim2.new(0, 50, 0, 50)
+                BillboardGui.StudsOffset = Vector3.new(0, 2, 0)
+
+                TextLabel.Parent = BillboardGui
+                TextLabel.BackgroundTransparency = 1
+                TextLabel.Size = UDim2.new(1, 0, 1, 0)
+                TextLabel.TextColor3 = Color3.fromRGB(0, 0, 255)
+                TextLabel.Text = "REAL DOOR" -- Display text
+                TextLabel.TextScaled = true
+                TextLabel.TextStrokeTransparency = 0.5 -- Text stroke for visibility
+
+                -- Removed the initial rotation check and related logic
+
+                local function updateColors()
+                    local hue = tick() % 5 / 5 
+                    local color = Color3.fromRGB(255, 165, 0)
+                    TextLabel.TextColor3 = color
+                end
+
+                -- Keep updating colors without rotation check
+                RunService.RenderStepped:Connect(updateColors)
+
+                highlightedObjects[obj] = true
+            end
+        end
+    end
+end
+
+-- Function to batch handle all existing objects
+local function handleExistingObjects()
+    for _, obj in ipairs(game.Workspace:GetDescendants()) do
+        handleNewObject(obj)
+    end
+end
+
+game.Workspace.ChildAdded:Connect(function(child)
+    handleNewObject(child)
+end)
+
+local lastCheck = 0
+RunService.Heartbeat:Connect(function(deltaTime)
+    lastCheck = lastCheck + deltaTime
+    if lastCheck >= 0.5 then
+        handleExistingObjects()
+        lastCheck = 0
+    end
+end)
+
+handleExistingObjects()
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Highlight Fake Door ( Red )",
+	Callback = function()
+-- Low-Lag, Auto-Refreshing Purple ESP for Keys (Mobile Safe)
+
+local function createPurpleESP(model)
+    if model:FindFirstChild("Highlight") then return end
+
+    local highlight = Instance.new("Highlight")
+    highlight.Name = "Highlight"
+    highlight.Adornee = model
+    highlight.FillColor = Color3.fromRGB(255, 0, 0) -- Purple
+    highlight.OutlineColor = Color3.fromRGB(250, 255, 255)
+    highlight.FillTransparency = 0.3
+    highlight.OutlineTransparency = 0.1
+    highlight.Parent = model
+end
+
+local function scanForKeys()
+    for _, obj in ipairs(workspace:GetDescendants()) do
+        if obj:IsA("Model") and obj.Name == "DoorFake" then
+            createPurpleESP(obj)
+        end
+    end
+end
+
+-- First scan
+scanForKeys()
+
+-- Auto refresh every 5 seconds (lag-free)
+while true do
+    task.wait(5)
+    pcall(scanForKeys)
+end
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Highlight Beer",
+	Callback = function()
+-- Low-Lag, Auto-Refreshing Purple ESP for Keys (Mobile Safe)
+
+local function createPurpleESP(model)
+    if model:FindFirstChild("Highlight") then return end
+
+    local highlight = Instance.new("Highlight")
+    highlight.Name = "Highlight"
+    highlight.Adornee = model
+    highlight.FillColor = Color3.fromRGB(0, 255, 0) -- Purple
+    highlight.OutlineColor = Color3.fromRGB(25, 2, 25)
+    highlight.FillTransparency = 0.3
+    highlight.OutlineTransparency = 0.1
+    highlight.Parent = model
+end
+
+local function scanForKeys()
+    for _, obj in ipairs(workspace:GetDescendants()) do
+        if obj:IsA("Model") and obj.Name == "Smoothie" then
+            createPurpleESP(obj)
+        end
+    end
+end
+
+-- First scan
+scanForKeys()
+
+-- Auto refresh every 5 seconds (lag-free)
+while true do
+    task.wait(5)
+    pcall(scanForKeys)
+end
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Highlight Lever",
+	Callback = function()
+-- Low-Lag, Auto-Refreshing Purple ESP for Keys (Mobile Safe)
+
+local function createPurpleESP(model)
+    if model:FindFirstChild("Highlight") then return end
+
+    local highlight = Instance.new("Highlight")
+    highlight.Name = "Highlight"
+    highlight.Adornee = model
+    highlight.FillColor = Color3.fromRGB(170, 0, 0) -- Purple
+    highlight.OutlineColor = Color3.fromRGB(250, 255, 255)
+    highlight.FillTransparency = 0.3
+    highlight.OutlineTransparency = 0.1
+    highlight.Parent = model
+end
+
+local function scanForKeys()
+    for _, obj in ipairs(workspace:GetDescendants()) do
+        if obj:IsA("Model") and obj.Name == "LeverForGate" then
+            createPurpleESP(obj)
+        end
+    end
+end
+
+-- First scan
+scanForKeys()
+
+-- Auto refresh every 5 seconds (lag-free)
+while true do
+    task.wait(5)
+    pcall(scanForKeys)
+end
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Esp books ( Figure )",
+	Callback = function()
+-- Made by mrpopcat14
+local RunService = game:GetService("RunService")
+local CollectionService = game:GetService("CollectionService")
+
+-- Table to keep track of highlighted objects
+local highlightedObjects = {}
+
+local function handleNewObject(obj)
+    if obj:IsA('Part') and obj.Parent and obj.Parent:IsA('Model') and obj.Parent.Name == 'LiveHintBook' then
+        -- Check if the object is not already highlighted
+        if not highlightedObjects[obj] then
+            if not obj.Parent:FindFirstChildOfClass('BillboardGui') then
+                local BillboardGui = Instance.new('BillboardGui')
+                local TextLabel = Instance.new('TextLabel')
+
+                BillboardGui.Parent = obj.Parent
+                BillboardGui.AlwaysOnTop = true
+                BillboardGui.Size = UDim2.new(0, 50, 0, 50)
+                BillboardGui.StudsOffset = Vector3.new(0, 1, 0)
+
+                TextLabel.Parent = BillboardGui
+                TextLabel.BackgroundTransparency = 1
+                TextLabel.Size = UDim2.new(1, 0, 1, 0)
+                TextLabel.Text = "Books" -- Display text
+                TextLabel.TextScaled = true
+                TextLabel.TextStrokeTransparency = 0.5 -- Text stroke for visibility
+
+                -- Removed the initial rotation check and related logic
+
+                local function updateColors()
+                    local hue = tick() % 5 / 5 
+                    local color = Color3.fromRGB(0, 0, 255)
+                    TextLabel.TextColor3 = color
+                end
+
+                -- Keep updating colors without rotation check
+                RunService.RenderStepped:Connect(updateColors)
+
+                highlightedObjects[obj] = true
+            end
+        end
+    end
+end
+
+-- Function to batch handle all existing objects
+local function handleExistingObjects()
+    for _, obj in ipairs(game.Workspace:GetDescendants()) do
+        handleNewObject(obj)
+    end
+end
+
+game.Workspace.ChildAdded:Connect(function(child)
+    handleNewObject(child)
+end)
+
+local lastCheck = 0
+RunService.Heartbeat:Connect(function(deltaTime)
+    lastCheck = lastCheck + deltaTime
+    if lastCheck >= 0.5 then
+        handleExistingObjects()
+        lastCheck = 0
+    end
+end)
+
+handleExistingObjects()
+  	end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Misc",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+	Name = "Full bright",
+	Callback = function()
+-- FullBright Script (works on mobile too)
+local lighting = game:GetService("Lighting")
+
+-- Save original settings (optional if you want to toggle later)
+local originalBrightness = lighting.Brightness
+local originalTimeOfDay = lighting.TimeOfDay
+local originalFogEnd = lighting.FogEnd
+local originalAmbient = lighting.Ambient
+
+-- Apply FullBright settings
+lighting.Brightness = 2
+lighting.ClockTime = 12 -- Noon
+lighting.FogEnd = 1000000
+lighting.GlobalShadows = false
+lighting.OutdoorAmbient = Color3.new(1, 1, 1)
+lighting.Ambient = Color3.new(1, 1, 1)
+
+-- Optional: Prevent future changes (anti-darkness)
+lighting:GetPropertyChangedSignal("ClockTime"):Connect(function()
+	lighting.ClockTime = 12
+end)
+
+lighting:GetPropertyChangedSignal("FogEnd"):Connect(function()
+	lighting.FogEnd = 1000000
+end)
+
+lighting:GetPropertyChangedSignal("Brightness"):Connect(function()
+	lighting.Brightness = 2
+end)
+
+lighting:GetPropertyChangedSignal("Ambient"):Connect(function()
+	lighting.Ambient = Color3.new(1, 1, 1)
+end)
+
+lighting:GetPropertyChangedSignal("OutdoorAmbient"):Connect(function()
+	lighting.OutdoorAmbient = Color3.new(1, 1, 1)
+end)
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Warning Monster",
+	Callback = function()
+-- DOORS Monster Detector + ESP + Mobile Notification
+local function createMonsterESP(monster)
+    if monster:FindFirstChild("Highlight") then return end
+
+    local esp = Instance.new("Highlight")
+    esp.Name = "Highlight"
+    esp.Adornee = monster
+    esp.FillColor = Color3.fromRGB(255, 0, 0) -- Red ESP for monster
+    esp.OutlineColor = Color3.fromRGB(0, 0, 0)
+    esp.FillTransparency = 0.2
+    esp.OutlineTransparency = 0
+    esp.Parent = monster
+end
+
+-- Notification for mobile users
+local function notify(txt)
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "MONSTER ALERT!",
+        Text = txt,
+        Duration = 4
+    })
+end
+
+-- Known monster names in DOORS (add more if needed)
+local monsterList = {
+    "RushMoving",
+    "AmbushMoving",
+    "Screech",
+    "Eyes",
+    "Figure",
+    "Seek",
+    "Halt"
+}
+
+-- Constant scan (optimized to run every 2 seconds)
+while true do
+    task.wait(2)
+
+    for _, obj in ipairs(workspace:GetDescendants()) do
+        if obj:IsA("Model") then
+            for _, name in pairs(monsterList) do
+                if obj.Name == name then
+                    createMonsterESP(obj)
+                    notify("Monster Detected: " .. name)
+                end
+            end
+        end
+    end
+end
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Instant Interact",
+	Callback = function()
+-- LocalScript (place in StarterPlayer > StarterPlayerScripts)
+
+local Players = game:GetService("Players")
+local ProximityPromptService = game:GetService("ProximityPromptService")
+
+-- Make all proximity prompts instantly interact
+ProximityPromptService.PromptShown:Connect(function(prompt)
+	prompt.HoldDuration = 0 -- Instantly interact when touched
+end)
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Max Interact",
+	Callback = function()
+-- LocalScript (place in StarterPlayer > StarterPlayerScripts)
+
+local ProximityPromptService = game:GetService("ProximityPromptService")
+
+-- Function to max out interaction range for new prompts
+local function upgradePrompt(prompt)
+	prompt.MaxActivationDistance = 1000 -- Adjust as needed (1000 = super far)
+end
+
+-- Modify all existing prompts in the game
+for _, prompt in pairs(workspace:GetDescendants()) do
+	if prompt:IsA("ProximityPrompt") then
+		upgradePrompt(prompt)
+	end
+end
+
+-- Apply to future prompts that appear
+ProximityPromptService.PromptShown:Connect(function(prompt)
+	upgradePrompt(prompt)
+end)
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Interact Through Objects",
+	Callback = function()
+-- LocalScript (place in StarterPlayer > StarterPlayerScripts)
+
+local ProximityPromptService = game:GetService("ProximityPromptService")
+
+-- Allow interaction through walls or transparent objects
+ProximityPromptService.PromptButtonHoldBegan:Connect(function(prompt)
+	-- Force interaction regardless of obstructions
+	prompt.MaxActivationDistance = math.huge -- Makes it interactable from any distance
+end)
+
+-- Optionally, change this globally for all prompts as soon as they appear
+ProximityPromptService.PromptShown:Connect(function(prompt)
+	prompt.RequiresLineOfSight = false -- Let it be triggered through objects
+end)
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Anti Lag Light",
+	Callback = function()
+-- Anti-Lag Light Script for Roblox (Mobile Friendly)
+for _, light in pairs(workspace:GetDescendants()) do
+    if light:IsA("PointLight") or light:IsA("SpotLight") or light:IsA("SurfaceLight") then
+        light.Enabled = false
+    end
+end
+
+-- Optional: continuously disable new lights added
+workspace.DescendantAdded:Connect(function(descendant)
+    if descendant:IsA("PointLight") or descendant:IsA("SpotLight") or descendant:IsA("SurfaceLight") then
+        descendant.Enabled = false
+    end
+end)
+  	end    
+})
