@@ -1,0 +1,82 @@
+local UIS = game:GetService("UserInputService")
+local VIM = game:GetService("VirtualInputManager")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local camera = workspace.CurrentCamera
+
+-- Tạo GUI toggle bật/tắt
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "AutoClickGui"
+gui.ResetOnSpawn = false
+
+local toggle = Instance.new("TextButton")
+toggle.Size = UDim2.new(0, 140, 0, 40)
+toggle.Position = UDim2.new(0.05, 0, 0.85, 0)
+toggle.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+toggle.Text = "CrossHair Hold: OFF"
+toggle.TextScaled = true
+toggle.Font = Enum.Font.SourceSansBold
+toggle.TextColor3 = Color3.new(1, 1, 1)
+toggle.Parent = gui
+toggle.Active = true
+toggle.Draggable = true
+
+-- Crosshair dấu cộng ở giữa
+local crosshair = Instance.new("TextLabel")
+crosshair.Size = UDim2.new(0, 20, 0, 20)
+crosshair.Position = UDim2.new(0.5, -10, 0.5, -40)
+crosshair.BackgroundTransparency = 1
+crosshair.Text = "•"
+crosshair.TextColor3 = Color3.new(0, 255, 0)
+crosshair.TextStrokeTransparency = 0
+crosshair.TextScaled = true
+crosshair.Font = Enum.Font.SourceSansBold
+crosshair.Parent = gui
+crosshair.Visible = false
+
+-- Trạng thái bật/tắt
+local autoClickEnabled = false
+
+toggle.MouseButton1Click:Connect(function()
+	autoClickEnabled = not autoClickEnabled
+	if autoClickEnabled then
+		toggle.Text = "CrossHair Hold: ON"
+		toggle.BackgroundColor3 = Color3.fromRGB(30, 150, 30)
+     crosshair.Visible = true
+	else
+		toggle.Text = "CrossHair Hold: OFF"
+		toggle.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+     crosshair.Visible = false
+	end
+end)
+
+local clickOffsetX = 30   -- sang phải
+local clickOffsetY = 0   -- lên/xuống
+
+-- Hàm nhấp giữa màn hình
+local function clickCenter()
+	local screenSize = camera.ViewportSize
+	local clickx = screenSize.X / 2 + clickOffsetX
+	local clicky = screenSize.Y / 2 + clickOffsetY
+	VIM:SendMouseButtonEvent(clickx, clicky, 0, true, game, 0)
+	task.wait()
+	VIM:SendMouseButtonEvent(clickx, clicky, 0, false, game, 0)
+end
+
+-- Nhấn chạm hoặc vuốt thì nhấp giữa
+UIS.InputBegan:Connect(function(input, gameProcessed)
+	if autoClickEnabled and not gameProcessed then
+		if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+			clickCenter()
+		end
+	end
+end)
+
+-- Nếu giữ và vuốt ngón tay
+UIS.InputChanged:Connect(function(input, gameProcessed)
+	if autoClickEnabled and not gameProcessed then
+		if input.UserInputType == Enum.UserInputType.Touch then
+			clickCenter()
+		end
+	end
+end)
