@@ -633,6 +633,13 @@ end)
 })
 
 local Button = Tab:CreateButton({
+   Name = "Fe CrossHair Tap and Hold",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Fe-crosshair-kibazhub-game"))()
+   end,
+})
+
+local Button = Tab:CreateButton({
    Name = "Tween player",
    Callback = function()
    -- Dịch vụ cần dùng
@@ -1165,7 +1172,7 @@ end)
 })
 
 local Button = Tab:CreateButton({
-   Name = "Kill Npc Mear",
+   Name = "Kill Npc Near",
    Callback = function()
    -- Lấy người chơi và mouse
 local player = game.Players.LocalPlayer
