@@ -391,7 +391,7 @@ local function toggleOrbit()
 			orbitConnection = game:GetService("RunService").RenderStepped:Connect(function()
 				if not orbiting or not myChar or not myChar.PrimaryPart or not targetHRP then return end
 				angle += speed
-				local radius = 10
+				local radius = 5
 				local orbitPos = targetHRP.Position + Vector3.new(math.cos(math.rad(angle)) * radius, 0, math.sin(math.rad(angle)) * radius)
 				myChar:SetPrimaryPartCFrame(CFrame.new(orbitPos, targetHRP.Position))
 			end)
