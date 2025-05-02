@@ -1215,7 +1215,7 @@ local function killNearbyNPCs()
         if npc:IsA("Model") and npc ~= character and npc:FindFirstChild("Humanoid") and npc:FindFirstChild("HumanoidRootPart") then
             local dist = (npc.HumanoidRootPart.Position - root.Position).Magnitude
             -- Kiểm tra khoảng cách giữa NPC và người chơi
-            if dist <= 50 then -- bán kính 50 studs (có thể thay đổi)
+            if dist <= 10000000 then -- bán kính 50 studs (có thể thay đổi)
                 -- Giảm máu NPC xuống 0 (chết)
                 npc.Humanoid.Health = 0
             end
