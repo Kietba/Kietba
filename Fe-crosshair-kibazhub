@@ -14,7 +14,7 @@ local toggle = Instance.new("TextButton")
 toggle.Size = UDim2.new(0, 130, 0, 40)
 toggle.Position = UDim2.new(0.05, 0, 0.85, 0)
 toggle.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
-toggle.Text = "CrossHair: OFF"
+toggle.Text = "CrossHair Tap: OFF"
 toggle.TextScaled = true
 toggle.Font = Enum.Font.SourceSansBold
 toggle.TextColor3 = Color3.new(1, 1, 1)
@@ -52,11 +52,11 @@ local isMoving = false -- Biến đánh dấu xem đang di chuyển hay không
 toggle.MouseButton1Click:Connect(function()
 	autoClickEnabled = not autoClickEnabled
 	if autoClickEnabled then
-		toggle.Text = "CrossHair: ON"
+		toggle.Text = "CrossHair Tap: ON"
 		toggle.BackgroundColor3 = Color3.fromRGB(30, 150, 30)
      crosshair.Visible = true
 	else
-		toggle.Text = "CrossHair: OFF"
+		toggle.Text = "CrossHair Tap: OFF"
 		toggle.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
      crosshair.Visible = false
 	end
