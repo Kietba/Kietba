@@ -305,9 +305,43 @@ local Button = Tab:CreateButton({
 })
 
 local Button = Tab:CreateButton({
-   Name = "Aimbot v1",
+   Name = "Aimbot V",
    Callback = function()
-   loadstring(game:HttpGet("https://raw.githubusercontent.com/yzeedw/Mortalv2-main/main/UNIVERSAL%20AIMBOT%20V2"))()
+   getgenv().veerve = {
+
+    ["Main"] = {
+
+        ["Prediction"] = 0.1632049827, 
+
+        ["XPrediction"] = 0.145674112345,
+
+        ["YPrediction"] = 0.12828687172849,
+
+        ["AutoPrediction"] = false,
+
+        ["AimPart"] = "HumanoidRootPart",
+
+        ["ToggleKey"] = "q"
+
+    },
+
+    ["Misc"] = {
+
+        ["AutoAir"] = true,
+
+        ["AirDelay"] = 0.2,
+
+        ["AntiGroundShots"] = true,
+
+        ["Intro"] = true,
+
+        ["Macro"] = true
+
+    }
+
+}
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/SigmaVeerveScripts/Veerve.lua-V2.1-Cam/refs/heads/main/Veerve.lua%20V2.1%20OBFUSCATED.txt", true))()
    end,
 })
 
