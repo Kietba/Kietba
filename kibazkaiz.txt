@@ -1,0 +1,674 @@
+local Players = game:GetService("Players")
+local UIS = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local player = Players.LocalPlayer
+local screenGui = Instance.new("ScreenGui",
+ player:WaitForChild("PlayerGui"))
+local player = game.Players.LocalPlayer
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+screenGui.ResetOnSpawn = false
+
+-- GUI Elements
+local menuButton = Instance.new("TextButton")
+menuButton.Text = "Menu"
+menuButton.Size = UDim2.new(0, 100, 0, 40)
+menuButton.Position = UDim2.new(0, 10, 0, 10)
+menuButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+menuButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+menuButton.Font = Enum.Font.Arial
+menuButton.Parent = screenGui
+
+local menuFrame = Instance.new("Frame")
+menuFrame.Size = UDim2.new(0, 300, 0, 260)
+menuFrame.Position = UDim2.new(0, 10, 0, 60)
+menuFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+menuFrame.Visible = false
+menuFrame.Parent = screenGui
+
+-- Toggle NPC Part
+local toggleButton = Instance.new("TextButton")
+toggleButton.Text = "Select npc"
+toggleButton.Size = UDim2.new(0, 120, 0, 40)
+toggleButton.Position = UDim2.new(0, 10, 0, 10)
+toggleButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleButton.Parent = menuFrame
+
+-- Kill Button
+local killButton = Instance.new("TextButton")
+killButton.Text = "Kill NPC"
+killButton.Size = UDim2.new(0, 120, 0, 40)
+killButton.Position = UDim2.new(0, 10, 0, 60)
+killButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+killButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+killButton.Parent = menuFrame
+
+-- NPC Info Label
+local npcInfoLabel = Instance.new("TextLabel")
+npcInfoLabel.Size = UDim2.new(0, 160, 0, 40)
+npcInfoLabel.Position = UDim2.new(0, 140, 0, 60)
+npcInfoLabel.Text = "No NPC selected"
+npcInfoLabel.BackgroundTransparency = 1
+npcInfoLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+npcInfoLabel.TextScaled = true
+npcInfoLabel.Parent = menuFrame
+
+-- Toggle Orbit
+local toggleOrbitButton = Instance.new("TextButton")
+toggleOrbitButton.Text = "Orbit"
+toggleOrbitButton.Size = UDim2.new(0, 120, 0, 40)
+toggleOrbitButton.Position = UDim2.new(0, 10, 0, 110)
+toggleOrbitButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+toggleOrbitButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleOrbitButton.Parent = menuFrame
+
+-- Orbit Speed
+local orbitSpeedTextBox = Instance.new("TextBox")
+orbitSpeedTextBox.Size = UDim2.new(0, 60, 0, 40)
+orbitSpeedTextBox.Position = UDim2.new(0, 140, 0, 110)
+orbitSpeedTextBox.Text = "1"
+orbitSpeedTextBox.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+orbitSpeedTextBox.TextColor3 = Color3.fromRGB(0, 0, 0)
+orbitSpeedTextBox.PlaceholderText = "Speed"
+orbitSpeedTextBox.Parent = menuFrame
+
+-- Orbit Radius
+local orbitRadiusTextBox = Instance.new("TextBox")
+orbitRadiusTextBox.Size = UDim2.new(0, 60, 0, 40)
+orbitRadiusTextBox.Position = UDim2.new(0, 210, 0, 110)
+orbitRadiusTextBox.Text = "5"
+orbitRadiusTextBox.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+orbitRadiusTextBox.TextColor3 = Color3.fromRGB(0, 0, 0)
+orbitRadiusTextBox.PlaceholderText = "Radius"
+orbitRadiusTextBox.Parent = menuFrame
+
+-- Labels
+local speedLabel = Instance.new("TextLabel")
+speedLabel.Size = UDim2.new(0, 60, 0, 20)
+speedLabel.Position = UDim2.new(0, 140, 0, 155)
+speedLabel.Text = "Speed"
+speedLabel.BackgroundTransparency = 1
+speedLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+speedLabel.TextScaled = true
+speedLabel.Parent = menuFrame
+
+local distanceLabel = Instance.new("TextLabel")
+distanceLabel.Size = UDim2.new(0, 60, 0, 20)
+distanceLabel.Position = UDim2.new(0, 210, 0, 155)
+distanceLabel.Text = "Distance"
+distanceLabel.BackgroundTransparency = 1
+distanceLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+distanceLabel.TextScaled = true
+distanceLabel.Parent = menuFrame
+
+-- Hitbox Button
+local toggleHitboxButton = Instance.new("TextButton")
+toggleHitboxButton.Text = "Hitbox"
+toggleHitboxButton.Size = UDim2.new(0, 120, 0, 40)
+toggleHitboxButton.Position = UDim2.new(0, 10, 0, 160)
+toggleHitboxButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+toggleHitboxButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleHitboxButton.Parent = menuFrame
+
+-- ESP Button
+local toggleEspButton = Instance.new("TextButton")
+toggleEspButton.Text = "ESP"
+toggleEspButton.Size = UDim2.new(0, 120, 0, 40)
+toggleEspButton.Position = UDim2.new(0, 10, 0, 210)
+toggleEspButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+toggleEspButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleEspButton.Parent = menuFrame
+
+local toggleHighlightButton = Instance.new("TextButton")
+toggleHighlightButton.Text = "Highlight"
+toggleHighlightButton.Size = UDim2.new(0, 120, 0, 40)
+toggleHighlightButton.Position = UDim2.new(0, 160, 0, 210)
+toggleHighlightButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+toggleHighlightButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+toggleHighlightButton.Parent = menuFrame
+
+-- Thêm nút chuyển trang
+local pageButton = Instance.new("TextButton")
+pageButton.Text = ">"
+pageButton.Size = UDim2.new(0, 40, 0, 40)
+pageButton.Position = UDim2.new(0, 250, 0, 10)
+pageButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+pageButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+pageButton.Parent = menuFrame
+
+-- GUI trang thứ hai
+local pageTwoFrame = Instance.new("Frame")
+pageTwoFrame.Size = UDim2.new(0, 300, 0, 260)
+pageTwoFrame.Position = UDim2.new(0, 10, 0, 60)
+pageTwoFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+pageTwoFrame.Visible = false
+pageTwoFrame.Parent = screenGui
+
+-- Nút trang thứ hai
+local backButton = Instance.new("TextButton")
+backButton.Text = "<"
+backButton.Size = UDim2.new(0, 120, 0, 40)
+backButton.Position = UDim2.new(0, 10, 0, 10)
+backButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+backButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+backButton.Parent = pageTwoFrame
+
+-- Mỗi lần bấm vào nút ">", giao diện sẽ chuyển sang trang thứ hai
+pageButton.MouseButton1Click:Connect(function()
+	menuFrame.Visible = false
+	pageTwoFrame.Visible = true
+end)
+
+-- Quay lại trang đầu khi bấm nút "Back"
+backButton.MouseButton1Click:Connect(function()
+	pageTwoFrame.Visible = false
+	menuFrame.Visible = true
+end)
+
+-- Code phần giao diện
+local teleportButton = Instance.new("TextButton")
+teleportButton.Text = "Teleport to NPC"
+teleportButton.Size = UDim2.new(0, 120, 0, 40)
+teleportButton.Position = UDim2.new(0, 10, 0, 60) -- Vị trí của nút trong trang 2
+teleportButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+teleportButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+teleportButton.Parent = pageTwoFrame
+
+-- Code phần giao diện
+local tweenButton = Instance.new("TextButton")
+tweenButton.Text = "Tween to NPC"
+tweenButton.Size = UDim2.new(0, 120, 0, 40)
+tweenButton.Position = UDim2.new(0, 10, 0, 110) -- Vị trí của nút trong trang 2
+tweenButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+tweenButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+tweenButton.Parent = pageTwoFrame
+
+-- Code phần giao diện
+local tweenSpeedTextBox = Instance.new("TextBox")
+tweenSpeedTextBox.Text = "2"  -- Mặc định là 2 giây
+tweenSpeedTextBox.Size = UDim2.new(0, 60, 0, 40)
+tweenSpeedTextBox.Position = UDim2.new(0, 140, 0, 110)  -- Vị trí TextBox
+tweenSpeedTextBox.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+tweenSpeedTextBox.TextColor3 = Color3.fromRGB(0, 0, 0)
+tweenSpeedTextBox.PlaceholderText = "Speed (s)"
+tweenSpeedTextBox.Parent = pageTwoFrame
+
+-- Thêm nút Void NPC (Giết NPC đã chọn)
+local voidNpcButton = Instance.new("TextButton")
+voidNpcButton.Text = "Void NPC"
+voidNpcButton.Size = UDim2.new(0, 120, 0, 40)
+voidNpcButton.Position = UDim2.new(0, 10, 0, 160)  -- Vị trí nút Void NPC
+voidNpcButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)  -- Màu đỏ
+voidNpcButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+voidNpcButton.Parent = pageTwoFrame
+
+-- States
+local toggleState = false
+local selectedNpc = nil
+local orbitOn = false
+local hitboxPart = nil
+local orbitSpeed = 1
+local orbitRadius = 5
+local orbitConnection
+local espLabel
+
+-- Toggle Menu
+menuButton.MouseButton1Click:Connect(function()
+	menuFrame.Visible = not menuFrame.Visible
+end)
+
+-- Toggle NPC Parts
+toggleButton.MouseButton1Click:Connect(function()
+	toggleState = not toggleState
+	for _, npc in ipairs(workspace:GetChildren()) do
+		if npc:IsA("Model") and npc:FindFirstChild("HumanoidRootPart") then
+			local part = npc:FindFirstChild("DisplayPart")
+			if toggleState and not part then
+				local p = Instance.new("Part")
+				p.Name = "DisplayPart"
+				p.Size = Vector3.new(1,1,1)
+				p.Anchored = true
+				p.CanCollide = false
+				p.BrickColor = BrickColor.new("Bright red")
+				p.Position = npc.HumanoidRootPart.Position + Vector3.new(0, 3, 0)
+				p.Parent = npc
+			elseif not toggleState and part then
+				part:Destroy()
+			end
+		end
+	end
+end)
+
+-- Kill NPC
+killButton.MouseButton1Click:Connect(function()
+	if selectedNpc and selectedNpc:FindFirstChild("Humanoid") then
+		selectedNpc.Humanoid.Health = 0
+		npcInfoLabel.Text = selectedNpc.Name .. " Has been kill"
+	else
+		npcInfoLabel.Text = "no npc selected"
+	end
+end)
+
+-- Orbit
+toggleOrbitButton.MouseButton1Click:Connect(function()
+	orbitOn = not orbitOn
+	toggleOrbitButton.Text = orbitOn and "Orbit: ON" or "Toggle Orbit"
+	if orbitOn and selectedNpc then
+		orbitConnection = RunService.Heartbeat:Connect(function()
+			local char = player.Character
+			local hrp = char and char:FindFirstChild("HumanoidRootPart")
+			if not hrp or not selectedNpc:FindFirstChild("HumanoidRootPart") then return end
+			local angle = tick() * orbitSpeed
+			local x = math.cos(angle) * orbitRadius
+			local z = math.sin(angle) * orbitRadius
+			local pos = selectedNpc.HumanoidRootPart.Position + Vector3.new(x, 0, z)
+			hrp.CFrame = CFrame.new(pos, selectedNpc.HumanoidRootPart.Position)
+		end)
+	else
+		if orbitConnection then orbitConnection:Disconnect() orbitConnection = nil end
+	end
+end)
+
+-- Hitbox
+toggleHitboxButton.MouseButton1Click:Connect(function()
+	if not selectedNpc or not selectedNpc:FindFirstChild("HumanoidRootPart") then return end
+	if hitboxPart then hitboxPart:Destroy() hitboxPart = nil return end
+
+	hitboxPart = Instance.new("Part")
+	hitboxPart.Size = Vector3.new(10, 10, 10)
+	hitboxPart.Anchored = true
+	hitboxPart.CanCollide = false
+	hitboxPart.Transparency = 0.5
+	hitboxPart.BrickColor = BrickColor.new("Bright yellow")
+	hitboxPart.Position = selectedNpc.HumanoidRootPart.Position
+	hitboxPart.Parent = workspace
+
+	RunService.Heartbeat:Connect(function()
+		if hitboxPart and selectedNpc then
+			hitboxPart.Position = selectedNpc.HumanoidRootPart.Position
+		end
+	end)
+end)
+
+-- ESP
+toggleEspButton.MouseButton1Click:Connect(function()
+	if espLabel then espLabel:Destroy() espLabel = nil return end
+	if selectedNpc and selectedNpc:FindFirstChild("Head") then
+		espLabel = Instance.new("BillboardGui", selectedNpc.Head)
+		espLabel.Size = UDim2.new(0, 200, 0, 50)
+		espLabel.AlwaysOnTop = true
+
+		local text = Instance.new("TextLabel", espLabel)
+		text.Size = UDim2.new(1, 0, 1, 0)
+		text.BackgroundTransparency = 1
+		text.TextColor3 = Color3.fromRGB(255, 255, 0)
+		text.TextScaled = true
+		text.Text = selectedNpc.Name
+	end
+end)
+
+-- Highlight toggle
+toggleHighlightButton.MouseButton1Click:Connect(function()
+	if highlightObj then highlightObj:Destroy() highlightObj = nil return end
+	if selectedNpc then
+		highlightObj = Instance.new("Highlight")
+		highlightObj.FillColor = Color3.fromRGB(0, 255, 255)
+		highlightObj.OutlineColor = Color3.fromRGB(0, 100, 100)
+		highlightObj.FillTransparency = 0.3
+		highlightObj.OutlineTransparency = 0
+		highlightObj.Adornee = selectedNpc
+		highlightObj.Parent = selectedNpc
+	end
+end)
+
+-- Orbit input update
+orbitSpeedTextBox.FocusLost:Connect(function()
+	local val = tonumber(orbitSpeedTextBox.Text)
+	if val then orbitSpeed = val else orbitSpeedTextBox.Text = tostring(orbitSpeed) end
+end)
+
+orbitRadiusTextBox.FocusLost:Connect(function()
+	local val = tonumber(orbitRadiusTextBox.Text)
+	if val then orbitRadius = val else orbitRadiusTextBox.Text = tostring(orbitRadius) end
+end)
+
+-- Kết nối với chức năng Teleport
+teleportButton.MouseButton1Click:Connect(function()
+    if selectedNpc then
+        local humanoidRootPart = selectedNpc:FindFirstChild("HumanoidRootPart")
+        if humanoidRootPart then
+            -- Di chuyển nhân vật người chơi đến vị trí của NPC đã chọn
+            local playerHRP = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+            if playerHRP then
+                playerHRP.CFrame = humanoidRootPart.CFrame
+            end
+        end
+    else
+        npcInfoLabel.Text = "No select npc"
+    end
+end)
+
+-- Kết nối với chức năng Tween
+local TweenService = game:GetService("TweenService")
+
+tweenButton.MouseButton1Click:Connect(function()
+    -- Kiểm tra xem giá trị nhập vào có hợp lệ không
+    local tweenSpeed = tonumber(tweenSpeedTextBox.Text)
+    if not tweenSpeed or tweenSpeed <= 0 then
+        tweenSpeed = 2 -- Mặc định là 2 giây nếu không nhập đúng
+    end
+
+    if selectedNpc then
+        local humanoidRootPart = selectedNpc:FindFirstChild("HumanoidRootPart")
+        if humanoidRootPart then
+            -- Lấy nhân vật người chơi
+            local playerHRP = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+            if playerHRP then
+                -- Tạo Tween cho di chuyển nhân vật
+                local tweenInfo = TweenInfo.new(
+                    tweenSpeed, -- Thời gian di chuyển (được lấy từ TextBox)
+                    Enum.EasingStyle.Linear, -- Kiểu easing
+                    Enum.EasingDirection.Out, -- Hướng easing
+                    0, -- Lặp lại (0 lần)
+                    false, -- Không đảo ngược
+                    0 -- Độ trễ trước khi bắt đầu
+                )
+
+                -- Tạo tween di chuyển
+                local tweenGoal = { CFrame = humanoidRootPart.CFrame }
+                local tween = TweenService:Create(playerHRP, tweenInfo, tweenGoal)
+                tween:Play()
+            end
+        end
+    else
+        npcInfoLabel.Text = "No select npc"
+    end
+end)
+
+-- Hành động khi nhấn vào nút toggle
+-- Hành động khi nhấn nút Void NPC
+voidNpcButton.MouseButton1Click:Connect(function()
+    if selectedNpc and selectedNpc:FindFirstChild("Humanoid") then
+        -- Tiêu diệt NPC
+        selectedNpc.Humanoid.Health = 0  -- Đặt sức khỏe của NPC bằng 0, tức là giết NPC
+        npcInfoLabel.Text = selectedNpc.Name .. " ☠️"
+    else
+        npcInfoLabel.Text = "No select npc"
+    end
+end)
+
+-- Trong cùng LocalScript
+
+local runService = game:GetService("RunService")
+local hue = 0
+
+runService.RenderStepped:Connect(function(dt)
+	hue = (hue + dt * 0.2) % 1
+	menuButton.TextColor3 = Color3.fromHSV(hue, 1, 1)
+end)
+
+-- NPC selection via touch
+UIS.TouchTap:Connect(function(touches)
+	local pos = touches[1]
+	local cam = workspace.CurrentCamera
+	local ray = cam:ScreenPointToRay(pos.X, pos.Y)
+	local result = workspace:Raycast(ray.Origin, ray.Direction * 500, RaycastParams.new())
+	if result and result.Instance then
+		local model = result.Instance:FindFirstAncestorOfClass("Model")
+		if model and model:FindFirstChild("Humanoid") then
+			selectedNpc = model
+			npcInfoLabel.Text = "Đã chọn: " .. model.Name
+		end
+	end
+end)
+
+-- Trong cùng LocalScript
+
+local runService = game:GetService("RunService")
+local hue = 0
+
+runService.RenderStepped:Connect(function(dt)
+	hue = (hue + dt * 0.2) % 1
+	toggleButton.TextColor3 = Color3.fromHSV(hue, 1, 1)
+end)
+
+-- Trong cùng LocalScript
+
+local runService = game:GetService("RunService")
+local hue = 0
+
+runService.RenderStepped:Connect(function(dt)
+	hue = (hue + dt * 0.2) % 1
+	killButton.TextColor3 = Color3.fromHSV(hue, 1, 1)
+end)
+
+-- Trong cùng LocalScript
+
+local runService = game:GetService("RunService")
+local hue = 0
+
+runService.RenderStepped:Connect(function(dt)
+	hue = (hue + dt * 0.2) % 1
+	toggleOrbitButton.TextColor3 = Color3.fromHSV(hue, 1, 1)
+end)
+
+-- Trong cùng LocalScript
+
+local runService = game:GetService("RunService")
+local hue = 0
+
+runService.RenderStepped:Connect(function(dt)
+	hue = (hue + dt * 0.2) % 1
+	speedLabel.TextColor3 = Color3.fromHSV(hue, 1, 1)
+end)
+
+-- Trong cùng LocalScript
+
+local runService = game:GetService("RunService")
+local hue = 0
+
+runService.RenderStepped:Connect(function(dt)
+	hue = (hue + dt * 0.2) % 1
+	distanceLabel.TextColor3 = Color3.fromHSV(hue, 1, 1)
+end)
+
+-- Trong cùng LocalScript
+
+local runService = game:GetService("RunService")
+local hue = 0
+
+runService.RenderStepped:Connect(function(dt)
+	hue = (hue + dt * 0.2) % 1
+	toggleHitboxButton.TextColor3 = Color3.fromHSV(hue, 1, 1)
+end)
+
+-- Trong cùng LocalScript
+
+local runService = game:GetService("RunService")
+local hue = 0
+
+runService.RenderStepped:Connect(function(dt)
+	hue = (hue + dt * 0.2) % 1
+	toggleEspButton.TextColor3 = Color3.fromHSV(hue, 1, 1)
+end)
+
+-- Trong cùng LocalScript
+
+local runService = game:GetService("RunService")
+local hue = 0
+
+runService.RenderStepped:Connect(function(dt)
+	hue = (hue + dt * 0.2) % 1
+	toggleHighlightButton.TextColor3 = Color3.fromHSV(hue, 1, 1)
+end)
+
+-- Trong cùng LocalScript
+
+local runService = game:GetService("RunService")
+local hue = 0
+
+runService.RenderStepped:Connect(function(dt)
+	hue = (hue + dt * 0.2) % 1
+	pageButton.TextColor3 = Color3.fromHSV(hue, 1, 1)
+end)
+
+-- Trong cùng LocalScript
+
+local runService = game:GetService("RunService")
+local hue = 0
+
+runService.RenderStepped:Connect(function(dt)
+	hue = (hue + dt * 0.2) % 1
+	backButton.TextColor3 = Color3.fromHSV(hue, 1, 1)
+end)
+
+-- Trong cùng LocalScript
+
+local runService = game:GetService("RunService")
+local hue = 0
+
+runService.RenderStepped:Connect(function(dt)
+	hue = (hue + dt * 0.2) % 1
+	teleportButton.TextColor3 = Color3.fromHSV(hue, 1, 1)
+end)
+
+-- Trong cùng LocalScript
+
+local runService = game:GetService("RunService")
+local hue = 0
+
+runService.RenderStepped:Connect(function(dt)
+	hue = (hue + dt * 0.2) % 1
+	tweenButton.TextColor3 = Color3.fromHSV(hue, 1, 1)
+end)
+
+-- Trong cùng LocalScript
+
+local runService = game:GetService("RunService")
+local hue = 0
+
+runService.RenderStepped:Connect(function(dt)
+	hue = (hue + dt * 0.2) % 1
+	voidNpcButton.TextColor3 = Color3.fromHSV(hue, 1, 1)
+end)
+
+-- Trong cùng LocalScript
+
+local runService = game:GetService("RunService")
+local hue = 0
+
+runService.RenderStepped:Connect(function(dt)
+	hue = (hue + dt * 0.2) % 1
+	viewNpcButton.TextColor3 = Color3.fromHSV(hue, 1, 1)
+end)
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 20)
+corner.Parent = menuFrame
+
+-- Viền sáng đẹp
+local stroke = Instance.new("UIStroke")
+stroke.Thickness = 2
+stroke.Color = Color3.fromRGB(255, 0, 0)
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+stroke.Parent = menuFrame
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 20)
+corner.Parent = pageTwoFrame
+
+-- Viền sáng đẹp
+local stroke = Instance.new("UIStroke")
+stroke.Thickness = 2
+stroke.Color = Color3.fromRGB(255, 0, 0)
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+stroke.Parent = pageTwoFrame
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 15) -- Bạn có thể tăng giá trị này để bo tròn nhiều hơn
+corner.Parent = menuButton
+
+-- Thêm viền màu xanh nước biển
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 20) -- giá trị càng lớn thì góc càng tròn
+corner.Parent = menuButton
+
+-- Viền màu hồng
+local stroke = Instance.new("UIStroke")
+stroke.Color = Color3.fromRGB(255, 105, 180) -- màu hồng
+stroke.Thickness = 2 -- độ dày viền
+stroke.Parent = frame
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 20) -- giá trị càng lớn thì góc càng tròn
+corner.Parent = toggleButton
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 20) -- giá trị càng lớn thì góc càng tròn
+corner.Parent = killButton
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 20) -- giá trị càng lớn thì góc càng tròn
+corner.Parent = toggleOrbitButton
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 20) -- giá trị càng lớn thì góc càng tròn
+corner.Parent = toggleHitboxButton
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 20) -- giá trị càng lớn thì góc càng tròn
+corner.Parent = orbitSpeedTextBox
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 20)
+corner.Parent = voidNpcButton
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 20) -- giá trị càng lớn thì góc càng tròn
+corner.Parent = toggleEspButton
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 20) -- giá trị càng lớn thì góc càng tròn
+corner.Parent = orbitRadiusTextBox
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 20) -- giá trị càng lớn thì góc càng tròn
+corner.Parent = pageButton
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 20) -- giá trị càng lớn thì góc càng tròn
+corner.Parent = toggleHighlightButton
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 20) -- giá trị càng lớn thì góc càng tròn
+corner.Parent = backButton
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 20) -- giá trị càng lớn thì góc càng tròn
+corner.Parent = teleportButton
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 20) -- giá trị càng lớn thì góc càng tròn
+corner.Parent = tweenButton
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 20) -- giá trị càng lớn thì góc càng tròn
+corner.Parent = tweenSpeedTextBox
