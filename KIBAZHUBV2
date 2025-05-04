@@ -1233,13 +1233,6 @@ local Tab = Window:CreateTab("Npc", 4483362458) -- Title, Image
 local Section = Tab:CreateSection("Script")
 
 local Button = Tab:CreateButton({
-   Name = "Select npc",
-   Callback = function()
-   loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/kibazkaiz.txt"))()
-   end,
-})
-
-local Button = Tab:CreateButton({
    Name = "Hitbox Npc Near",
    Callback = function()
  local Players = game:GetService("Players")
@@ -1418,6 +1411,14 @@ end
 button.MouseButton1Click:Connect(toggleFreeze)
    end,
 })
+
+local Button = Tab:CreateButton({
+   Name = "Select npc",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/kibazkaiz.txt"))()
+   end,
+})
+
 -- Admin
 
 
