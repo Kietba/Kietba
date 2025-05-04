@@ -78,6 +78,95 @@ local Button = Tab:CreateButton({
 })
 
 local Button = Tab:CreateButton({
+   Name = "Auto collect frozen soul",
+   Callback = function()
+   local player = game.Players.LocalPlayer
+local char = player.Character or player.CharacterAdded:Wait()
+local hrp = char:WaitForChild("HumanoidRootPart")
+
+-- CÀI ĐẶT: Tên Model và ClassName
+local targetName = "Frozen Lock"
+local targetClassName = "Model"
+
+-- Tạo GUI Toggle
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "ToggleTeleportGui"
+
+local toggle = Instance.new("TextButton")
+toggle.Size = UDim2.new(0, 50, 0, 50)
+toggle.Position = UDim2.new(0.5, -100, 0.85, 0)
+toggle.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggle.Text = "Collect Frozen: Off"
+toggle.TextScaled = true
+toggle.Parent = gui
+toggle.Active = true
+toggle.Draggable = true
+
+-- Hàm lấy CFrame của Model
+local function getModelCFrame(model)
+	if model.PrimaryPart then
+		return model:GetPrimaryPartCFrame()
+	end
+	local part = model:FindFirstChild("HumanoidRootPart") or model:FindFirstChildWhichIsA("BasePart")
+	if part then
+		return part.CFrame
+	end
+	return nil
+end
+
+-- Toggle loop
+local running = false
+local toggleConnection
+
+toggle.MouseButton1Click:Connect(function()
+running = not running
+toggle.Text = running and "Collect: BẬT" or "Collect: Off"
+toggle.BackgroundColor3 = running and Color3.fromRGB(50, 220, 50) or Color3.fromRGB(255, 50, 50)
+
+	if running then
+		toggleConnection = task.spawn(function()
+			while running do
+				for _, obj in pairs(workspace:GetDescendants()) do
+					if obj.ClassName == targetClassName and obj.Name == targetName then
+						local cf = getModelCFrame(obj)
+						if cf then
+							hrp.CFrame = cf + Vector3.new(0, 3, 0)
+							break
+						end
+					end
+				end
+				task.wait(1)
+			end
+		end)
+	end
+end)
+
+-- Góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 15) -- Số càng lớn thì bo càng tròn
+corner.Parent = toggle
+
+-- Viền nền màu tím (viền nút, không phải chữ)
+local stroke = Instance.new("UIStroke")
+stroke.Color = Color3.fromRGB(170, 0, 255) -- Màu tím
+stroke.Thickness = 2 -- Độ dày viền
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Viền bao nút
+stroke.Parent = toggle
+
+-- cùng LocalScript
+
+local runService = game:GetService("RunService")
+local hue = 0
+
+runService.RenderStepped:Connect(function(dt)
+	hue = (hue + dt * 0.2) % 1
+	toggle.TextColor3 = Color3.fromHSV(hue, 1, 1)
+end)
+   end,
+})
+
+local Button = Tab:CreateButton({
    Name = "Auto Block + Aimbot",
    Callback = function()
    loadstring(game:HttpGet("https://raw.githubusercontent.com/Cyborg883/TSB/refs/heads/main/CombatGui"))()
