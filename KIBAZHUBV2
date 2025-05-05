@@ -1258,6 +1258,18 @@ toggleButton.Active = true
 toggleButton.Selectable = true
 toggleButton.Parent = screenGui
 
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = toggleButton
+
+-- Viền nền màu tím (viền nút, không phải chữ)
+local stroke = Instance.new("UIStroke")
+stroke.Color = Color3.fromRGB(170, 0, 255) -- Màu tím
+stroke.Thickness = 2 -- Độ dày viền
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Viền bao nút
+stroke.Parent = toggleButton
+
 -- Hitbox Logic
 local isOn = false
 local defaultSize = Vector3.new(2, 2, 1)
@@ -1346,6 +1358,18 @@ local function killNearbyNPCs()
     end
 end
 
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = killBtn
+
+-- Viền nền màu tím (viền nút, không phải chữ)
+local stroke = Instance.new("UIStroke")
+stroke.Color = Color3.fromRGB(170, 0, 255) -- Màu tím
+stroke.Thickness = 2 -- Độ dày viền
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Viền bao nút
+stroke.Parent = killBtn
+
 -- Khi nhấn nút "Kill Nearby NPCs"
 killBtn.MouseButton1Click:Connect(killNearbyNPCs)
    end,
@@ -1406,6 +1430,18 @@ local function toggleFreeze()
 		end
 	end
 end
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = button
+
+-- Viền nền màu tím (viền nút, không phải chữ)
+local stroke = Instance.new("UIStroke")
+stroke.Color = Color3.fromRGB(170, 0, 255) -- Màu tím
+stroke.Thickness = 2 -- Độ dày viền
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Viền bao nút
+stroke.Parent = button
 
 -- Bắt sự kiện click
 button.MouseButton1Click:Connect(toggleFreeze)
