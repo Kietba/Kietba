@@ -785,7 +785,7 @@ MainFrame.Draggable = true
 
 -- TextBox
 local TextBox = Instance.new("TextBox", MainFrame)
-TextBox.Size = UDim2.new(1, -40, 0, 40)
+TextBox.Size = UDim2.new(1, -20, 0, 40)
 TextBox.Position = UDim2.new(0, 10, 0, 10)
 TextBox.PlaceholderText = "Enter Name Player..."
 TextBox.Text = ""
