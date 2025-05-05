@@ -909,6 +909,78 @@ GoToSavedPointButton.MouseButton1Click:Connect(function()
 	end
 end)
 
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = TextBox
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = Button
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = SavePointButton
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = GotoSavePointButton
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = ToggleListButton
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = SaveListFrame
+
+-- Viền nền màu tím (viền nút, không phải chữ)
+local stroke = Instance.new("UIStroke")
+stroke.Color = Color3.fromRGB(170, 0, 255) -- Màu tím
+stroke.Thickness = 2 -- Độ dày viền
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Viền bao nút
+stroke.Parent = TextBox
+
+-- Viền nền màu tím (viền nút, không phải chữ)
+local stroke = Instance.new("UIStroke")
+stroke.Color = Color3.fromRGB(170, 0, 255) -- Màu tím
+stroke.Thickness = 2 -- Độ dày viền
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Viền bao nút
+stroke.Parent = SavePointButton
+
+-- Viền nền màu tím (viền nút, không phải chữ)
+local stroke = Instance.new("UIStroke")
+stroke.Color = Color3.fromRGB(170, 0, 255) -- Màu tím
+stroke.Thickness = 2 -- Độ dày viền
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Viền bao nút
+stroke.Parent = Button
+
+-- Viền nền màu tím (viền nút, không phải chữ)
+local stroke = Instance.new("UIStroke")
+stroke.Color = Color3.fromRGB(170, 0, 255) -- Màu tím
+stroke.Thickness = 2 -- Độ dày viền
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Viền bao nút
+stroke.Parent = GotoSavePointButton
+
+-- Viền nền màu tím (viền nút, không phải chữ)
+local stroke = Instance.new("UIStroke")
+stroke.Color = Color3.fromRGB(170, 0, 255) -- Màu tím
+stroke.Thickness = 2 -- Độ dày viền
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Viền bao nút
+stroke.Parent = ToggleListButton
+
+-- Viền nền màu tím (viền nút, không phải chữ)
+local stroke = Instance.new("UIStroke")
+stroke.Color = Color3.fromRGB(170, 0, 255) -- Màu tím
+stroke.Thickness = 2 -- Độ dày viền
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Viền bao nút
+stroke.Parent = SaveListFrame
+
 -- Nút toggle danh sách
 ToggleListButton.MouseButton1Click:Connect(function()
 	SavedListFrame.Visible = not SavedListFrame.Visible
