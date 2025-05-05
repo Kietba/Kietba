@@ -939,7 +939,7 @@ corner.Parent = SavePointButton
 -- Làm tròn góc
 local corner = Instance.new("UICorner")
 corner.CornerRadius = UDim.new(0, 12)
-corner.Parent = GotoSavePointButton
+corner.Parent = GotoSavedPointButton
 
 -- Làm tròn góc
 local corner = Instance.new("UICorner")
@@ -977,7 +977,7 @@ local stroke = Instance.new("UIStroke")
 stroke.Color = Color3.fromRGB(170, 0, 255) -- Màu tím
 stroke.Thickness = 2 -- Độ dày viền
 stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Viền bao nút
-stroke.Parent = GotoSavePointButton
+stroke.Parent = GotoSavedPointButton
 
 -- Viền nền màu tím (viền nút, không phải chữ)
 local stroke = Instance.new("UIStroke")
