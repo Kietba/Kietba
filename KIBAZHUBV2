@@ -1323,8 +1323,6 @@ local mainFrame = Instance.new("Frame", screenGui)
 mainFrame.Size = UDim2.new(0, 75, 0, 75)  -- Kích thước nhỏ hơn
 mainFrame.Position = UDim2.new(0, 50, 0, 50)  -- Đặt vào giữa màn hình
 mainFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-mainFrame.Active = true
-mainFrame.Draggable = true  -- Cho phép kéo thả
 
 -- Tạo nút "Kill Nearby NPCs"
 local killBtn = Instance.new("TextButton", mainFrame)
@@ -1335,6 +1333,8 @@ killBtn.TextColor3 = Color3.new(1, 1, 1)
 killBtn.Font = Enum.Font.SourceSansBold
 killBtn.TextSize = 14  -- Kích thước chữ nhỏ hơn
 killBtn.TextWrapped = true  -- Cho phép chữ xuống dòng nếu cần
+killBtn.Active = true
+killBtn.Draggable = true  -- Cho phép kéo thả
 
 -- Hàm giết NPC gần người chơi
 local function killNearbyNPCs()
@@ -1357,6 +1357,11 @@ local function killNearbyNPCs()
         end
     end
 end
+
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = mainFrame
 
 -- Làm tròn góc
 local corner = Instance.new("UICorner")
