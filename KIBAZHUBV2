@@ -91,6 +91,8 @@ local targetClassName = "Model"
 -- Tạo GUI Toggle
 local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
 gui.Name = "ToggleTeleportGui"
+gui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+gui.ResetOnSpawn = false
 
 local toggle = Instance.new("TextButton")
 toggle.Size = UDim2.new(0, 50, 0, 50)
