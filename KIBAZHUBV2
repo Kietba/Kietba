@@ -1045,26 +1045,57 @@ toggleButton.Parent = screenGui
 toggleButton.Active = true
 toggleButton.Draggable = true
 
+-- Tạo label góc trái hiển thị team
+local teamLabel = Instance.new("TextLabel")
+teamLabel.Size = UDim2.new(0, 200, 0, 30)
+teamLabel.Position = UDim2.new(0, 10, 0, 10)
+teamLabel.BackgroundTransparency = 1
+teamLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+teamLabel.TextScaled = true
+teamLabel.Text = ""
+teamLabel.Parent = screenGui
+
 -- Trạng thái bật/tắt
 local espEnabled = false
 local highlights = {}
+local teamColors = {}
 
--- Hàm tạo ESP cho 1 player
+-- Hàm tạo cầu vồng
+local hue = 0
+game:GetService("RunService").RenderStepped:Connect(function()
+    hue = (hue + 1) % 360
+    local color = Color3.fromHSV(hue/360, 1, 1)
+    if espEnabled then
+        teamLabel.TextColor3 = color
+    end
+end)
+
+-- Cập nhật danh sách màu team
+local function updateTeamColors()
+    for _, team in pairs(game:GetService("Teams"):GetTeams()) do
+        teamColors[team.Name] = team.TeamColor.Color
+    end
+end
+
+updateTeamColors()
+
+game:GetService("Teams").ChildAdded:Connect(updateTeamColors)
+game:GetService("Teams").ChildRemoved:Connect(updateTeamColors)
+
+-- Hàm tạo ESP
 local function addESP(player)
     if player ~= game.Players.LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
         if player.Character:FindFirstChild("ESP_Billboard") then return end
 
-        local color = Color3.fromRGB(170, 0, 255) -- Màu tím
+        local teamColor = teamColors[player.Team.Name] or Color3.fromRGB(255, 255, 255)
 
-        -- Highlight
         local highlight = Instance.new("Highlight")
-        highlight.FillColor = color
-        highlight.OutlineColor = color
-        highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop -- Xuyên tường
+        highlight.FillColor = teamColor
+        highlight.OutlineColor = teamColor
+        highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
         highlight.Parent = player.Character
         highlights[player] = highlight
 
-        -- BillboardGui hiển thị tên, team, máu
         local billboard = Instance.new("BillboardGui")
         billboard.Name = "ESP_Billboard"
         billboard.Adornee = player.Character:WaitForChild("Head")
@@ -1076,17 +1107,16 @@ local function addESP(player)
         local textLabel = Instance.new("TextLabel")
         textLabel.Size = UDim2.new(1, 0, 1, 0)
         textLabel.BackgroundTransparency = 1
-        textLabel.TextColor3 = color
+        textLabel.TextColor3 = teamColor
         textLabel.TextScaled = true
         textLabel.Text = player.Name .. " | " .. tostring(player.Team) .. " | HP: " .. math.floor(player.Character.Humanoid.Health)
         textLabel.Parent = billboard
 
-        -- SelectionBox
         local selectionBox = Instance.new("SelectionBox")
         selectionBox.Adornee = player.Character
         selectionBox.LineThickness = 0.05
-        selectionBox.Color3 = color
-        selectionBox.SurfaceTransparency = 1 -- Cho xuyên tường
+        selectionBox.Color3 = Color3.fromRGB(170, 0, 255)
+        selectionBox.SurfaceTransparency = 1
         selectionBox.Parent = player.Character
     end
 end
@@ -1109,11 +1139,30 @@ local function removeESP()
     end
 end
 
+-- Làm tròn góc
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = toggleButton
+
+-- Viền nền màu tím (viền nút, không phải chữ)
+local stroke = Instance.new("UIStroke")
+stroke.Color = Color3.fromRGB(170, 0, 255) -- Màu tím
+stroke.Thickness = 2 -- Độ dày viền
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Viền bao nút
+stroke.Parent = toggleButton
+
 -- Toggle
 toggleButton.MouseButton1Click:Connect(function()
     espEnabled = not espEnabled
     toggleButton.Text = espEnabled and "ESP ON" or "ESP OFF"
-    if not espEnabled then
+
+    local localPlayer = game.Players.LocalPlayer
+    local myTeam = localPlayer.Team and localPlayer.Team.Name or "Không có team"
+
+    if espEnabled then
+        teamLabel.Text = "Tôi team: " .. myTeam
+    else
+        teamLabel.Text = ""
         removeESP()
     end
 end)
@@ -1121,29 +1170,34 @@ end)
 -- Luôn chạy update ESP
 game:GetService("RunService").RenderStepped:Connect(function()
     if espEnabled then
+        updateTeamColors()
+        local localPlayer = game.Players.LocalPlayer
+        local myTeam = localPlayer.Team and localPlayer.Team.Name or "Không có team"
+        teamLabel.Text = "Tôi team: " .. myTeam
+
         for _, player in pairs(game.Players:GetPlayers()) do
-            if player ~= game.Players.LocalPlayer and player.Character and player.Character:FindFirstChild("Humanoid") then
+            if player ~= localPlayer and player.Character and player.Character:FindFirstChild("Humanoid") then
                 addESP(player)
                 local billboard = player.Character:FindFirstChild("ESP_Billboard")
                 local hp = math.floor(player.Character.Humanoid.Health)
-                local color = Color3.fromRGB(170, 0, 255)
+                local teamColor = teamColors[player.Team.Name] or Color3.fromRGB(255, 255, 255)
 
                 if billboard then
                     local label = billboard:FindFirstChildOfClass("TextLabel")
                     if label then
                         label.Text = player.Name .. " | " .. tostring(player.Team) .. " | HP: " .. hp
-                        label.TextColor3 = color
+                        label.TextColor3 = teamColor
                     end
                 end
 
                 if highlights[player] then
-                    highlights[player].FillColor = color
-                    highlights[player].OutlineColor = color
+                    highlights[player].FillColor = teamColor
+                    highlights[player].OutlineColor = teamColor
                 end
 
                 local box = player.Character:FindFirstChildOfClass("SelectionBox")
                 if box then
-                    box.Color3 = color
+                    box.Color3 = Color3.fromRGB(170, 0, 255)
                 end
             end
         end
