@@ -440,6 +440,8 @@ local Button = Tab:CreateButton({
    -- GUI setup
 local screenGui = Instance.new("ScreenGui")
 screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+screenGui.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+screenGui.ResetOnSpawn = false
 
 local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 300, 0, 200)
@@ -576,6 +578,8 @@ local Button = Tab:CreateButton({
    -- Tạo GUI
 local screenGui = Instance.new("ScreenGui")
 screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+screenGui.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+screenGui.ResetOnSpawn = false
 
 local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 300, 0, 150)  -- Kích thước nhỏ gọn
@@ -1018,6 +1022,132 @@ Button.MouseButton1Click:Connect(function()
 		end
 	end
 	showStatusMessage("Không tìm thấy người chơi.")
+end)
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Esp Team",
+   Callback = function()
+   -- Tạo ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+screenGui.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+screenGui.ResetOnSpawn = false
+
+-- Tạo Toggle Button
+local toggleButton = Instance.new("TextButton")
+toggleButton.Size = UDim2.new(0, 50, 0, 50)
+toggleButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+toggleButton.Text = "ESP OFF"
+toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleButton.Parent = screenGui
+toggleButton.Active = true
+toggleButton.Draggable = true
+
+-- Trạng thái bật/tắt
+local espEnabled = false
+local highlights = {}
+
+-- Hàm tạo ESP cho 1 player
+local function addESP(player)
+    if player ~= game.Players.LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        if player.Character:FindFirstChild("ESP_Billboard") then return end
+
+        local color = Color3.fromRGB(170, 0, 255) -- Màu tím
+
+        -- Highlight
+        local highlight = Instance.new("Highlight")
+        highlight.FillColor = color
+        highlight.OutlineColor = color
+        highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop -- Xuyên tường
+        highlight.Parent = player.Character
+        highlights[player] = highlight
+
+        -- BillboardGui hiển thị tên, team, máu
+        local billboard = Instance.new("BillboardGui")
+        billboard.Name = "ESP_Billboard"
+        billboard.Adornee = player.Character:WaitForChild("Head")
+        billboard.Size = UDim2.new(0, 100, 0, 50)
+        billboard.StudsOffset = Vector3.new(0, 2, 0)
+        billboard.AlwaysOnTop = true
+        billboard.Parent = player.Character
+
+        local textLabel = Instance.new("TextLabel")
+        textLabel.Size = UDim2.new(1, 0, 1, 0)
+        textLabel.BackgroundTransparency = 1
+        textLabel.TextColor3 = color
+        textLabel.TextScaled = true
+        textLabel.Text = player.Name .. " | " .. tostring(player.Team) .. " | HP: " .. math.floor(player.Character.Humanoid.Health)
+        textLabel.Parent = billboard
+
+        -- SelectionBox
+        local selectionBox = Instance.new("SelectionBox")
+        selectionBox.Adornee = player.Character
+        selectionBox.LineThickness = 0.05
+        selectionBox.Color3 = color
+        selectionBox.SurfaceTransparency = 1 -- Cho xuyên tường
+        selectionBox.Parent = player.Character
+    end
+end
+
+-- Hàm xóa ESP
+local function removeESP()
+    for _, player in pairs(game.Players:GetPlayers()) do
+        if player.Character then
+            local billboard = player.Character:FindFirstChild("ESP_Billboard")
+            if billboard then billboard:Destroy() end
+
+            local selectionBox = player.Character:FindFirstChildOfClass("SelectionBox")
+            if selectionBox then selectionBox:Destroy() end
+
+            if highlights[player] then
+                highlights[player]:Destroy()
+                highlights[player] = nil
+            end
+        end
+    end
+end
+
+-- Toggle
+toggleButton.MouseButton1Click:Connect(function()
+    espEnabled = not espEnabled
+    toggleButton.Text = espEnabled and "ESP ON" or "ESP OFF"
+    if not espEnabled then
+        removeESP()
+    end
+end)
+
+-- Luôn chạy update ESP
+game:GetService("RunService").RenderStepped:Connect(function()
+    if espEnabled then
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= game.Players.LocalPlayer and player.Character and player.Character:FindFirstChild("Humanoid") then
+                addESP(player)
+                local billboard = player.Character:FindFirstChild("ESP_Billboard")
+                local hp = math.floor(player.Character.Humanoid.Health)
+                local color = Color3.fromRGB(170, 0, 255)
+
+                if billboard then
+                    local label = billboard:FindFirstChildOfClass("TextLabel")
+                    if label then
+                        label.Text = player.Name .. " | " .. tostring(player.Team) .. " | HP: " .. hp
+                        label.TextColor3 = color
+                    end
+                end
+
+                if highlights[player] then
+                    highlights[player].FillColor = color
+                    highlights[player].OutlineColor = color
+                end
+
+                local box = player.Character:FindFirstChildOfClass("SelectionBox")
+                if box then
+                    box.Color3 = color
+                end
+            end
+        end
+    end
 end)
    end,
 })
