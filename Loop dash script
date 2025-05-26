@@ -1,0 +1,115 @@
+-- Tạo GUI
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local runService = game:GetService("RunService")
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "SpinGui"
+screenGui.ResetOnSpawn = false -- giữ GUI khi chết
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+local button = Instance.new("TextButton")
+button.Size = UDim2.new(0, 150, 0, 50)
+button.Position = UDim2.new(0.5, -75, 0.8, 0)
+button.BackgroundColor3 = Color3.fromRGB(255, 170, 0)
+button.TextColor3 = Color3.new(1, 1, 1)
+button.Text = "Auto Tech"
+button.Font = Enum.Font.GothamBold
+button.TextSize = 20
+button.Name = "SpinButton"
+button.Parent = screenGui
+button.Active = true
+button.Draggable = true
+
+-- Biến chính
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local communicate = character:WaitForChild("Communicate")
+
+-- Gán NPC nếu muốn điều khiển NPC thay vì chính mình
+local targetNPC = nil -- Ví dụ: workspace.Zombie1
+
+-- Cập nhật lại khi chết & hồi sinh
+player.CharacterAdded:Connect(function(newChar)
+	character = newChar
+	humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+	communicate = character:WaitForChild("Communicate")
+end)
+
+-- Tìm người gần nhất
+local function getClosestPlayer()
+	local closest, dist = nil, math.huge
+	for _, other in ipairs(Players:GetPlayers()) do
+		if other ~= player and other.Character and other.Character:FindFirstChild("HumanoidRootPart") then
+			local d = (other.Character.HumanoidRootPart.Position - humanoidRootPart.Position).Magnitude
+			if d < dist then
+				closest = other
+				dist = d
+			end
+		end
+	end
+	return closest
+end
+
+-- Gửi hành động Q
+local function simulateQPress()
+	local args = {
+		[1] = {
+			["Dash"] = Enum.KeyCode.W,
+			["Key"] = Enum.KeyCode.Q,
+			["Goal"] = "KeyPress"
+		}
+	}
+	if communicate then
+		communicate:FireServer(unpack(args))
+	end
+end
+
+-- Xử lý khi nhấn GUI
+button.MouseButton1Click:Connect(function()
+	simulateQPress()
+
+	local controlPart
+	if targetNPC and targetNPC:FindFirstChild("HumanoidRootPart") then
+		controlPart = targetNPC.HumanoidRootPart
+	else
+		controlPart = humanoidRootPart
+	end
+
+	local startTick = tick()
+	local duration = 0.5
+	local lastAngle = 0
+	local closestPlayer = getClosestPlayer()
+
+	local connection
+	connection = runService.RenderStepped:Connect(function()
+		local elapsed = tick() - startTick
+		if elapsed > duration then
+			connection:Disconnect()
+			if closestPlayer and closestPlayer.Character and closestPlayer.Character:FindFirstChild("HumanoidRootPart") then
+				local targetPart = closestPlayer.Character.HumanoidRootPart
+				local direction = (controlPart.Position - targetPart.Position).Unit
+				local offsetPos = targetPart.Position + direction * 5
+				offsetPos = Vector3.new(offsetPos.X, controlPart.Position.Y, offsetPos.Z)
+				controlPart.CFrame = CFrame.new(offsetPos, targetPart.Position)
+			end
+			return
+		end
+
+		local angle = (elapsed / duration) * 360
+		local deltaAngle = angle - lastAngle
+		lastAngle = angle
+
+		local currentPos = controlPart.Position
+		if closestPlayer and closestPlayer.Character and closestPlayer.Character:FindFirstChild("HumanoidRootPart") then
+			local targetPos = closestPlayer.Character.HumanoidRootPart.Position
+			local dir = (targetPos - currentPos).Unit
+			local flatDir = Vector3.new(dir.X, 0, dir.Z)
+			local baseLook = CFrame.lookAt(Vector3.zero, flatDir)
+			local spin = CFrame.Angles(0, math.rad(angle), 0)
+			controlPart.CFrame = CFrame.new(currentPos) * spin:ToWorldSpace(baseLook)
+		else
+			controlPart.CFrame *= CFrame.Angles(0, math.rad(deltaAngle), 0)
+		end
+	end)
+end)
