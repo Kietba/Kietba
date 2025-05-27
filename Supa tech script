@@ -1,0 +1,83 @@
+local player = game:GetService("Players").LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+local players = game:GetService("Players")
+local runService = game:GetService("RunService")
+
+-- Tạo GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "DashGui"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = playerGui
+
+local button = Instance.new("TextButton")
+button.Size = UDim2.new(0, 140, 0, 50)
+button.Position = UDim2.new(0.5, -70, 0.8, 0)
+button.Text = "Supa Tech"
+button.TextScaled = true
+button.BackgroundColor3 = Color3.fromRGB(30, 144, 255)
+button.TextColor3 = Color3.new(1, 1, 1)
+button.Font = Enum.Font.GothamBold
+button.Parent = screenGui
+button.Active = true
+button.Draggable = true
+
+-- Hàm tìm người gần nhất
+local function getNearestPlayer()
+    local nearest = nil
+    local shortest = math.huge
+    local myChar = player.Character
+    local myRoot = myChar and myChar:FindFirstChild("HumanoidRootPart")
+    if not myRoot then return nil end
+
+    for _, other in pairs(players:GetPlayers()) do
+        if other ~= player and other.Character then
+            local root = other.Character:FindFirstChild("HumanoidRootPart")
+            if root then
+                local dist = (root.Position - myRoot.Position).Magnitude
+                if dist < shortest and dist <= 50 then
+                    shortest = dist
+                    nearest = root
+                end
+            end
+        end
+    end
+    return nearest
+end
+
+-- Khi ấn nút
+button.MouseButton1Click:Connect(function()
+    local character = player.Character or player.CharacterAdded:Wait()
+    local root = character:WaitForChild("HumanoidRootPart")
+
+    -- Gửi FireServer
+    local args = {
+        [1] = {
+            ["Dash"] = Enum.KeyCode.W,
+            ["Key"] = Enum.KeyCode.Q,
+            ["Goal"] = "KeyPress"
+        }
+    }
+    character.Communicate:FireServer(unpack(args))
+
+    -- Sau 0.3 giây: quay ngược + bắt đầu lock
+    task.delay(0.3, function()
+        local reversedLook = -root.CFrame.LookVector
+        root.CFrame = CFrame.new(root.Position, root.Position + reversedLook)
+
+        -- Bắt đầu lock hướng
+        local conn
+        conn = runService.RenderStepped:Connect(function()
+            local target = getNearestPlayer()
+            if target then
+                local myPos = root.Position
+                local targetPos = target.Position
+                root.CFrame = CFrame.new(myPos, Vector3.new(targetPos.X, myPos.Y, targetPos.Z))
+            end
+        end)
+
+        -- Tắt lock sau 0.1 giây
+        task.delay(1, function()
+            if conn then conn:Disconnect() end
+        end)
+    end)
+end)
