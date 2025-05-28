@@ -1,0 +1,336 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local Camera = workspace.CurrentCamera
+
+-- ======= Phần INTRO ===========
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "MobileCamGui"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+local introLabel = Instance.new("TextLabel")
+introLabel.Size = UDim2.new(0, 400, 0, 80)
+introLabel.Position = UDim2.new(0.5, -200, 0.5, -40)
+introLabel.BackgroundTransparency = 1
+introLabel.Text = "Lethal Dash kibaz"
+introLabel.TextColor3 = Color3.new(1,1,1)
+introLabel.TextScaled = true
+introLabel.Font = Enum.Font.GothamBlack
+introLabel.TextTransparency = 1 -- bắt đầu ẩn
+introLabel.ZIndex = 10
+introLabel.Parent = screenGui
+
+local tweenIn = TweenService:Create(introLabel, TweenInfo.new(1.5), {TextTransparency = 0})
+local tweenOut = TweenService:Create(introLabel, TweenInfo.new(1.5), {TextTransparency = 1})
+
+tweenIn:Play()
+tweenIn.Completed:Wait()
+
+wait(2)
+
+tweenOut:Play()
+tweenOut.Completed:Wait()
+
+introLabel:Destroy()
+
+-- ====== Phần GUI chính =======
+local button = Instance.new("TextButton")
+button.Size = UDim2.new(0, 160, 0, 50)
+button.Position = UDim2.new(0.5, -80, 0.9, 0)
+button.Text = "Lethal Dash"
+button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+button.TextScaled = true
+button.Font = Enum.Font.GothamBold
+button.BorderSizePixel = 0
+button.Active = true
+button.Draggable = false
+button.ZIndex = 20
+button.Parent = screenGui
+
+local toggleMenu = Instance.new("TextButton")
+toggleMenu.Size = UDim2.new(0, 40, 0, 40)
+toggleMenu.Position = UDim2.new(1, -45, 0, 5)
+toggleMenu.Text = "☰"
+toggleMenu.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+toggleMenu.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleMenu.Font = Enum.Font.GothamBold
+toggleMenu.TextScaled = true
+toggleMenu.ZIndex = 20
+toggleMenu.Parent = screenGui
+
+local menuFrame = Instance.new("Frame")
+menuFrame.Size = UDim2.new(0, 160, 0, 180)
+menuFrame.Position = UDim2.new(1, -170, 0, 50)
+menuFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+menuFrame.BorderSizePixel = 0
+menuFrame.Visible = false
+menuFrame.ZIndex = 30
+menuFrame.Parent = screenGui
+
+-- Nút Đổi màu
+local colorBtn = Instance.new("TextButton")
+colorBtn.Size = UDim2.new(1, -10, 0, 40)
+colorBtn.Position = UDim2.new(0, 5, 0, 5)
+colorBtn.Text = "Changer Color"
+colorBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+colorBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+colorBtn.TextScaled = true
+colorBtn.Font = Enum.Font.GothamBold
+colorBtn.ZIndex = 31
+colorBtn.Parent = menuFrame
+
+-- Nút khoá kéo
+local lockBtn = Instance.new("TextButton")
+lockBtn.Size = UDim2.new(1, -10, 0, 40)
+lockBtn.Position = UDim2.new(0, 5, 0, 50)
+lockBtn.Text = "Lock GUI"
+lockBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+lockBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+lockBtn.TextScaled = true
+lockBtn.Font = Enum.Font.GothamBold
+lockBtn.ZIndex = 31
+lockBtn.Parent = menuFrame
+
+-- Nút bo góc tròn toggle
+local roundBtn = Instance.new("TextButton")
+roundBtn.Size = UDim2.new(0, 40, 0, 40)
+roundBtn.Position = UDim2.new(0, 5, 0, 95)
+roundBtn.Text = "◯"
+roundBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+roundBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+roundBtn.TextScaled = true
+roundBtn.Font = Enum.Font.GothamBold
+roundBtn.ZIndex = 31
+roundBtn.Parent = menuFrame
+
+-- Nút X đóng GUI
+local closeBtn = Instance.new("TextButton")
+closeBtn.Size = UDim2.new(0, 40, 0, 40)
+closeBtn.Position = UDim2.new(1, -45, 0, 95)
+closeBtn.Text = "X"
+closeBtn.BackgroundColor3 = Color3.fromRGB(180, 40, 40)
+closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeBtn.TextScaled = true
+closeBtn.Font = Enum.Font.GothamBold
+closeBtn.ZIndex = 31
+closeBtn.Parent = menuFrame
+
+local isLocked = false
+local isRounded = false
+
+lockBtn.MouseButton1Click:Connect(function()
+	isLocked = not isLocked
+	lockBtn.Text = isLocked and "Lock : On" or "Lock : Off"
+end)
+
+toggleMenu.MouseButton1Click:Connect(function()
+	menuFrame.Visible = not menuFrame.Visible
+end)
+
+-- Mảng màu để đổi cho nút xoay
+local colors = {
+	Color3.fromRGB(50, 50, 50),
+	Color3.fromRGB(150, 0, 0),
+	Color3.fromRGB(0, 150, 0),
+	Color3.fromRGB(0, 0, 150),
+	Color3.fromRGB(150, 150, 0),
+	Color3.fromRGB(150, 0, 150),
+	Color3.fromRGB(0, 150, 150),
+}
+
+local colorIndex = 1
+colorBtn.MouseButton1Click:Connect(function()
+	colorIndex = colorIndex + 1
+	if colorIndex > #colors then colorIndex = 1 end
+	button.BackgroundColor3 = colors[colorIndex]
+end)
+
+roundBtn.MouseButton1Click:Connect(function()
+	if not isRounded then
+		button.ClipsDescendants = true
+		local corner = Instance.new("UICorner")
+		corner.CornerRadius = UDim.new(0, 15)
+		corner.Name = "UICorner"
+		corner.Parent = button
+	else
+		local corner = button:FindFirstChild("UICorner")
+		if corner then corner:Destroy() end
+	end
+	isRounded = not isRounded
+end)
+
+-- Popup xác nhận xoá GUI
+local popupFrame = Instance.new("Frame")
+popupFrame.Size = UDim2.new(0, 250, 0, 120)
+popupFrame.Position = UDim2.new(0.5, -125, 0.5, -60)
+popupFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+popupFrame.BorderSizePixel = 0
+popupFrame.Visible = false
+popupFrame.ZIndex = 50
+popupFrame.Parent = screenGui
+
+local popupText = Instance.new("TextLabel")
+popupText.Size = UDim2.new(1, -20, 0, 40)
+popupText.Position = UDim2.new(0, 10, 0, 10)
+popupText.BackgroundTransparency = 1
+popupText.Text = "Are you sure you want to delete this gui?"
+popupText.TextColor3 = Color3.new(1, 1, 1)
+popupText.TextScaled = true
+popupText.Font = Enum.Font.GothamBold
+popupText.ZIndex = 51
+popupText.Parent = popupFrame
+
+local yesBtn = Instance.new("TextButton")
+yesBtn.Size = UDim2.new(0.4, -10, 0, 40)
+yesBtn.Position = UDim2.new(0, 10, 1, -50)
+yesBtn.Text = "Yes"
+yesBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+yesBtn.TextColor3 = Color3.new(1, 1, 1)
+yesBtn.TextScaled = true
+yesBtn.Font = Enum.Font.GothamBold
+yesBtn.ZIndex = 52
+yesBtn.Parent = popupFrame
+
+local noBtn = Instance.new("TextButton")
+noBtn.Size = UDim2.new(0.4, -10, 0, 40)
+noBtn.Position = UDim2.new(0.6, 10, 1, -50)
+noBtn.Text = "No"
+noBtn.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
+noBtn.TextColor3 = Color3.new(1, 1, 1)
+noBtn.TextScaled = true
+noBtn.Font = Enum.Font.GothamBold
+noBtn.ZIndex = 52
+noBtn.Parent = popupFrame
+
+closeBtn.MouseButton1Click:Connect(function()
+	menuFrame.Visible = false
+	popupFrame.Visible = true
+end)
+
+yesBtn.MouseButton1Click:Connect(function()
+	screenGui:Destroy()
+end)
+
+noBtn.MouseButton1Click:Connect(function()
+	popupFrame.Visible = false
+end)
+
+-- Hàm Remote fire (giữ nguyên code bạn gửi)
+local function fireRemote()
+	local args = {
+		[1] = {
+			["Dash"] = Enum.KeyCode.W,
+			["Key"] = Enum.KeyCode.Q,
+			["Goal"] = "KeyPress"
+		}
+	}
+	if character:FindFirstChild("Communicate") then
+		character.Communicate:FireServer(unpack(args))
+	end
+end
+
+-- Xoay camera vuốt sang phải
+local function smoothRotateCameraY(angleDegrees, duration, onDone)
+	local startCF = Camera.CFrame
+	local angleRad = math.rad(angleDegrees)
+	local progress = 0
+	local lastTime = tick()
+
+	local conn
+	conn = RunService.RenderStepped:Connect(function()
+		local now = tick()
+		local dt = now - lastTime
+		lastTime = now
+		progress += dt / duration
+		if progress >= 1 then
+			progress = 1
+			conn:Disconnect()
+			if onDone then onDone() end
+		end
+		local currentAngle = angleRad * progress
+		Camera.CFrame = startCF * CFrame.Angles(0, currentAngle, 0)
+	end)
+end
+
+-- Tìm người gần nhất
+local function getClosestPlayer()
+	local closest, minDist
+	local myHRP = character:FindFirstChild("HumanoidRootPart")
+	if not myHRP then return nil end
+	for _, other in ipairs(Players:GetPlayers()) do
+		if other ~= player and other.Character and other.Character:FindFirstChild("HumanoidRootPart") then
+			local dist = (myHRP.Position - other.Character.HumanoidRootPart.Position).Magnitude
+			if not minDist or dist < minDist then
+				minDist = dist
+				closest = other
+			end
+		end
+	end
+	return closest
+end
+
+-- Ghim camera vào người gần nhất trong 0.5s
+local function lockCamera(targetPart)
+	local conn
+	conn = RunService.RenderStepped:Connect(function()
+		if targetPart and targetPart.Parent then
+			Camera.CFrame = CFrame.new(Camera.CFrame.Position, targetPart.Position)
+		end
+	end)
+	task.delay(0.5, function()
+		if conn then conn:Disconnect() end
+	end)
+end
+
+-- Khi nhấn nút
+local function onButtonClick()
+	smoothRotateCameraY(360, 0.2, function()
+		local closest = getClosestPlayer()
+		if closest and closest.Character and closest.Character:FindFirstChild("HumanoidRootPart") then
+			lockCamera(closest.Character.HumanoidRootPart)
+		end
+	end)
+	fireRemote()
+end
+
+button.MouseButton1Click:Connect(onButtonClick)
+
+-- Xử lý kéo button (chỉ kéo khi chưa khóa)
+local dragStart, startPos
+button.InputBegan:Connect(function(input)
+	if isLocked then return end
+	if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragStart = input.Position
+		startPos = button.Position
+		local moved = false
+
+		local moveConn, endConn
+
+		moveConn = input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.Change then
+				local delta = input.Position - dragStart
+				if delta.Magnitude > 10 then
+					moved = true
+					button.Position = UDim2.new(
+						startPos.X.Scale,
+						startPos.X.Offset + delta.X,
+						startPos.Y.Scale,
+						startPos.Y.Offset + delta.Y
+					)
+				end
+			end
+		end)
+
+		endConn = input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				moveConn:Disconnect()
+				endConn:Disconnect()
+			end
+		end)
+	end
+end)
