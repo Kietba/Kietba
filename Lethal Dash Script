@@ -1,0 +1,85 @@
+local keyURL = "https://work.ink/1ZSr/chghmk2d"
+local correctKey = "9927748991999991919848383992929292828LethalDashScriptByYQANTGlllllllllllllllllll"
+local keyFile = "9927748991999991919848383992929292828LethalDashScriptByYQANTGlllllllllllllllllll"
+
+-- Check saved key
+local savedKey
+if isfile and isfile(keyFile) then
+    savedKey = readfile(keyFile)
+    if savedKey == correctKey then
+        loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\34\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\75\105\101\116\98\97\47\75\105\101\116\98\97\47\114\101\102\115\47\104\101\97\100\115\47\109\97\105\110\47\76\101\116\104\97\108\37\50\48\68\97\115\104\34\41\41\40\41")()
+        return -- Stop script since GUI not needed
+    end
+end
+
+-- GUI Setup
+local player = game.Players.LocalPlayer
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "KeySystem"
+
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0, 300, 0, 200)
+frame.Position = UDim2.new(0.5, -150, 0.5, -100)
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+frame.BorderSizePixel = 0
+
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1, 0, 0, 40)
+title.Position = UDim2.new(0, 0, 0, 0)
+title.Text = "Key System"
+title.TextColor3 = Color3.new(1, 1, 1)
+title.BackgroundTransparency = 1
+title.Font = Enum.Font.GothamBold
+title.TextScaled = true
+
+local textbox = Instance.new("TextBox", frame)
+textbox.Size = UDim2.new(1, -40, 0, 40)
+textbox.Position = UDim2.new(0, 20, 0, 60)
+textbox.PlaceholderText = "Enter Key"
+textbox.Text = ""
+textbox.Font = Enum.Font.Gotham
+textbox.TextScaled = true
+textbox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+textbox.TextColor3 = Color3.new(1, 1, 1)
+textbox.ClearTextOnFocus = false
+
+local getKeyBtn = Instance.new("TextButton", frame)
+getKeyBtn.Size = UDim2.new(0.45, -10, 0, 40)
+getKeyBtn.Position = UDim2.new(0.05, 0, 0, 120)
+getKeyBtn.Text = "Get Key"
+getKeyBtn.Font = Enum.Font.GothamBold
+getKeyBtn.TextScaled = true
+getKeyBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+getKeyBtn.TextColor3 = Color3.new(1, 1, 1)
+
+local submitBtn = Instance.new("TextButton", frame)
+submitBtn.Size = UDim2.new(0.45, -10, 0, 40)
+submitBtn.Position = UDim2.new(0.5, 10, 0, 120)
+submitBtn.Text = "Submit"
+submitBtn.Font = Enum.Font.GothamBold
+submitBtn.TextScaled = true
+submitBtn.BackgroundColor3 = Color3.fromRGB(0, 255, 140)
+submitBtn.TextColor3 = Color3.new(1, 1, 1)
+
+-- Logic
+getKeyBtn.MouseButton1Click:Connect(function()
+    setclipboard(keyURL)
+    getKeyBtn.Text = "Copied!"
+    task.wait(1.5)
+    getKeyBtn.Text = "Get Key"
+end)
+
+submitBtn.MouseButton1Click:Connect(function()
+    if textbox.Text == correctKey then
+        -- Lưu key
+        if writefile then
+            writefile(keyFile, correctKey)
+        end
+        gui:Destroy()
+        loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\34\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\75\105\101\116\98\97\47\75\105\101\116\98\97\47\114\101\102\115\47\104\101\97\100\115\47\109\97\105\110\47\76\101\116\104\97\108\37\50\48\68\97\115\104\34\41\41\40\41")()
+    else
+        submitBtn.Text = "Wrong Key!"
+        task.wait(1.5)
+        submitBtn.Text = "Submit"
+    end
+end)
