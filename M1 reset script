@@ -1,5 +1,5 @@
 -- M1 Reset&Emote Dash Script
---  WARN IT BAN ABLE
+--  WARNING IT BAN ABLE
 -- Set Keybile for Pc here (keycode.[adjusthere])
 getgenv().keybinds = {
     m1reset = Enum.KeyCode.R,  -- M1 Reset 
