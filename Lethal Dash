@@ -4,6 +4,13 @@ local TweenService = game:GetService("TweenService")
 
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
+
+-- Tự cập nhật character khi hồi sinh
+local function updateCharacter()
+	character = player.Character or player.CharacterAdded:Wait()
+end
+player.CharacterAdded:Connect(updateCharacter)
+
 local Camera = workspace.CurrentCamera
 
 -- ======= Phần INTRO ===========
@@ -20,7 +27,7 @@ introLabel.Text = "Lethal Dash kibaz"
 introLabel.TextColor3 = Color3.new(1,1,1)
 introLabel.TextScaled = true
 introLabel.Font = Enum.Font.GothamBlack
-introLabel.TextTransparency = 1 -- bắt đầu ẩn
+introLabel.TextTransparency = 1
 introLabel.ZIndex = 10
 introLabel.Parent = screenGui
 
@@ -72,7 +79,6 @@ menuFrame.Visible = false
 menuFrame.ZIndex = 30
 menuFrame.Parent = screenGui
 
--- Nút Đổi màu
 local colorBtn = Instance.new("TextButton")
 colorBtn.Size = UDim2.new(1, -10, 0, 40)
 colorBtn.Position = UDim2.new(0, 5, 0, 5)
@@ -84,7 +90,6 @@ colorBtn.Font = Enum.Font.GothamBold
 colorBtn.ZIndex = 31
 colorBtn.Parent = menuFrame
 
--- Nút khoá kéo
 local lockBtn = Instance.new("TextButton")
 lockBtn.Size = UDim2.new(1, -10, 0, 40)
 lockBtn.Position = UDim2.new(0, 5, 0, 50)
@@ -96,7 +101,6 @@ lockBtn.Font = Enum.Font.GothamBold
 lockBtn.ZIndex = 31
 lockBtn.Parent = menuFrame
 
--- Nút bo góc tròn toggle
 local roundBtn = Instance.new("TextButton")
 roundBtn.Size = UDim2.new(0, 40, 0, 40)
 roundBtn.Position = UDim2.new(0, 5, 0, 95)
@@ -108,7 +112,6 @@ roundBtn.Font = Enum.Font.GothamBold
 roundBtn.ZIndex = 31
 roundBtn.Parent = menuFrame
 
--- Nút X đóng GUI
 local closeBtn = Instance.new("TextButton")
 closeBtn.Size = UDim2.new(0, 40, 0, 40)
 closeBtn.Position = UDim2.new(1, -45, 0, 95)
@@ -132,7 +135,6 @@ toggleMenu.MouseButton1Click:Connect(function()
 	menuFrame.Visible = not menuFrame.Visible
 end)
 
--- Mảng màu để đổi cho nút xoay
 local colors = {
 	Color3.fromRGB(50, 50, 50),
 	Color3.fromRGB(150, 0, 0),
@@ -164,7 +166,7 @@ roundBtn.MouseButton1Click:Connect(function()
 	isRounded = not isRounded
 end)
 
--- Popup xác nhận xoá GUI
+-- Xác nhận xoá GUI
 local popupFrame = Instance.new("Frame")
 popupFrame.Size = UDim2.new(0, 250, 0, 120)
 popupFrame.Position = UDim2.new(0.5, -125, 0.5, -60)
@@ -220,7 +222,7 @@ noBtn.MouseButton1Click:Connect(function()
 	popupFrame.Visible = false
 end)
 
--- Hàm Remote fire (giữ nguyên code bạn gửi)
+-- Remote fire luôn dùng character mới nhất
 local function fireRemote()
 	local args = {
 		[1] = {
@@ -229,12 +231,12 @@ local function fireRemote()
 			["Goal"] = "KeyPress"
 		}
 	}
-	if character:FindFirstChild("Communicate") then
-		character.Communicate:FireServer(unpack(args))
+	if player.Character and player.Character:FindFirstChild("Communicate") then
+		player.Character.Communicate:FireServer(unpack(args))
 	end
 end
 
--- Xoay camera vuốt sang phải
+-- Camera xoay
 local function smoothRotateCameraY(angleDegrees, duration, onDone)
 	local startCF = Camera.CFrame
 	local angleRad = math.rad(angleDegrees)
@@ -260,7 +262,8 @@ end
 -- Tìm người gần nhất
 local function getClosestPlayer()
 	local closest, minDist
-	local myHRP = character:FindFirstChild("HumanoidRootPart")
+	local myChar = player.Character
+	local myHRP = myChar and myChar:FindFirstChild("HumanoidRootPart")
 	if not myHRP then return nil end
 	for _, other in ipairs(Players:GetPlayers()) do
 		if other ~= player and other.Character and other.Character:FindFirstChild("HumanoidRootPart") then
@@ -274,7 +277,7 @@ local function getClosestPlayer()
 	return closest
 end
 
--- Ghim camera vào người gần nhất trong 0.5s
+-- Khoá camera
 local function lockCamera(targetPart)
 	local conn
 	conn = RunService.RenderStepped:Connect(function()
@@ -287,7 +290,7 @@ local function lockCamera(targetPart)
 	end)
 end
 
--- Khi nhấn nút
+-- Sự kiện nút
 local function onButtonClick()
 	smoothRotateCameraY(360, 0.2, function()
 		local closest = getClosestPlayer()
@@ -300,7 +303,7 @@ end
 
 button.MouseButton1Click:Connect(onButtonClick)
 
--- Xử lý kéo button (chỉ kéo khi chưa khóa)
+-- Kéo GUI
 local dragStart, startPos
 button.InputBegan:Connect(function(input)
 	if isLocked then return end
