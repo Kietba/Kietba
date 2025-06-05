@@ -1,0 +1,55 @@
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "DashGui"
+ScreenGui.ResetOnSpawn = false -- Không reset khi nhân vật respawn
+ScreenGui.Parent = player:WaitForChild("PlayerGui")
+
+local Button = Instance.new("TextButton")
+Button.Parent = ScreenGui
+Button.Size = UDim2.new(0, 120, 0, 40)
+Button.Position = UDim2.new(0.5, -60, 0.8, 0)
+Button.Text = "Lùi + Dash"
+Button.BackgroundColor3 = Color3.fromRGB(30, 144, 255)
+Button.TextColor3 = Color3.new(1, 1, 1)
+Button.Font = Enum.Font.SourceSansBold
+Button.TextSize = 20
+Button.BorderSizePixel = 0
+Button.AutoButtonColor = true
+Button.Active = true
+Button.Draggable = true
+
+-- Xử lý khi nhấn nút
+Button.MouseButton1Click:Connect(function()
+	local char = player.Character or player.CharacterAdded:Wait()
+	if not char or not char:FindFirstChild("HumanoidRootPart") then return end
+
+	local hrp = char.HumanoidRootPart
+	local targetCFrame = hrp.CFrame * CFrame.new(0, 0, 5) -- lùi lại 5 stud
+
+	local tweenInfo = TweenInfo.new(
+		0.1, -- thời gian lùi
+		Enum.EasingStyle.Sine,
+		Enum.EasingDirection.Out
+	)
+
+	local tween = TweenService:Create(hrp, tweenInfo, {CFrame = targetCFrame})
+	tween:Play()
+
+	tween.Completed:Connect(function()
+		local args = {
+			[1] = {
+				["Dash"] = Enum.KeyCode.W,
+				["Key"] = Enum.KeyCode.Q,
+				["Goal"] = "KeyPress"
+			}
+		}
+
+		local com = char:FindFirstChild("Communicate")
+		if com then
+			com:FireServer(unpack(args))
+		end
+	end)
+end)
