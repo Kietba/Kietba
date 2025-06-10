@@ -1,0 +1,92 @@
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Tạo GUI nếu chưa có
+local mainGui = playerGui:FindFirstChild("TeleportGui")
+if not mainGui then
+    mainGui = Instance.new("ScreenGui")
+    mainGui.Name = "TeleportGui"
+    mainGui.ResetOnSpawn = false
+    mainGui.Parent = playerGui
+end
+
+-- Toggle trạng thái
+local toggleActive = true
+
+-- Tạo nút Toggle bật/tắt
+local toggleButton = Instance.new("TextButton")
+toggleButton.Name = "TeleportToggle"
+toggleButton.Size = UDim2.new(0, 100, 0, 40)
+toggleButton.Position = UDim2.new(1, -110, 1, -60)
+toggleButton.AnchorPoint = Vector2.new(0, 1)
+toggleButton.Text = "M1: ON"
+toggleButton.BackgroundColor3 = Color3.fromRGB(60, 200, 60)
+toggleButton.TextColor3 = Color3.new(1, 1, 1)
+toggleButton.Font = Enum.Font.SourceSansBold
+toggleButton.TextSize = 20
+toggleButton.Parent = mainGui
+toggleButton.Active = true
+toggleButton.Draggable = true
+
+toggleButton.MouseButton1Click:Connect(function()
+    toggleActive = not toggleActive
+    if toggleActive then
+        toggleButton.Text = "M1: ON"
+        toggleButton.BackgroundColor3 = Color3.fromRGB(60, 200, 60)
+    else
+        toggleButton.Text = "M1: OFF"
+        toggleButton.BackgroundColor3 = Color3.fromRGB(200, 60, 60)
+    end
+end)
+
+-- Tìm nút ảnh có ID 12252402662
+local teleportButton = nil
+
+for _, gui in pairs(playerGui:GetDescendants()) do
+    if gui:IsA("ImageButton") and gui.Image:find("12252402662") then
+        teleportButton = gui
+        break
+    end
+end
+
+if not teleportButton then
+    warn("❌ Không tìm thấy nút có hình ảnh 12252402662")
+    return
+end
+
+-- Tìm người chơi gần nhất
+local function getNearestPlayer()
+    local myChar = player.Character
+    if not myChar or not myChar:FindFirstChild("HumanoidRootPart") then return end
+
+    local myPos = myChar.HumanoidRootPart.Position
+    local nearestChar = nil
+    local minDist = 25
+
+    for _, other in pairs(game.Players:GetPlayers()) do
+        if other ~= player and other.Character and other.Character:FindFirstChild("HumanoidRootPart") then
+            local dist = (other.Character.HumanoidRootPart.Position - myPos).Magnitude
+            if dist < minDist then
+                minDist = dist
+                nearestChar = other.Character
+            end
+        end
+    end
+
+    return nearestChar
+end
+
+-- Khi nhấn nút ảnh, thực hiện dịch chuyển nếu toggle bật
+teleportButton.MouseButton1Click:Connect(function()
+    if not toggleActive then return end
+
+    local targetChar = getNearestPlayer()
+    local myChar = player.Character
+    if targetChar and myChar and myChar:FindFirstChild("HumanoidRootPart") then
+        local targetRoot = targetChar.HumanoidRootPart
+        local myRoot = myChar.HumanoidRootPart
+
+        local behind = targetRoot.CFrame * CFrame.new(0, 0, 4)
+        myRoot.CFrame = CFrame.new(behind.Position, targetRoot.Position)
+    end
+end)
