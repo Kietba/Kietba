@@ -1,0 +1,188 @@
+-- // Dịch vụ
+local TweenService = game:GetService("TweenService")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local Camera = workspace.CurrentCamera
+local LocalPlayer = Players.LocalPlayer
+
+-- // Hàm hỗ trợ chung
+local function keyDown(key)
+	VirtualInputManager:SendKeyEvent(true, key, false, game)
+end
+
+local function keyUp(key)
+	VirtualInputManager:SendKeyEvent(false, key, false, game)
+end
+
+local function swipeCameraBack()
+	Camera.CFrame = Camera.CFrame * CFrame.Angles(0, math.rad(88), 0)
+end
+
+local function swipeCameraRight()
+	Camera.CFrame = Camera.CFrame * CFrame.Angles(0, math.rad(88), 0)
+end
+
+local function sendDashRemote()
+	local args = {
+		[1] = {
+			["Dash"] = Enum.KeyCode.W,
+			["Key"] = Enum.KeyCode.Q,
+			["Goal"] = "KeyPress"
+		}
+	}
+	local remote = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Communicate")
+	if remote then
+		remote:FireServer(unpack(args))
+	end
+end
+
+local function tweenRightSmooth(studs, duration)
+	local char = LocalPlayer.Character
+	if not char or not char:FindFirstChild("HumanoidRootPart") then return end
+
+	local hrp = char.HumanoidRootPart
+	local offset = hrp.CFrame.RightVector * studs
+	local targetCF = hrp.CFrame + offset
+
+	local tween = TweenService:Create(hrp, TweenInfo.new(duration, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+		CFrame = CFrame.new(targetCF.Position, targetCF.Position + hrp.CFrame.LookVector)
+	})
+	tween:Play()
+end
+
+-- === GUI CHÍNH ===
+local gui = Instance.new("ScreenGui", game.CoreGui)
+gui.Name = "YQANTG_GUI"
+
+-- === INTRO ===
+local intro = Instance.new("TextLabel", gui)
+intro.Size = UDim2.new(0.6, 0, 0.2, 0)
+intro.Position = UDim2.new(0.2, 0, 0.4, 0)
+intro.BackgroundTransparency = 1
+intro.Text = "M1 Reset By YQANTG"
+intro.TextColor3 = Color3.new(1, 1, 1)
+intro.TextStrokeTransparency = 0.5
+intro.TextStrokeColor3 = Color3.new(0, 0, 0)
+intro.Font = Enum.Font.GothamBlack
+intro.TextScaled = true
+intro.TextTransparency = 1
+
+-- Nhạc Intro
+local sound = Instance.new("Sound", intro)
+sound.SoundId = "rbxassetid://120011175571061"
+sound.Volume = 3
+sound:Play()
+
+-- Hiệu ứng Fade
+local tweenIn = TweenService:Create(intro, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+	TextTransparency = 0,
+	TextStrokeTransparency = 0.5
+})
+local tweenOut = TweenService:Create(intro, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+	TextTransparency = 1,
+	TextStrokeTransparency = 1
+})
+
+tweenIn:Play()
+task.wait(5)
+tweenOut:Play()
+task.wait(1)
+
+sound:Stop()
+intro:Destroy()
+
+-- === STYLE BUTTON ===
+local function styleButton(btn, color, text)
+	btn.Size = UDim2.new(0, 50, 0, 50)
+	btn.BackgroundColor3 = color
+	btn.TextColor3 = Color3.new(1, 1, 1)
+	btn.Font = Enum.Font.GothamBold
+	btn.TextScaled = true
+	btn.Text = text
+	btn.BorderSizePixel = 0
+	btn.Active = true
+	btn.Draggable = true
+
+	local corner = Instance.new("UICorner", btn)
+	corner.CornerRadius = UDim.new(0, 12)
+
+	local stroke = Instance.new("UIStroke", btn)
+	stroke.Thickness = 1.5
+	stroke.Color = Color3.fromRGB(0, 0, 0)
+	stroke.Transparency = 0.5
+end
+
+-- === ÂM THANH NÚT ===
+local function playClickSound()
+	local s = Instance.new("Sound")
+	s.SoundId = "rbxassetid://7147226095"
+	s.Volume = 5
+	s.PlayOnRemove = false
+	s.Parent = gui
+	s:Play()
+	game.Debris:AddItem(s, 2)
+end
+
+-- === 🔵 BUTTON 1 ===
+local button1 = Instance.new("TextButton", gui)
+button1.Position = UDim2.new(0.5, -60, 0.6, -25)
+styleButton(button1, Color3.fromRGB(60, 170, 255), "1")
+
+local downPos1 = nil
+button1.MouseButton1Down:Connect(function()
+	downPos1 = UserInputService:GetMouseLocation()
+end)
+
+button1.MouseButton1Up:Connect(function()
+	local upPos = UserInputService:GetMouseLocation()
+	if (upPos - downPos1).Magnitude < 5 then
+		keyDown(Enum.KeyCode.D)
+		keyDown(Enum.KeyCode.Q)
+		tweenRightSmooth(12, 0.1)
+		task.wait(0.3)
+		keyUp(Enum.KeyCode.D)
+		keyUp(Enum.KeyCode.Q)
+		swipeCameraBack()
+		task.wait(0.2)
+		playClickSound() -- Phát âm thanh sau 0.25s
+		sendDashRemote()
+	end
+end)
+
+-- === 🟡 BUTTON 2 ===
+local button2 = Instance.new("TextButton", gui)
+button2.Position = UDim2.new(0.5, 10, 0.6, -25)
+styleButton(button2, Color3.fromRGB(255, 200, 40), "2")
+
+local downPos2 = nil
+button2.MouseButton1Down:Connect(function()
+	downPos2 = UserInputService:GetMouseLocation()
+end)
+
+button2.MouseButton1Up:Connect(function()
+	local upPos = UserInputService:GetMouseLocation()
+	if (upPos - downPos2).Magnitude < 5 then
+		swipeCameraRight()
+
+		local char = LocalPlayer.Character
+		if char and char:FindFirstChild("Humanoid") then
+			char.Humanoid.Jump = true
+		end
+
+		task.wait(0.1)
+		keyDown(Enum.KeyCode.D)
+
+		task.wait(0.2)
+		VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+		task.wait(0.1)
+		VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Q, false, game)
+
+		task.wait(0.1)
+		keyUp(Enum.KeyCode.D)
+
+		tweenRightSmooth(25, 0.35)
+		task.wait(0.35)
+		playClickSound() -- Phát âm thanh sau 0.35s
+	end
+end)
