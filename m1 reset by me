@@ -140,13 +140,14 @@ button1.MouseButton1Up:Connect(function()
 		keyDown(Enum.KeyCode.D)
 		keyDown(Enum.KeyCode.Q)
 		tweenRightSmooth(12, 0.1)
-		task.wait(0.3)
+		task.wait(0.25)
 		keyUp(Enum.KeyCode.D)
 		keyUp(Enum.KeyCode.Q)
 		swipeCameraBack()
 		task.wait(0.2)
+      sendDashRemote()
+     task.wait(0.35)
 		playClickSound() -- Phát âm thanh sau 0.25s
-		sendDashRemote()
 	end
 end)
 
