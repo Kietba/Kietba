@@ -119,7 +119,7 @@ button.MouseButton1Click:Connect(function()
 
 	-- Lùi 3 stud theo hướng đang nhìn
 	local lookVector = hrp.CFrame.LookVector
-	hrp.CFrame = hrp.CFrame - lookVector * 4
+	hrp.CFrame = hrp.CFrame - lookVector * 2
 
 	-- Nhảy lên không giới hạn
 	hrp.Velocity = Vector3.new(hrp.Velocity.X, 60, hrp.Velocity.Z)
