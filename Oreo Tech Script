@@ -147,8 +147,8 @@ end)
 -- 🛎 Hiện Notification và phát âm thanh
 StarterGui:SetCore("SendNotification", {
 	Title = "The Strongest Battleground",
-	Text = "Oreo Tech Script By YQANTG ( Fix miss 50% )",
-	Duration = 1
+	Text = "Oreo Tech Script By YQANTG ( Fix Miss 50 % )",
+	Duration = 10
 })
 notifySound:Play()
 
