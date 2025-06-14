@@ -22,7 +22,7 @@ button.Visible = false
 button.AutoButtonColor = false
 button.Parent = gui
 
--- Bo góc
+-- Bo tròn
 local corner = Instance.new("UICorner")
 corner.CornerRadius = UDim.new(0, 12)
 corner.Parent = button
@@ -45,15 +45,15 @@ button.MouseButton1Up:Connect(function()
 	button.BackgroundColor3 = Color3.fromRGB(0, 200, 255)
 end)
 
--- Âm thanh thông báo
+-- 🔊 Âm thanh thông báo
 local notifySound = Instance.new("Sound", gui)
 notifySound.SoundId = "rbxassetid://3442983711"
 notifySound.Volume = 10
 
--- Âm thanh nút
+-- 🔊 Âm thanh nút
 local buttonSound = Instance.new("Sound", button)
 buttonSound.SoundId = "rbxassetid://8394620892"
-buttonSound.Volume = 15
+buttonSound.Volume = 20
 
 -- Drag setup
 local dragging = false
@@ -93,11 +93,11 @@ local function swipeCameraBack(char, onFinish)
 	local distance = camOffset.Magnitude
 
 	local newDirection = -horizontalDirection
-	local newPos = hrp.Position + newDirection * distance + Vector3.new(0, 2, 0)
-	local lookAt = hrp.Position + Vector3.new(0, 1.5, 0)
+	local newPos = hrp.Position + newDirection * distance + Vector3.new(0, 0, 0)
+	local lookAt = hrp.Position + Vector3.new(0, 0, 0)
 
 	local newCF = CFrame.new(newPos, lookAt)
-	local tween = TweenService:Create(cam, TweenInfo.new(0.2, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+	local tween = TweenService:Create(cam, TweenInfo.new(0, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
 		CFrame = newCF
 	})
 	tween:Play()
@@ -106,7 +106,7 @@ local function swipeCameraBack(char, onFinish)
 	end)
 end
 
--- Khi nhấn nút
+-- Khi nhấn button
 button.MouseButton1Click:Connect(function()
 	if movedFar then return end
 
@@ -114,14 +114,10 @@ button.MouseButton1Click:Connect(function()
 	local hrp = char:FindFirstChild("HumanoidRootPart")
 	if not hrp then return end
 
-	-- Phát âm thanh nút
+	-- 🔊 Play âm thanh nút
 	buttonSound:Play()
 
-	-- Lùi 3 stud theo hướng đang nhìn
-	local lookVector = hrp.CFrame.LookVector
-	hrp.CFrame = hrp.CFrame - lookVector * 2
-
-	-- Nhảy lên không giới hạn
+	-- Nhảy
 	hrp.Velocity = Vector3.new(hrp.Velocity.X, 60, hrp.Velocity.Z)
 
 	-- Gửi remote
@@ -137,26 +133,26 @@ button.MouseButton1Click:Connect(function()
 		remote:FireServer(unpack(args))
 	end
 
-	-- Giữ phím W
+	-- Giữ W
 	VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.W, false, game)
 
-	-- Sau 0.3 giây → xoay camera → thả W
-	task.wait(0.2)
+	-- Sau 0.3 giây xoay camera → thả W
+	task.wait(0.35)
 	swipeCameraBack(char, function()
-		task.wait(0.3)
+		task.wait(0.2)
 VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.W, false, game)
 	end)
 end)
 
--- Hiện Notification + âm thanh
+-- 🛎 Hiện Notification và phát âm thanh
 StarterGui:SetCore("SendNotification", {
 	Title = "The Strongest Battleground",
-	Text = "Oreo Tech Script By YQANTG",
-	Duration = 5
+	Text = "Oreo Tech Script By YQANTG ( Fix miss 50% )",
+	Duration = 1
 })
 notifySound:Play()
 
--- Sau 1.5 giây hiện nút
-task.delay(5, function()
+-- Sau đó hiện button
+task.delay(1, function()
 	button.Visible = true
 end)
