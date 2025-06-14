@@ -14,7 +14,7 @@ gui.Name = "JumpDashGui"
 local button = Instance.new("TextButton")
 button.Size = UDim2.new(0, 50, 0, 50)
 button.Position = UDim2.new(0.5, -25, 0.8, 0)
-button.Text = "Oreo"
+button.Text = "↑"
 button.BackgroundColor3 = Color3.fromRGB(0, 200, 255)
 button.TextColor3 = Color3.new(1, 1, 1)
 button.TextScaled = true
@@ -53,7 +53,7 @@ notifySound.Volume = 10
 -- 🔊 Âm thanh nút
 local buttonSound = Instance.new("Sound", button)
 buttonSound.SoundId = "rbxassetid://8394620892"
-buttonSound.Volume = 20
+buttonSound.Volume = 15
 
 -- Drag setup
 local dragging = false
@@ -93,11 +93,11 @@ local function swipeCameraBack(char, onFinish)
 	local distance = camOffset.Magnitude
 
 	local newDirection = -horizontalDirection
-	local newPos = hrp.Position + newDirection * distance + Vector3.new(0, 0, 0)
-	local lookAt = hrp.Position + Vector3.new(0, 0, 0)
+	local newPos = hrp.Position + newDirection * distance + Vector3.new(0, 2, 0)
+	local lookAt = hrp.Position + Vector3.new(0, 1.5, 0)
 
 	local newCF = CFrame.new(newPos, lookAt)
-	local tween = TweenService:Create(cam, TweenInfo.new(0, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+	local tween = TweenService:Create(cam, TweenInfo.new(0.2, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
 		CFrame = newCF
 	})
 	tween:Play()
@@ -137,9 +137,9 @@ button.MouseButton1Click:Connect(function()
 	VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.W, false, game)
 
 	-- Sau 0.3 giây xoay camera → thả W
-	task.wait(0.35)
+	task.wait(0.23)
 	swipeCameraBack(char, function()
-		task.wait(0.2)
+		task.wait(0.3)
 VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.W, false, game)
 	end)
 end)
@@ -147,12 +147,12 @@ end)
 -- 🛎 Hiện Notification và phát âm thanh
 StarterGui:SetCore("SendNotification", {
 	Title = "The Strongest Battleground",
-	Text = "Oreo Tech Script By YQANTG ( Fix Miss 50 % )",
-	Duration = 10
+	Text = "Oreo Tech Script By YQANTG ( Old )",
+	Duration = 4
 })
 notifySound:Play()
 
 -- Sau đó hiện button
-task.delay(1, function()
+task.delay(1.5, function()
 	button.Visible = true
 end)
