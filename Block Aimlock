@@ -1,0 +1,126 @@
+-- 📛 Aimlock full: Cực ghim + Tên + % máu + Highlight
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local StarterGui = game:GetService("StarterGui")
+
+local lp = Players.LocalPlayer
+local cam = workspace.CurrentCamera
+
+-- 📌 GUI Button
+local gui = lp:WaitForChild("PlayerGui")
+local jumpBtn = gui:FindFirstChild("JumpButton", true)
+local button = jumpBtn and jumpBtn:FindFirstChild("BlockButton")
+
+if not button then
+	warn("❌ Không tìm thấy BlockButton!")
+	return
+end
+
+-- 🔠 Label hiển thị tên + máu
+local infoLabel = Instance.new("TextLabel")
+infoLabel.Size = UDim2.new(0, 300, 0, 30)
+infoLabel.Position = UDim2.new(1, -310, 0, 10) -- góc phải trên
+infoLabel.BackgroundTransparency = 1
+infoLabel.TextScaled = true
+infoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+infoLabel.Font = Enum.Font.SourceSansBold
+infoLabel.Visible = false
+infoLabel.Parent = gui
+
+-- ⚡ Biến
+local holding = false
+local target = nil
+local conn = nil
+local highlight = nil
+
+-- 📍 Kiểm tra xem part có nằm trong màn hình không
+local function isOnScreen(part)
+	if not part then return false end
+	local _, onScreen = cam:WorldToViewportPoint(part.Position)
+	return onScreen
+end
+
+-- 🔍 Tìm NPC/player gần nhất trong khung hình
+local function getClosestTarget()
+	local live = workspace:FindFirstChild("Live")
+	if not live then return end
+
+	local closest, shortest = nil, math.huge
+	for _, model in ipairs(live:GetChildren()) do
+		if model:IsA("Model") and model ~= lp.Character and model:FindFirstChild("HumanoidRootPart") and model:FindFirstChild("Humanoid") then
+			if model.Humanoid.Health > 0 and isOnScreen(model.HumanoidRootPart) then
+				local pos = cam:WorldToViewportPoint(model.HumanoidRootPart.Position)
+				local dist = (Vector2.new(pos.X, pos.Y) - Vector2.new(cam.ViewportSize.X/2, cam.ViewportSize.Y/2)).Magnitude
+				if dist < shortest then
+					shortest = dist
+					closest = model
+				end
+			end
+		end
+	end
+	return closest
+end
+
+-- 🎯 Bật highlight
+local function applyHighlight(model)
+	if highlight then highlight:Destroy() end
+	highlight = Instance.new("Highlight")
+	highlight.Adornee = model
+	highlight.FillColor = Color3.fromHSV(math.random(), 1, 1)
+	highlight.OutlineColor = Color3.new(1, 1, 1)
+	highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+	highlight.FillTransparency = 0.3
+	highlight.OutlineTransparency = 0
+	highlight.Parent = model
+end
+
+-- 🔓 Tắt highlight
+local function removeHighlight()
+	if highlight then
+		highlight:Destroy()
+		highlight = nil
+	end
+end
+
+-- 🔒 Aim & hiện thông tin
+local function lockOn()
+	target = getClosestTarget()
+	if not target then return end
+
+	applyHighlight(target)
+	infoLabel.Visible = true
+
+	conn = RunService.RenderStepped:Connect(function()
+		if not target or not target:FindFirstChild("HumanoidRootPart") or not holding then return end
+
+		-- Camera ghim cực nhanh
+		cam.CFrame = CFrame.lookAt(cam.CFrame.Position, target.HumanoidRootPart.Position)
+
+		-- Cập nhật thông tin
+		local name = target.Name
+		local hp = target:FindFirstChild("Humanoid") and math.floor((target.Humanoid.Health / target.Humanoid.MaxHealth) * 100) or 0
+		infoLabel.Text = "🎯 " .. name .. " - " .. hp .. "% HP"
+	end)
+end
+
+-- 📴 Ngắt Aimlock
+local function unlock()
+	if conn then
+		conn:Disconnect()
+		conn = nil
+	end
+	removeHighlight()
+	infoLabel.Visible = false
+	target = nil
+end
+
+-- 📲 Gắn vào nút giữ BlockButton
+button.MouseButton1Down:Connect(function()
+	holding = true
+	lockOn()
+end)
+
+button.MouseButton1Up:Connect(function()
+	holding = false
+	unlock()
+end)
