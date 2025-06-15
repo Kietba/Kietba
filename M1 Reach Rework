@@ -1,0 +1,119 @@
+-- 📛 FULL: Tween PunchButton + Toggle + Chỉ dash nếu <= 50 studs
+
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local lp = Players.LocalPlayer
+local cam = workspace.CurrentCamera
+local RunService = game:GetService("RunService")
+
+-- 🔁 Biến toggle
+_G.tweenEnabled = _G.tweenEnabled or true
+
+-- 📂 GUI
+local gui = lp:WaitForChild("PlayerGui")
+local jumpBtn = gui:FindFirstChild("JumpButton", true)
+local punchBtn = jumpBtn and jumpBtn:FindFirstChild("PunchButton")
+
+-- 🆕 Tạo nút Toggle
+local toggleGui = Instance.new("ScreenGui", gui)
+toggleGui.Name = "TweenToggleGui"
+toggleGui.ResetOnSpawn = false
+
+local toggleBtn = Instance.new("TextButton")
+toggleBtn.Name = "TweenToggle"
+toggleBtn.Size = UDim2.new(0, 140, 0, 40)
+toggleBtn.Position = UDim2.new(0, 10, 0, 100)
+toggleBtn.BackgroundColor3 = Color3.fromRGB(50, 200, 100)
+toggleBtn.BorderSizePixel = 0
+toggleBtn.Text = "Reach: ON"
+toggleBtn.TextColor3 = Color3.new(1, 1, 1)
+toggleBtn.TextScaled = true
+toggleBtn.Font = Enum.Font.SourceSansBold
+toggleBtn.Parent = toggleGui
+
+local function updateToggleUI()
+	if _G.tweenEnabled then
+		toggleBtn.BackgroundColor3 = Color3.fromRGB(50, 200, 100)
+		toggleBtn.Text = "Reach: ON"
+	else
+		toggleBtn.BackgroundColor3 = Color3.fromRGB(200, 80, 80)
+		toggleBtn.Text = "Reach: OFF"
+	end
+end
+
+toggleBtn.MouseButton1Click:Connect(function()
+	_G.tweenEnabled = not _G.tweenEnabled
+	updateToggleUI()
+end)
+
+updateToggleUI()
+
+-- 🔍 Tìm NPC/Player gần nhất trong phạm vi 50 studs
+local function getClosestTarget()
+	local live = workspace:FindFirstChild("Live")
+	if not live then return end
+
+	local closest, shortest = nil, 50 -- Giới hạn max 50 studs
+	for _, model in ipairs(live:GetChildren()) do
+		if model:IsA("Model") and model ~= lp.Character and model:FindFirstChild("HumanoidRootPart") and model:FindFirstChild("Humanoid") then
+			if model.Humanoid.Health > 0 then
+				local dist = (lp.Character.HumanoidRootPart.Position - model.HumanoidRootPart.Position).Magnitude
+				if dist <= shortest then
+					shortest = dist
+					closest = model
+				end
+			end
+		end
+	end
+	return closest
+end
+
+-- 🚀 Tween đến gần mục tiêu
+local function dashToTarget(target)
+	local hrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
+	if not hrp or not target then return end
+
+	local pos = target:FindFirstChild("HumanoidRootPart") and target.HumanoidRootPart.Position
+	if not pos then return end
+
+	local dir = (pos - hrp.Position).Unit
+	local dest = pos - dir * 2
+
+	local tween = TweenService:Create(hrp, TweenInfo.new(0.15, Enum.EasingStyle.Linear), {
+		CFrame = CFrame.new(dest)
+	})
+	tween:Play()
+end
+
+-- 🔁 Khi giữ PunchButton
+local holding = false
+local looping = false
+
+local function startLoop()
+	if looping then return end
+	looping = true
+	while holding do
+		if not _G.tweenEnabled then break end
+		local target = getClosestTarget()
+		if target then
+			dashToTarget(target)
+		end
+		task.wait(0.15)
+	end
+	looping = false
+end
+
+-- 🎮 Gắn giữ/thả PunchButton
+if punchBtn then
+	punchBtn.MouseButton1Down:Connect(function()
+		if not _G.tweenEnabled then return end
+		holding = true
+		startLoop()
+	end)
+
+	punchBtn.MouseButton1Up:Connect(function()
+		holding = false
+	end)
+else
+	warn("❌ Không tìm thấy PunchButton!")
+end
