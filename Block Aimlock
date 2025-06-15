@@ -1,80 +1,45 @@
--- 📛 Aimlock full: Cực ghim + Tên + % máu + Highlight
+-- 📛 FULL: Aimlock Toggle ON/OFF gắn/ngắt sự kiện BlockButton
+
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
-local StarterGui = game:GetService("StarterGui")
-
 local lp = Players.LocalPlayer
 local cam = workspace.CurrentCamera
-
--- 📌 GUI Button
 local gui = lp:WaitForChild("PlayerGui")
+
+-- ✅ Biến bật/tắt toàn cục cho Aimlock
+_G.aimlockEnabled = _G.aimlockEnabled or false
+
+-- 📌 Tìm BlockButton có sẵn
 local jumpBtn = gui:FindFirstChild("JumpButton", true)
-local button = jumpBtn and jumpBtn:FindFirstChild("BlockButton")
+local blockBtn = jumpBtn and jumpBtn:FindFirstChild("BlockButton")
 
-if not button then
-	warn("❌ Không tìm thấy BlockButton!")
-	return
-end
+-- 🆕 Tạo Toggle GUI cho Aimlock
+local toggleGui = Instance.new("ScreenGui", gui)
+toggleGui.Name = "AimlockToggleGui"
+toggleGui.ResetOnSpawn = false
 
--- 🔠 Label hiển thị tên + máu
-local infoLabel = Instance.new("TextLabel")
-infoLabel.Size = UDim2.new(0, 300, 0, 30)
-infoLabel.Position = UDim2.new(1, -310, 0, 10) -- góc phải trên
-infoLabel.BackgroundTransparency = 1
-infoLabel.TextScaled = true
-infoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-infoLabel.Font = Enum.Font.SourceSansBold
-infoLabel.Visible = false
-infoLabel.Parent = gui
+local toggleBtn = Instance.new("TextButton")
+toggleBtn.Name = "AimlockToggle"
+toggleBtn.Size = UDim2.new(0, 140, 0, 40)
+toggleBtn.Position = UDim2.new(0, 10, 0, 150)
+toggleBtn.BackgroundColor3 = Color3.fromRGB(200, 80, 80)
+toggleBtn.BorderSizePixel = 0
+toggleBtn.Text = "Aimlock: OFF"
+toggleBtn.TextColor3 = Color3.new(1, 1, 1)
+toggleBtn.TextScaled = true
+toggleBtn.Font = Enum.Font.SourceSansBold
+toggleBtn.Parent = toggleGui
 
--- ⚡ Biến
+-- 🎯 Biến aimlock
 local holding = false
 local target = nil
 local conn = nil
 local highlight = nil
 
--- 📍 Kiểm tra xem part có nằm trong màn hình không
-local function isOnScreen(part)
-	if not part then return false end
-	local _, onScreen = cam:WorldToViewportPoint(part.Position)
-	return onScreen
-end
+-- 📌 Connections lưu để có thể disconnect
+local conDown, conUp = nil, nil
 
--- 🔍 Tìm NPC/player gần nhất trong khung hình
-local function getClosestTarget()
-	local live = workspace:FindFirstChild("Live")
-	if not live then return end
-
-	local closest, shortest = nil, math.huge
-	for _, model in ipairs(live:GetChildren()) do
-		if model:IsA("Model") and model ~= lp.Character and model:FindFirstChild("HumanoidRootPart") and model:FindFirstChild("Humanoid") then
-			if model.Humanoid.Health > 0 and isOnScreen(model.HumanoidRootPart) then
-				local pos = cam:WorldToViewportPoint(model.HumanoidRootPart.Position)
-				local dist = (Vector2.new(pos.X, pos.Y) - Vector2.new(cam.ViewportSize.X/2, cam.ViewportSize.Y/2)).Magnitude
-				if dist < shortest then
-					shortest = dist
-					closest = model
-				end
-			end
-		end
-	end
-	return closest
-end
-
--- 🎯 Bật highlight
-local function applyHighlight(model)
-	if highlight then highlight:Destroy() end
-	highlight = Instance.new("Highlight")
-	highlight.Adornee = model
-	highlight.FillColor = Color3.fromHSV(math.random(), 1, 1)
-	highlight.OutlineColor = Color3.new(1, 1, 1)
-	highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-	highlight.FillTransparency = 0.3
-	highlight.OutlineTransparency = 0
-	highlight.Parent = model
-end
-
--- 🔓 Tắt highlight
+-- 📍 Hàm bỏ highlight
 local function removeHighlight()
 	if highlight then
 		highlight:Destroy()
@@ -82,45 +47,107 @@ local function removeHighlight()
 	end
 end
 
--- 🔒 Aim & hiện thông tin
+-- 🔓 Ngắt Aimlock
+local function unlock()
+	if conn then conn:Disconnect() end
+	conn = nil
+	removeHighlight()
+	target = nil
+end
+
+-- 🔎 Tìm target gần nhất trong khung nhìn
+local function getClosestTarget()
+	local live = workspace:FindFirstChild("Live")
+	if not live then return end
+
+	local closest, shortest = nil, math.huge
+	for _, model in ipairs(live:GetChildren()) do
+		if model:IsA("Model") and model ~= lp.Character and model:FindFirstChild("HumanoidRootPart") and model:FindFirstChild("Humanoid") then
+			if model.Humanoid.Health > 0 then
+				local pos, onScreen = cam:WorldToViewportPoint(model.HumanoidRootPart.Position)
+				if onScreen then
+					local dist = (Vector2.new(pos.X, pos.Y) - Vector2.new(cam.ViewportSize.X/2, cam.ViewportSize.Y/2)).Magnitude
+					if dist < shortest then
+						shortest = dist
+						closest = model
+					end
+				end
+			end
+		end
+	end
+	return closest
+end
+
+-- 🔒 Aimlock
 local function lockOn()
 	target = getClosestTarget()
 	if not target then return end
 
-	applyHighlight(target)
-	infoLabel.Visible = true
+	removeHighlight()
+	highlight = Instance.new("Highlight")
+	highlight.Adornee = target
+	highlight.FillColor = Color3.fromHSV(math.random(), 1, 1)
+	highlight.OutlineColor = Color3.new(1, 1, 1)
+	highlight.FillTransparency = 0.3
+	highlight.OutlineTransparency = 0
+	highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+	highlight.Parent = target
 
 	conn = RunService.RenderStepped:Connect(function()
-		if not target or not target:FindFirstChild("HumanoidRootPart") or not holding then return end
-
-		-- Camera ghim cực nhanh
-		cam.CFrame = CFrame.lookAt(cam.CFrame.Position, target.HumanoidRootPart.Position)
-
-		-- Cập nhật thông tin
-		local name = target.Name
-		local hp = target:FindFirstChild("Humanoid") and math.floor((target.Humanoid.Health / target.Humanoid.MaxHealth) * 100) or 0
-		infoLabel.Text = "🎯 " .. name .. " - " .. hp .. "% HP"
+		if holding and target and target:FindFirstChild("HumanoidRootPart") then
+			cam.CFrame = CFrame.lookAt(cam.CFrame.Position, target.HumanoidRootPart.Position)
+		end
 	end)
 end
 
--- 📴 Ngắt Aimlock
-local function unlock()
-	if conn then
-		conn:Disconnect()
-		conn = nil
-	end
-	removeHighlight()
-	infoLabel.Visible = false
-	target = nil
+-- ✅ GẮN sự kiện cho BlockButton
+local function bindBlockButton()
+	if not blockBtn then return end
+
+	conDown = blockBtn.MouseButton1Down:Connect(function()
+		holding = true
+		lockOn()
+	end)
+
+	conUp = blockBtn.MouseButton1Up:Connect(function()
+		holding = false
+		unlock()
+	end)
 end
 
--- 📲 Gắn vào nút giữ BlockButton
-button.MouseButton1Down:Connect(function()
-	holding = true
-	lockOn()
-end)
-
-button.MouseButton1Up:Connect(function()
+-- ❌ NGẮT sự kiện khỏi BlockButton
+local function unbindBlockButton()
+	if conDown then conDown:Disconnect() end
+	if conUp then conUp:Disconnect() end
 	holding = false
 	unlock()
+end
+
+-- 🔁 Cập nhật giao diện Toggle
+local function updateToggleUI()
+	if _G.aimlockEnabled then
+		toggleBtn.BackgroundColor3 = Color3.fromRGB(50, 200, 100)
+		toggleBtn.Text = "Aimlock: ON"
+	else
+		toggleBtn.BackgroundColor3 = Color3.fromRGB(200, 80, 80)
+		toggleBtn.Text = "Aimlock: OFF"
+	end
+end
+
+-- 🖱️ Toggle click: bật/tắt + gắn/ngắt sự kiện
+toggleBtn.MouseButton1Click:Connect(function()
+	_G.aimlockEnabled = not _G.aimlockEnabled
+	updateToggleUI()
+
+	if _G.aimlockEnabled then
+		bindBlockButton()
+	else
+		unbindBlockButton()
+	end
 end)
+
+-- 🟢 Lúc khởi động nếu ON thì gắn sẵn
+updateToggleUI()
+if _G.aimlockEnabled then
+	bindBlockButton()
+end
