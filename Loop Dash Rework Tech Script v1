@@ -172,7 +172,7 @@ end
 yesBtn.MouseButton1Click:Connect(function()
 	playClickSound()
 	pcall(function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Loop%20Dash%20Rework%20Script"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Loop%20Dash%20Rework%20Script"))()
 	end)
 	closeIntro()
 end)
