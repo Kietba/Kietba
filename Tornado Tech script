@@ -1,0 +1,156 @@
+-- Dịch vụ
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+local Workspace = game:GetService("Workspace")
+
+local LocalPlayer = Players.LocalPlayer
+local Camera = Workspace.CurrentCamera
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+local Live = workspace:WaitForChild("Live")
+
+-- ID hình ảnh ShiftLock
+local IMAGE_OFF = "rbxassetid://79605996519245"
+local IMAGE_ON = "rbxassetid://79664771265271"
+
+-- Button có sẵn
+local ShiftLockButton
+pcall(function()
+    ShiftLockButton = LocalPlayer:WaitForChild("PlayerGui")
+        .TouchGui.TouchControlFrame.JumpButton.ShiftLockButton
+end)
+
+-- Tìm mục tiêu gần nhất trong 10 studs
+local function getClosestTargetInRange(maxRange)
+    local closest, dist = nil, math.huge
+    for _, model in pairs(Live:GetChildren()) do
+        if model:IsA("Model") and model:FindFirstChild("HumanoidRootPart") and model ~= Character then
+            local isValid = model.Name == "Weakest Dummy" or Players:GetPlayerFromCharacter(model)
+            if isValid then
+                local mag = (HumanoidRootPart.Position - model.HumanoidRootPart.Position).Magnitude
+                if mag < dist and mag <= maxRange then
+                    dist = mag
+                    closest = model
+                end
+            end
+        end
+    end
+    return closest
+end
+
+-- Xoay body
+local function rotateToTarget(target)
+    local connection = RunService.RenderStepped:Connect(function()
+        if not target or not target:FindFirstChild("HumanoidRootPart") then return end
+        if Character:FindFirstChild("Humanoid") and Character.Humanoid.Health <= 0 then
+            connection:Disconnect()
+            return
+        end
+        local myPos = HumanoidRootPart.Position
+        local targetPos = target.HumanoidRootPart.Position
+        targetPos = Vector3.new(targetPos.X, myPos.Y, targetPos.Z)
+        HumanoidRootPart.CFrame = CFrame.new(myPos, targetPos)
+    end)
+    return connection
+end
+
+-- Highlight
+local function applyHighlight(target)
+    if not target:FindFirstChild("AuraEffect") then
+        local hl = Instance.new("Highlight")
+        hl.Name = "AuraEffect"
+        hl.Adornee = target
+        hl.FillColor = Color3.fromRGB(255, 0, 0)
+        hl.OutlineColor = Color3.fromRGB(255, 255, 0)
+        hl.FillTransparency = 0.25
+        hl.OutlineTransparency = 0
+        hl.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+        hl.Parent = target
+    end
+end
+
+local function removeHighlight(target)
+    local h = target:FindFirstChild("AuraEffect")
+    if h then h:Destroy() end
+end
+
+-- Remote Dash + Q
+local function fireRemote()
+    local args = {
+        [1] = {
+            ["Dash"] = Enum.KeyCode.W,
+            ["Key"] = Enum.KeyCode.Q,
+            ["Goal"] = "KeyPress"
+        }
+    }
+    pcall(function()
+        Character.Communicate:FireServer(unpack(args))
+    end)
+end
+
+-- Tween 3 bước: lên đầu → ngang người → xuống chân
+local function tweenUpMidDown(target)
+    local hrp = target:FindFirstChild("HumanoidRootPart")
+    if not hrp then return end
+
+    -- Tween lên đầu
+    local tweenUp = TweenService:Create(
+        HumanoidRootPart,
+        TweenInfo.new(0.2),
+        {CFrame = CFrame.new(hrp.Position + Vector3.new(0, 5, 0), hrp.Position)}
+    )
+    tweenUp:Play()
+    tweenUp.Completed:Wait()
+
+    -- Tween ngang người
+    local tweenMid = TweenService:Create(
+        HumanoidRootPart,
+        TweenInfo.new(0.1),
+        {CFrame = CFrame.new(hrp.Position + Vector3.new(0, 2.5, 0), hrp.Position)}
+    )
+    tweenMid:Play()
+    tweenMid.Completed:Wait()
+
+    -- Tween xuống chân
+    local tweenDown = TweenService:Create(
+        HumanoidRootPart,
+        TweenInfo.new(0.1),
+        {CFrame = CFrame.new(hrp.Position - Vector3.new(0, 2, 0), hrp.Position)}
+    )
+    tweenDown:Play()
+end
+
+-- Kiểm tra ShiftLock có đang OFF không
+local function isShiftLockOff()
+    return ShiftLockButton and ShiftLockButton.Image == IMAGE_OFF
+end
+
+-- Gắn sự kiện vào ShiftLockButton có sẵn
+if ShiftLockButton then
+    ShiftLockButton.MouseButton1Click:Connect(function()
+        task.wait(0.1)
+        if isShiftLockOff() then
+            local target = getClosestTargetInRange(10)
+            if target then
+                -- Bắt đầu xoay body
+                local rotateConn = rotateToTarget(target)
+
+                -- Hiệu ứng
+                applyHighlight(target)
+                fireRemote()
+                tweenUpMidDown(target)
+
+                -- Dừng sau 1.5 giây
+                task.delay(1.5, function()
+                    if rotateConn then rotateConn:Disconnect() end
+                    removeHighlight(target)
+                end)
+            else
+                warn("Không có NPC hoặc người chơi nào trong 10 studs.")
+            end
+        end
+    end)
+else
+    warn("Không tìm thấy ShiftLockButton.")
+end
