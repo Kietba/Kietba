@@ -124,7 +124,7 @@ local function createNotification()
 	title.Size = UDim2.new(1, -10, 0.4, 0)
 	title.Position = UDim2.new(0, 5, 0, 0)
 	title.BackgroundTransparency = 1
-	title.Text = "Do you want to turn Tornado Tech back on?"
+	title.Text = "Do you want to turn Loop Dash Tech back on?"
 	title.TextScaled = true
 	title.Font = Enum.Font.GothamBold
 	title.TextColor3 = Color3.new(1, 1, 1)
