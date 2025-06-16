@@ -1,0 +1,201 @@
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+local player = Players.LocalPlayer
+
+-- Phát âm thanh với volume 15
+local function playSound(id)
+	local sound = Instance.new("Sound")
+	sound.SoundId = "rbxassetid://" .. id
+	sound.Volume = 15
+	sound.Parent = workspace
+	sound:Play()
+	game.Debris:AddItem(sound, 5)
+end
+
+-- Hiệu ứng đổi màu cầu vồng
+local function rainbowCycle(obj, prop)
+	task.spawn(function()
+		local hue = 0
+		while obj and obj.Parent do
+			hue = (hue + 0.0015) % 1
+			pcall(function()
+				obj[prop] = Color3.fromHSV(hue, 1, 1)
+			end)
+			RunService.RenderStepped:Wait()
+		end
+	end)
+end
+
+-- Hiện emoji 🗿 ở giữa màn hình khi nhấn No
+local function showMoai()
+	local moaiGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+	moaiGui.Name = "MoaiNotification"
+	moaiGui.IgnoreGuiInset = true
+	moaiGui.ResetOnSpawn = false
+
+	local moai = Instance.new("TextLabel", moaiGui)
+	moai.Size = UDim2.new(0, 200, 0, 200)
+	moai.AnchorPoint = Vector2.new(0.5, 0.5)
+	moai.Position = UDim2.new(0.5, 0, 0.5, 0)
+	moai.BackgroundTransparency = 1
+	moai.Text = "🗿"
+	moai.TextScaled = true
+	moai.Font = Enum.Font.GothamBlack
+	moai.TextColor3 = Color3.new(1, 1, 1)
+	moai.TextTransparency = 1
+
+	local tweenIn = TweenService:Create(moai, TweenInfo.new(0.4), { TextTransparency = 0 })
+	tweenIn:Play()
+	playSound(7147226095)
+
+	task.delay(2, function()
+		local tweenOut = TweenService:Create(moai, TweenInfo.new(0.5), { TextTransparency = 1 })
+		tweenOut:Play()
+		tweenOut.Completed:Connect(function()
+			moaiGui:Destroy()
+		end)
+	end)
+end
+
+-- Hiện emoji 😘 ở giữa màn hình khi nhấn Yes
+local function showKiss()
+	local kissGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+	kissGui.Name = "KissNotification"
+	kissGui.IgnoreGuiInset = true
+	kissGui.ResetOnSpawn = false
+
+	local emoji = Instance.new("TextLabel", kissGui)
+	emoji.Size = UDim2.new(0, 200, 0, 200)
+	emoji.AnchorPoint = Vector2.new(0.5, 0.5)
+	emoji.Position = UDim2.new(0.5, 0, 0.5, 0)
+	emoji.BackgroundTransparency = 1
+	emoji.Text = "😘"
+	emoji.TextScaled = true
+	emoji.Font = Enum.Font.GothamBlack
+	emoji.TextColor3 = Color3.new(1, 1, 1)
+	emoji.TextTransparency = 1
+
+	local tweenIn = TweenService:Create(emoji, TweenInfo.new(0.4), { TextTransparency = 0 })
+	tweenIn:Play()
+	playSound(8394620892)
+
+	task.delay(2, function()
+		local tweenOut = TweenService:Create(emoji, TweenInfo.new(0.5), { TextTransparency = 1 })
+		tweenOut:Play()
+		tweenOut.Completed:Connect(function()
+			kissGui:Destroy()
+		end)
+	end)
+end
+
+-- Tạo notification sau khi chết
+local function createNotification()
+	local oldGui = player.PlayerGui:FindFirstChild("DeathNotifyGui")
+	if oldGui then oldGui:Destroy() end
+
+	local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+	gui.Name = "DeathNotifyGui"
+	gui.IgnoreGuiInset = true
+	gui.ResetOnSpawn = false
+
+	local frame = Instance.new("Frame", gui)
+	frame.AnchorPoint = Vector2.new(0.5, 0.5)
+	frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+	frame.Size = UDim2.new(0, 320, 0, 170)
+	frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	frame.BorderSizePixel = 0
+	frame.ClipsDescendants = true
+	frame.Visible = false
+
+	local scale = Instance.new("UIScale", frame)
+	scale.Scale = 0.3
+
+	local corner = Instance.new("UICorner", frame)
+	corner.CornerRadius = UDim.new(0, 16)
+
+	local stroke = Instance.new("UIStroke", frame)
+	stroke.Thickness = 2
+	stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	stroke.LineJoinMode = Enum.LineJoinMode.Round
+	rainbowCycle(stroke, "Color")
+
+	local title = Instance.new("TextLabel", frame)
+	title.Size = UDim2.new(1, -10, 0.4, 0)
+	title.Position = UDim2.new(0, 5, 0, 0)
+	title.BackgroundTransparency = 1
+	title.Text = "Do you want to turn Tornado Tech back on?"
+	title.TextScaled = true
+	title.Font = Enum.Font.GothamBold
+	title.TextColor3 = Color3.new(1, 1, 1)
+	title.TextWrapped = true
+	rainbowCycle(title, "TextColor3")
+
+	local yes = Instance.new("TextButton", frame)
+	yes.Size = UDim2.new(0.45, 0, 0.25, 0)
+	yes.Position = UDim2.new(0.05, 0, 0.6, 0)
+	yes.BackgroundColor3 = Color3.fromRGB(0, 200, 100)
+	yes.Text = "Yes"
+	yes.TextScaled = true
+	yes.Font = Enum.Font.GothamBold
+	yes.TextColor3 = Color3.new(1, 1, 1)
+	Instance.new("UICorner", yes).CornerRadius = UDim.new(0, 12)
+	rainbowCycle(yes, "TextColor3")
+
+	local no = Instance.new("TextButton", frame)
+	no.Size = UDim2.new(0.45, 0, 0.25, 0)
+	no.Position = UDim2.new(0.5, 0, 0.6, 0)
+	no.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+	no.Text = "No"
+	no.TextScaled = true
+	no.Font = Enum.Font.GothamBold
+	no.TextColor3 = Color3.new(1, 1, 1)
+	Instance.new("UICorner", no).CornerRadius = UDim.new(0, 12)
+	rainbowCycle(no, "TextColor3")
+
+	task.wait(0.05)
+	frame.Visible = true
+	playSound(3442983711)
+
+	local tweenIn = TweenService:Create(scale, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 1 })
+	tweenIn:Play()
+
+	local function closeGui()
+		local tweenOut = TweenService:Create(scale, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+			Scale = 0.3
+		})
+		tweenOut:Play()
+		tweenOut.Completed:Connect(function()
+			gui:Destroy()
+		end)
+	end
+
+	yes.MouseButton1Click:Connect(function()
+		showKiss()
+		pcall(function()
+	        	loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Loop%20Dash%20Rework%20Script"))()
+		end)
+		closeGui()
+	end)
+
+	no.MouseButton1Click:Connect(function()
+		showMoai()
+		closeGui()
+	end)
+end
+
+-- Gắn sự kiện khi nhân vật chết
+local function bindToCharacter(character)
+	local hum = character:WaitForChild("Humanoid")
+	hum.Died:Connect(function()
+		player.CharacterAdded:Wait()
+		task.wait(1.5)
+		createNotification()
+	end)
+end
+
+-- Gắn khi game chạy và khi hồi sinh
+if player.Character then bindToCharacter(player.Character) end
+player.CharacterAdded:Connect(bindToCharacter)
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Loop%20Dash%20Rework%20Tech%20Script%20v1"))()
