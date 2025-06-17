@@ -90,6 +90,7 @@ noBtn.Parent = promptFrame
 local lines = {
         "-- Script by YQANTG",
 	"-- Turn Off Shiftlock To Use Loop Dash Tech",
+        "-- Fix Teleport ( Teleport = Remove )",
 	"-- Ping 100 ↓",
 }
 
