@@ -1,0 +1,80 @@
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "DashGui"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = playerGui
+
+-- Button
+local dashBtn = Instance.new("TextButton")
+dashBtn.Name = "DashForward"
+dashBtn.Text = "Fake Dash Q"
+dashBtn.Size = UDim2.new(0, 0, 0, 0)
+dashBtn.Position = UDim2.new(0.5, -80, 0.5, -100)
+dashBtn.AnchorPoint = Vector2.new(0.5, 0.5)
+dashBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 60)
+dashBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+dashBtn.TextSize = 20
+dashBtn.Font = Enum.Font.GothamBold
+dashBtn.BorderSizePixel = 0
+dashBtn.BackgroundTransparency = 0.1
+dashBtn.Active = true
+dashBtn.Draggable = true
+dashBtn.AutoButtonColor = false
+dashBtn.Visible = false
+dashBtn.Parent = screenGui
+
+-- Viền + góc
+Instance.new("UICorner", dashBtn).CornerRadius = UDim.new(0, 12)
+Instance.new("UIStroke", dashBtn).Color = Color3.fromRGB(150, 100, 255)
+
+-- Hiệu ứng mượt hiện
+task.wait(0.3)
+dashBtn.Visible = true
+game:GetService("TweenService"):Create(dashBtn, TweenInfo.new(0.3), {
+	Size = UDim2.new(0, 160, 0, 50)
+}):Play()
+
+-- Dash 32 stud (theo hướng xoay)
+local running = false
+dashBtn.MouseButton1Click:Connect(function()
+	if running then return end
+	running = true
+
+	local char = player.Character or player.CharacterAdded:Wait()
+	local hrp = char:WaitForChild("HumanoidRootPart")
+	local humanoid = char:FindFirstChildOfClass("Humanoid")
+	local animator = humanoid:FindFirstChildOfClass("Animator") or Instance.new("Animator", humanoid)
+
+	-- Phát animation
+	local anim = Instance.new("Animation")
+	anim.AnimationId = "rbxassetid://10479335397"
+	local track = animator:LoadAnimation(anim)
+	track:Play()
+
+	-- Dash theo quãng đường: 32 stud
+	local distanceToTravel = 32
+	local speed = 100 -- stud/sec
+	local distanceTraveled = 0
+
+	local RunService = game:GetService("RunService")
+	local lastPosition = hrp.Position
+
+	local connection
+	connection = RunService.Heartbeat:Connect(function(dt)
+		if not hrp or not hrp.Parent then connection:Disconnect() return end
+
+		local moveStep = hrp.CFrame.LookVector * speed * dt
+		hrp.CFrame = hrp.CFrame + moveStep
+
+		distanceTraveled += (hrp.Position - lastPosition).Magnitude
+		lastPosition = hrp.Position
+
+		if distanceTraveled >= distanceToTravel then
+			connection:Disconnect()
+			running = false
+		end
+	end)
+end)
