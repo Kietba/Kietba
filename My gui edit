@@ -552,4 +552,542 @@ local function createHealthBar(char)
 
 	local conn = humanoid.HealthChanged:Connect(updateHealth)
 	table.insert(healthBarConns, conn)
-	u
+	updateHealth()
+end
+
+local function handlePlayerForHealthBar(player)
+	if player == Players.LocalPlayer then return end
+
+	local function onChar(char)
+		wait(0.5)
+		createHealthBar(char)
+	end
+
+	if player.Character then
+		onChar(player.Character)
+	end
+
+	local charConn = player.CharacterAdded:Connect(onChar)
+	table.insert(healthBarConns, charConn)
+end
+
+local function clearAllHealthBars()
+	for _, p in ipairs(Players:GetPlayers()) do
+		if p.Character and p.Character:FindFirstChild("Head") then
+			local h = p.Character.Head:FindFirstChild("ESP_HealthBar")
+			if h then h:Destroy() end
+		end
+	end
+	for _, conn in ipairs(healthBarConns) do
+		if conn.Disconnect then conn:Disconnect() end
+	end
+	healthBarConns = {}
+end
+
+showHealthBarBtn.MouseButton1Click:Connect(function()
+	showHealthBarEnabled = not showHealthBarEnabled
+	showHealthBarBtn.Text = showHealthBarEnabled and "Show Health Bar [ON]" or "Show Health Bar"
+
+	if showHealthBarEnabled then
+		for _, p in ipairs(Players:GetPlayers()) do
+			handlePlayerForHealthBar(p)
+		end
+		local conn = Players.PlayerAdded:Connect(handlePlayerForHealthBar)
+		table.insert(healthBarConns, conn)
+	else
+		clearAllHealthBars()
+	end
+end)
+
+local tracerEnabled = false
+local tracerBtn = Instance.new("TextButton")
+tracerBtn.Size = UDim2.new(1, -10, 0, 40)
+tracerBtn.Position = UDim2.new(0, 5, 0, 180) -- chỉnh nếu bạn có nhiều nút khác
+tracerBtn.Text = "Show Tracer"
+tracerBtn.BackgroundColor3 = Color3.fromRGB(130, 130, 130)
+tracerBtn.TextColor3 = Color3.new(1, 1, 1)
+tracerBtn.Font = Enum.Font.SourceSans
+tracerBtn.TextSize = 18
+tracerBtn.Parent = page3
+
+local tracerConns = {}
+local tracerLines = {}
+
+local function createTracerForPlayer(player)
+	if player == Players.LocalPlayer then return end
+
+	local function updateLine()
+		local char = player.Character
+		local myChar = Players.LocalPlayer.Character
+		if char and char:FindFirstChild("HumanoidRootPart") and myChar and myChar:FindFirstChild("HumanoidRootPart") then
+			local line = tracerLines[player]
+			if not line then
+				line = Instance.new("Beam")
+				local a0 = Instance.new("Attachment")
+				local a1 = Instance.new("Attachment")
+
+				a0.Name = "TracerA0"
+				a1.Name = "TracerA1"
+				a0.Parent = myChar.HumanoidRootPart
+				a1.Parent = char.HumanoidRootPart
+
+				line.Attachment0 = a0
+				line.Attachment1 = a1
+				line.Color = ColorSequence.new(Color3.fromRGB(0, 255, 0))
+				line.Width0 = 1
+				line.Width1 = 1
+				line.FaceCamera = true
+				line.Parent = a0
+
+				tracerLines[player] = line
+			end
+		end
+	end
+
+	if player.Character then
+		updateLine()
+	end
+
+	local conn1 = player.CharacterAdded:Connect(function()
+		wait(1)
+		updateLine()
+	end)
+
+	table.insert(tracerConns, conn1)
+end
+
+local function removeAllTracers()
+	for _, line in pairs(tracerLines) do
+		if line and line.Parent then
+			local a0 = line.Attachment0
+			local a1 = line.Attachment1
+			if a0 then a0:Destroy() end
+			if a1 then a1:Destroy() end
+			line:Destroy()
+		end
+	end
+	tracerLines = {}
+
+	for _, conn in pairs(tracerConns) do
+		if conn.Disconnect then conn:Disconnect() end
+	end
+	tracerConns = {}
+end
+
+tracerBtn.MouseButton1Click:Connect(function()
+	tracerEnabled = not tracerEnabled
+	tracerBtn.Text = tracerEnabled and "Show Tracer [ON]" or "Show Tracer"
+
+	if tracerEnabled then
+		for _, p in ipairs(Players:GetPlayers()) do
+			createTracerForPlayer(p)
+		end
+		local conn = Players.PlayerAdded:Connect(createTracerForPlayer)
+		table.insert(tracerConns, conn)
+	else
+		removeAllTracers()
+	end
+end)
+
+-- Tăng canvas nếu cần
+page3.CanvasSize = UDim2.new(0, 0, 0, 230)
+
+local tracerEnabled = false
+local tracerBtn = Instance.new("TextButton")
+tracerBtn.Size = UDim2.new(1, -10, 0, 40)
+tracerBtn.Position = UDim2.new(0, 5, 0, 225) -- chỉnh nếu bạn có nhiều nút khác
+tracerBtn.Text = "Hightlight Dummy"
+tracerBtn.BackgroundColor3 = Color3.fromRGB(130, 130, 130)
+tracerBtn.TextColor3 = Color3.new(1, 1, 1)
+tracerBtn.Font = Enum.Font.SourceSans
+tracerBtn.TextSize = 18
+tracerBtn.Parent = page3
+
+local toggled = false
+local tagName = "_HighlightDummyTag"
+
+tracerBtn.Text = "Highlight Dummy: OFF"
+
+tracerBtn.MouseButton1Click:Connect(function()
+	toggled = not toggled
+	tracerBtn.Text = toggled and "Highlight Dummy: ON" or "Highlight Dummy: OFF"
+
+	if toggled then
+		-- Bật highlight viền tím
+		for _, npc in pairs(workspace:WaitForChild("Live"):GetChildren()) do
+			if npc:IsA("Model") and npc.Name == "Weakest Dummy" then
+				if not npc:FindFirstChild(tagName) then
+					local h = Instance.new("Highlight")
+					h.Name = tagName
+					h.Adornee = npc
+					h.FillTransparency = 1
+					h.OutlineColor = Color3.fromRGB(170, 0, 255)
+					h.OutlineTransparency = 0
+					h.Parent = npc
+				end
+			end
+		end
+	else
+		-- Tắt highlight
+		for _, npc in pairs(workspace:WaitForChild("Live"):GetChildren()) do
+			if npc:IsA("Model") and npc.Name == "Weakest Dummy" then
+				local h = npc:FindFirstChild(tagName)
+				if h then
+					h:Destroy()
+				end
+			end
+		end
+	end
+end)
+
+page3.CanvasSize = UDim2.new(0, 0, 0, 270)
+
+--Aimbot page
+
+local aimbotBtn = Instance.new("TextButton", page4)
+aimbotBtn.Size = UDim2.new(1, -10, 0, 40)
+aimbotBtn.Position = UDim2.new(0, 5, 0, 0)
+aimbotBtn.Text = "Aimbot"
+aimbotBtn.BackgroundColor3 = Color3.fromRGB(130, 130, 130)
+aimbotBtn.TextColor3 = Color3.new(1, 1, 1)
+aimbotBtn.Font = Enum.Font.SourceSans
+aimbotBtn.TextSize = 18
+
+aimbotBtn.MouseButton1Click:Connect(function()
+	local success, err = pcall(function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Aimlock%20By%20YQANTG"))()
+	end)
+	if not success then
+		warn("Aimbot Error:", err)
+	end
+end)
+
+-- Block Aimlock Button in Page 4
+local blockBtn = Instance.new("TextButton", page4)
+blockBtn.Size = UDim2.new(1, -10, 0, 40)
+blockBtn.Position = UDim2.new(0, 5, 0, 45)
+blockBtn.Text = "Block Aimlock"
+blockBtn.BackgroundColor3 = Color3.fromRGB(130, 130, 130)
+blockBtn.TextColor3 = Color3.new(1, 1, 1)
+blockBtn.Font = Enum.Font.SourceSans
+blockBtn.TextSize = 18
+
+blockBtn.MouseButton1Click:Connect(function()	loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Block%20Aimlock"))()
+end)
+
+page4.CanvasSize = UDim2.new(0, 0, 0, 100)
+
+-- Block Aimlock Button in Page 4
+local faceLock = Instance.new("TextButton", page4)
+faceLock.Size = UDim2.new(1, -10, 0, 40)
+faceLock.Position = UDim2.new(0, 5, 0, 90)
+faceLock.Text = "FaceLock"
+faceLock.BackgroundColor3 = Color3.fromRGB(130, 130, 130)
+faceLock.TextColor3 = Color3.new(1, 1, 1)
+faceLock.Font = Enum.Font.SourceSans
+faceLock.TextSize = 18
+
+faceLock.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/Tsb/FACELOCK"))()
+end)
+
+page4.CanvasSize = UDim2.new(0, 0, 0, 100)
+
+-- Page5
+local ifnt = Instance.new("TextButton", page5)
+ifnt.Size = UDim2.new(1, -10, 0, 40)
+ifnt.Position = UDim2.new(0, 5, 0, 0)
+ifnt.Text = "Infitinite Yield"
+ifnt.BackgroundColor3 = Color3.fromRGB(130, 130, 130)
+ifnt.TextColor3 = Color3.new(1, 1, 1)
+ifnt.Font = Enum.Font.SourceSans
+ifnt.TextSize = 18
+
+ifnt.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+end)
+
+page5.CanvasSize = UDim2.new(0, 0, 0, 100)
+
+-- Page 5
+local ifnt = Instance.new("TextButton", page5)
+ifnt.Size = UDim2.new(1, -10, 0, 40)
+ifnt.Position = UDim2.new(0, 5, 0, 45)
+ifnt.Text = "Nameless"
+ifnt.BackgroundColor3 = Color3.fromRGB(130, 130, 130)
+ifnt.TextColor3 = Color3.new(1, 1, 1)
+ifnt.Font = Enum.Font.SourceSans
+ifnt.TextSize = 18
+
+ifnt.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet("https://github.com/FilteringEnabled/NamelessAdmin/blob/main/Source?raw=true"))()
+end)
+
+page5.CanvasSize = UDim2.new(0, 0, 0, 100)
+
+local ifnt = Instance.new("TextButton", page6)
+ifnt.Size = UDim2.new(1, -10, 0, 40)
+ifnt.Position = UDim2.new(0, 5, 0, 0)
+ifnt.Text = "Rejoin"
+ifnt.BackgroundColor3 = Color3.fromRGB(130, 130, 130)
+ifnt.TextColor3 = Color3.new(1, 1, 1)
+ifnt.Font = Enum.Font.SourceSans
+ifnt.TextSize = 18
+
+ifnt.MouseButton1Click:Connect(function()
+local TeleportService = game:GetService("TeleportService")
+local player = game.Players.LocalPlayer
+
+-- Tạo GUI đếm ngược
+local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+local label = Instance.new("TextLabel", screenGui)
+label.Size = UDim2.new(0.3, 0, 0.2, 0)
+label.Position = UDim2.new(0.35, 0, 0.4, 0)
+label.TextScaled = true
+label.BackgroundTransparency = 1
+label.TextColor3 = Color3.new(1, 1, 1)
+label.Font = Enum.Font.GothamBold
+
+-- Đếm ngược
+for i = 5, 1, -1 do
+    label.Text = "Rejoining in " .. i .. "..."
+    task.wait(1)
+end
+
+-- Xóa GUI
+screenGui:Destroy()
+
+-- Teleport lại server hiện tại
+TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, player)
+end)
+
+page6.CanvasSize = UDim2.new(0, 0, 0, 100)
+
+local ifnt = Instance.new("TextButton", page6)
+ifnt.Size = UDim2.new(1, -10, 0, 40)
+ifnt.Position = UDim2.new(0, 5, 0, 45)
+ifnt.Text = "Server Hop"
+ifnt.BackgroundColor3 = Color3.fromRGB(130, 130, 130)
+ifnt.TextColor3 = Color3.new(1, 1, 1)
+ifnt.Font = Enum.Font.SourceSans
+ifnt.TextSize = 18
+
+ifnt.MouseButton1Click:Connect(function()
+local TeleportService = game:GetService("TeleportService")
+local HttpService = game:GetService("HttpService")
+local player = game.Players.LocalPlayer
+local placeId = game.PlaceId
+
+-- Tạo GUI đếm ngược
+local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+local label = Instance.new("TextLabel", screenGui)
+label.Size = UDim2.new(0.3, 0, 0.2, 0)
+label.Position = UDim2.new(0.35, 0, 0.4, 0)
+label.TextScaled = true
+label.BackgroundTransparency = 1
+label.TextColor3 = Color3.new(1, 1, 1)
+label.Font = Enum.Font.GothamBold
+
+-- Đếm ngược
+for i = 5, 1, -1 do
+    label.Text = "Hopping in " .. i .. "..."
+    task.wait(1)
+end
+
+-- Xóa GUI
+screenGui:Destroy()
+
+-- Tìm server khác
+local function getRandomServer()
+    local servers = {}
+    local success, response = pcall(function()
+        return HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..placeId.."/servers/Public?sortOrder=Asc&limit=100"))
+    end)
+
+    if success and response and response.data then
+        for _, server in pairs(response.data) do
+            if server.playing < server.maxPlayers and server.id ~= game.JobId then
+                table.insert(servers, server.id)
+            end
+        end
+    end
+
+    return #servers > 0 and servers[math.random(1, #servers)] or nil
+end
+
+local target = getRandomServer()
+if target then
+    TeleportService:TeleportToPlaceInstance(placeId, target, player)
+else
+    warn("Không tìm được server khác.")
+end
+end)
+
+page6.CanvasSize = UDim2.new(0, 0, 0, 100)
+
+local ifnt = Instance.new("TextButton", page6)
+ifnt.Size = UDim2.new(1, -10, 0, 40)
+ifnt.Position = UDim2.new(0, 5, 0, 90)
+ifnt.Text = "Small Server Hop"
+ifnt.BackgroundColor3 = Color3.fromRGB(130, 130, 130)
+ifnt.TextColor3 = Color3.new(1, 1, 1)
+ifnt.Font = Enum.Font.SourceSans
+ifnt.TextSize = 18
+
+ifnt.MouseButton1Click:Connect(function()
+local TeleportService = game:GetService("TeleportService")
+local HttpService = game:GetService("HttpService")
+local player = game.Players.LocalPlayer
+local placeId = game.PlaceId
+
+-- Tạo GUI đếm ngược
+local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+local label = Instance.new("TextLabel", screenGui)
+label.Size = UDim2.new(0.4, 0, 0.2, 0)
+label.Position = UDim2.new(0.3, 0, 0.4, 0)
+label.TextScaled = true
+label.BackgroundTransparency = 1
+label.TextColor3 = Color3.new(1, 1, 1)
+label.Font = Enum.Font.GothamBold
+
+-- Đếm ngược
+for i = 5, 1, -1 do
+    label.Text = "Tìm server ít người trong: " .. i
+    task.wait(1)
+end
+
+-- Xóa GUI
+screenGui:Destroy()
+
+-- Tìm server có dưới 5 người
+local function getSmallServer()
+    local servers = {}
+    local cursor = nil
+
+    for _ = 1, 5 do
+        local url = "https://games.roblox.com/v1/games/"..placeId.."/servers/Public?sortOrder=Asc&limit=100"
+        if cursor then url = url.."&cursor="..cursor end
+
+        local success, response = pcall(function()
+            return HttpService:JSONDecode(game:HttpGet(url))
+        end)
+
+        if success and response and response.data then
+            for _, server in ipairs(response.data) do
+                if server.playing < 5 and server.id ~= game.JobId then
+                    table.insert(servers, server.id)
+                end
+            end
+            if response.nextPageCursor then
+                cursor = response.nextPageCursor
+            else
+                break
+            end
+        else
+            break
+        end
+    end
+
+    return #servers > 0 and servers[math.random(1, #servers)] or nil
+end
+
+local target = getSmallServer()
+if target then
+    TeleportService:TeleportToPlaceInstance(placeId, target, player)
+else
+    warn("Không tìm được server < 5 người.")
+end
+end)
+
+page6.CanvasSize = UDim2.new(0, 0, 0, 100)
+
+local ifnt = Instance.new("TextButton", page6)
+ifnt.Size = UDim2.new(1, -10, 0, 40)
+ifnt.Position = UDim2.new(0, 5, 0, 135)
+ifnt.Text = "Exit Server"
+ifnt.BackgroundColor3 = Color3.fromRGB(130, 130, 130)
+ifnt.TextColor3 = Color3.new(1, 1, 1)
+ifnt.Font = Enum.Font.SourceSans
+ifnt.TextSize = 18
+
+ifnt.MouseButton1Click:Connect(function()
+local player = game.Players.LocalPlayer
+
+-- Tạo ScreenGui
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.ResetOnSpawn = false
+
+-- Khung chính
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0.5, 0, 0.3, 0)
+frame.Position = UDim2.new(0.25, 0, 0.35, 0)
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+frame.BorderSizePixel = 0
+frame.BackgroundTransparency = 0.1
+frame.AnchorPoint = Vector2.new(0.5, 0.5)
+frame.ClipsDescendants = true
+
+-- Tiêu đề
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1, 0, 0.4, 0)
+title.Position = UDim2.new(0, 0, 0, 0)
+title.Text = "Do you want exit server?"
+title.TextColor3 = Color3.new(1, 1, 1)
+title.BackgroundTransparency = 1
+title.TextScaled = true
+title.Font = Enum.Font.GothamBold
+
+-- Nút Yes
+local yesBtn = Instance.new("TextButton", frame)
+yesBtn.Size = UDim2.new(0.4, 0, 0.3, 0)
+yesBtn.Position = UDim2.new(0.1, 0, 0.55, 0)
+yesBtn.Text = "Yes"
+yesBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+yesBtn.TextColor3 = Color3.new(1, 1, 1)
+yesBtn.TextScaled = true
+yesBtn.Font = Enum.Font.GothamBold
+yesBtn.AutoButtonColor = true
+
+-- Nút No
+local noBtn = Instance.new("TextButton", frame)
+noBtn.Size = UDim2.new(0.4, 0, 0.3, 0)
+noBtn.Position = UDim2.new(0.5, 0, 0.55, 0)
+noBtn.Text = "No"
+noBtn.BackgroundColor3 = Color3.fromRGB(50, 200, 50)
+noBtn.TextColor3 = Color3.new(1, 1, 1)
+noBtn.TextScaled = true
+noBtn.Font = Enum.Font.GothamBold
+noBtn.AutoButtonColor = true
+
+-- Chức năng Yes/No
+yesBtn.MouseButton1Click:Connect(function()
+    player:Kick("Bạn đã thoát khỏi server.")
+end)
+
+noBtn.MouseButton1Click:Connect(function()
+    gui:Destroy()
+end)
+end)
+
+page6.CanvasSize = UDim2.new(0, 0, 0, 100)
+
+-- Viền cầu vồng
+local stroke = Instance.new("UIStroke")
+stroke.Thickness = 3 -- Độ dày viền
+stroke.Color = Color3.fromRGB(255, 0, 0) -- Màu khởi đầu (sẽ đổi liên tục)
+stroke.Parent = menuButton
+
+-- Tween đổi màu viền cầu vồng
+task.spawn(function()
+	local hue = 0
+	while true do
+		hue = (hue + 1) % 360
+		local color = Color3.fromHSV(hue / 360, 1, 1)
+
+		local tween = TweenService:Create(stroke, TweenInfo.new(0.1, Enum.EasingStyle.Linear), {
+			Color = color
+		})
+		tween:Play()
+		tween.Completed:Wait()
+	end
+end)
