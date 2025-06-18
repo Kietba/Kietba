@@ -1,0 +1,555 @@
+-- Full GUI Script - 3 Pages (Misc, Tech, Esp)
+-- Includes full button logic and toggles
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "MyGui"
+screenGui.ResetOnSpawn = false
+screenGui.IgnoreGuiInset = true
+screenGui.Parent = playerGui
+
+local menuButton = Instance.new("TextButton")
+menuButton.Size = UDim2.new(0, 50, 0, 40)
+menuButton.Position = UDim2.new(0, 0, 0, 50)
+menuButton.Text = "Menu"
+menuButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+menuButton.TextColor3 = Color3.new(1, 1, 1)
+menuButton.Font = Enum.Font.SourceSansBold
+menuButton.TextSize = 20
+menuButton.Parent = screenGui
+
+local uicorner = Instance.new("UICorner")
+uicorner.CornerRadius = UDim.new(1, 0)
+uicorner.Parent = menuButton
+
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0.8, 0, 0.7, 0)
+mainFrame.Position = UDim2.new(0.1, 0, 0.15, 0)
+mainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+mainFrame.Visible = true
+mainFrame.Parent = screenGui
+
+local pageSelector = Instance.new("Frame")
+pageSelector.Size = UDim2.new(0.5, 0, 0, 50)
+pageSelector.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+pageSelector.Parent = mainFrame
+
+local function createPageButton(name, position)
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(1/3, 0, 1, 0)
+    button.Position = position
+    button.Text = name
+    button.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+    button.TextColor3 = Color3.new(1, 1, 1)
+    button.Font = Enum.Font.SourceSansBold
+    button.TextSize = 20
+    button.Parent = pageSelector
+    return button
+end
+
+local page1Button = createPageButton("Misc", UDim2.new(0, 0, 0, 0))
+local page2Button = createPageButton("Tech", UDim2.new(1/3, 0, 0, 0))
+local page3Button = createPageButton("Esp", UDim2.new(2/3, 0, 0, 0))
+local page4Button = createPageButton("Aimbot", UDim2.new(3/3, 0, 0, 0))
+local page5Button = createPageButton("Admin", UDim2.new(5/3, 0, 0, 0))
+local page6Button = createPageButton("Server", UDim2.new(4/3, 0, 0, 0))
+
+local titleBar = Instance.new("TextLabel")
+titleBar.Size = UDim2.new(1, 0, 0, 30)
+titleBar.Position = UDim2.new(0, 0, 0, 50)
+titleBar.Text = "The Strongest Battleground Script"
+titleBar.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
+titleBar.TextColor3 = Color3.new(1, 1, 1)
+titleBar.Font = Enum.Font.SourceSansBold
+titleBar.TextSize = 20
+titleBar.Parent = mainFrame
+
+local function createPage(bgColor)
+    local page = Instance.new("ScrollingFrame")
+    page.Size = UDim2.new(1, 0, 1, -80)
+    page.Position = UDim2.new(0, 0, 0, 80)
+    page.BackgroundColor3 = bgColor
+    page.CanvasSize = UDim2.new(0, 0, 1, 0)
+    page.ScrollBarThickness = 8
+    page.ScrollingDirection = Enum.ScrollingDirection.Y
+    page.Visible = false
+    page.Parent = mainFrame
+    return page
+end
+
+local page1 = createPage(Color3.fromRGB(80, 80, 80))
+local page2 = createPage(Color3.fromRGB(100, 100, 100))
+local page3 = createPage(Color3.fromRGB(110, 110, 110))
+local page4 = createPage(Color3.fromRGB(110, 110, 110))
+local page5 = createPage(Color3.fromRGB(110, 110, 110))
+local page6 = createPage(Color3.fromRGB(110, 110, 110))
+page1.Visible = true
+
+page1Button.MouseButton1Click:Connect(function()
+    page1.Visible = true page2.Visible = false page3.Visible = false page4.Visible = false page5.Visible = false page6.Visible = false
+end)
+page2Button.MouseButton1Click:Connect(function()
+    page1.Visible = false page2.Visible = true page3.Visible = false page4.Visible = false page5.Visible = false page6.Visible = false
+end)
+page3Button.MouseButton1Click:Connect(function()
+    page1.Visible = false page2.Visible = false page3.Visible = true page4.Visible = false page5.Visible = false page6.Visible = false
+end)
+page4Button.MouseButton1Click:Connect(function()
+    page1.Visible = false page2.Visible = false page3.Visible = false page4.Visible = true page5.Visible = false page6.Visible = false
+end)
+page5Button.MouseButton1Click:Connect(function()
+   page1.Visible = false page2.Visible = false page3.Visible = false page4.Visible = false page5.Visible = true page6.Visible = false
+end)
+page6Button.MouseButton1Click:Connect(function()
+   page1.Visible = false page2.Visible = false page3.Visible = false page4.Visible = false page5.Visible = false page6.Visible = true
+end)
+menuButton.MouseButton1Click:Connect(function()
+    mainFrame.Visible = not mainFrame.Visible
+end)
+
+-- === MISC BUTTONS ===
+local miscButtons = {
+    {
+        Name = "Anti Lag",
+        Type = "normal",
+        Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Antilag%20script"))()]]
+    },
+    {
+        Name = "M1 Reach Rework",
+        Type = "normal",
+        Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/M1%20Reach%20Rework"))()]]
+    },
+{
+        Name = "Aura ( Client )",
+        Type = "normal",
+        Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Aura"))()]]
+    },
+{
+        Name = "Auto Block + Aimbot",
+        Type = "normal",
+        Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/Cyborg883/TSB/refs/heads/main/CombatGui"))()]]
+    },
+{
+        Name = "Orbit",
+        Type = "normal",
+        Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Orbit%20by%20YQANTG"))()]]
+    },
+{
+        Name = "standing pose for afk",
+        Type = "normal",
+        Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Idiea"))()]]
+    },
+    {
+        Name = "KeyBoard",
+        Type = "normal",
+        Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/Delta-Scripts/refs/heads/main/MobileKeyboard.txt"))()]]
+    },
+{
+        Name = "Fake Dash Q",
+        Type = "normal",
+        Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Fake%20Dash%20Q"))()]]
+    },
+    {
+        Name = "Invisible Block",
+        Type = "normal",
+        Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Invisible%20Block"))()]]
+    },
+    {
+        Name = "No Slide Dash Endlag",
+        Type = "normal",
+        Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/Slaphello/No-endlag-side-dash/refs/heads/main/No%20endlag%20side%20dash"))()]]
+    },
+    {
+        Name = "No Stun",
+        Type = "toggle",
+        OnCode = [[
+            if not _G.StunBypass then
+                _G.StunBypass = game:GetService("RunService").RenderStepped:Connect(function()
+                    local char = game.Players.LocalPlayer.Character
+                    if char then
+                        if char:FindFirstChild("Stunned") then
+                            char.Stunned:Destroy()
+                        end
+                        if char:FindFirstChild("Humanoid") then
+                            char.Humanoid.PlatformStand = false
+                            if char.Humanoid.WalkSpeed == 0 then
+                                char.Humanoid.WalkSpeed = 16
+                            end
+                        end
+                    end
+                end)
+            end
+        ]],
+        OffCode = [[
+            if _G.StunBypass then
+                _G.StunBypass:Disconnect()
+                _G.StunBypass = nil
+            end
+        ]]
+    },
+    {
+        Name = "No Slowed",
+        Type = "toggle",
+        OnCode = [[
+            if not _G.NoSlowLoop then
+                _G.NoSlowLoop = game:GetService("RunService").RenderStepped:Connect(function()
+                    local char = game.Players.LocalPlayer.Character
+                    if char and char:FindFirstChild("Humanoid") then
+                        local hum = char.Humanoid
+                        if hum.WalkSpeed < 20 then
+                            hum.WalkSpeed = 20
+                        end
+                        hum.PlatformStand = false
+                    end
+                end)
+            end
+        ]],
+        OffCode = [[
+            if _G.NoSlowLoop then
+                _G.NoSlowLoop:Disconnect()
+                _G.NoSlowLoop = nil
+            end
+            local char = game.Players.LocalPlayer.Character
+            if char and char:FindFirstChild("Humanoid") then
+                char.Humanoid.WalkSpeed = 16
+            end
+        ]]
+    }
+}
+local function addButton(page, data, index)
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(1, -10, 0, 40)
+    btn.Position = UDim2.new(0, 5, 0, (index - 1) * 45)
+    btn.Text = data.Name
+    btn.BackgroundColor3 = Color3.fromRGB(130, 130, 130)
+    btn.TextColor3 = Color3.new(1, 1, 1)
+    btn.Font = Enum.Font.SourceSans
+    btn.TextSize = 18
+    btn.Parent = page
+
+    if data.Type == "normal" then
+        btn.MouseButton1Click:Connect(function()
+            local success, err = pcall(function()
+                loadstring(data.Code)()
+            end)
+            if not success then warn("Script Error:", err) end
+        end)
+    elseif data.Type == "toggle" then
+        local toggled = false
+        btn.MouseButton1Click:Connect(function()
+            toggled = not toggled
+            btn.Text = toggled and (data.Name .. " [ON]") or data.Name
+            local code = toggled and data.OnCode or data.OffCode
+            local success, err = pcall(function()
+                loadstring(code)()
+            end)
+            if not success then warn("Toggle Error:", err) end
+        end)
+    end
+end
+
+for i, btn in ipairs(miscButtons) do
+    addButton(page1, btn, i)
+end
+page1.CanvasSize = UDim2.new(0, 0, 0, #miscButtons * 45 + 10)
+-- === TECH BUTTONS ===
+local techButtons = {
+    {Name = "M1 Reset By YQANTG", Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/m1%20reset%20by%20me"))()]]},
+    {Name = "M1 Reset By Idk Hub", Code = [[
+        getgenv().keybinds = {
+            m1reset = Enum.KeyCode.R,
+            emotedash = Enum.KeyCode.T,
+            rotation = Enum.KeyCode.H
+        }
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Slaphello/M1-Reset-And-Emote-Dash-TSB-OLD-/refs/heads/main/M1R%26ED%20TSB"))()
+    ]]},
+    {Name = "Auto Kyoto", Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Auto%20kyoto%20ma%20hoa"))()]]},
+    {Name = "Loop Dash Rework", Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Loop%20Dash%20Rework%20Script%20Real"))()]]},
+{Name = "Oreo Dash", Code = [[loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\34\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\75\105\101\116\98\97\47\75\105\101\116\98\97\47\114\101\102\115\47\104\101\97\100\115\47\109\97\105\110\47\79\114\101\111\37\50\48\84\101\99\104\37\50\48\83\99\114\105\112\116\34\41\41\40\41")()]]},
+    {Name = "Lethal Dash", Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Lethal%20Dash%20Script"))()]]},
+{Name = "Tornado Tech", Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Idk%20lolololol"))()]]},
+    {Name = "Twited", Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/TwitQ%20Tech%20Script"))()]]},
+    {Name = "Supa Tech", Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Supa%20tech%20script"))()]]}
+}
+for i, btn in ipairs(techButtons) do
+    addButton(page2, {Name = btn.Name, Type = "normal", Code = btn.Code}, i)
+end
+page2.CanvasSize = UDim2.new(0, 0, 0, #techButtons * 45 + 10)
+
+-- === ESP BUTTON ===
+local espNameEnabled = false
+local espNameBtn = Instance.new("TextButton")
+espNameBtn.Size = UDim2.new(1, -10, 0, 40)
+espNameBtn.Position = UDim2.new(0, 5, 0, 0)
+espNameBtn.Text = "Esp Name"
+espNameBtn.BackgroundColor3 = Color3.fromRGB(130, 130, 130)
+espNameBtn.TextColor3 = Color3.new(1, 1, 1)
+espNameBtn.Font = Enum.Font.SourceSans
+espNameBtn.TextSize = 18
+espNameBtn.Parent = page3
+
+local function addEspToCharacter(char, playerName)
+	if not char:FindFirstChild("Head") then return end
+	if not char.Head:FindFirstChild("ESP_Name") then
+		local bb = Instance.new("BillboardGui")
+		bb.Name = "ESP_Name"
+		bb.Size = UDim2.new(0, 100, 0, 30)
+		bb.StudsOffset = Vector3.new(0, 2, 0)
+		bb.AlwaysOnTop = true
+		bb.Adornee = char.Head
+		bb.Parent = char.Head
+
+		local label = Instance.new("TextLabel")
+		label.Size = UDim2.new(1, 0, 1, 0)
+		label.BackgroundTransparency = 1
+		label.Text = playerName
+		label.TextColor3 = Color3.new(1, 1, 1)
+		label.TextScaled = true
+		label.Font = Enum.Font.SourceSansBold
+		label.Parent = bb
+	end
+end
+
+local function enableEspNameForPlayer(player)
+	if player == Players.LocalPlayer then return end
+
+	if player.Character then
+		addEspToCharacter(player.Character, player.Name)
+	end
+
+	player.CharacterAdded:Connect(function(char)
+		wait(1)
+		addEspToCharacter(char, player.Name)
+	end)
+end
+
+local function removeAllEspNames()
+	for _, player in ipairs(Players:GetPlayers()) do
+		if player.Character and player.Character:FindFirstChild("Head") then
+			local esp = player.Character.Head:FindFirstChild("ESP_Name")
+			if esp then esp:Destroy() end
+		end
+	end
+end
+
+espNameBtn.MouseButton1Click:Connect(function()
+	espNameEnabled = not espNameEnabled
+	espNameBtn.Text = espNameEnabled and "Esp Name [ON]" or "Esp Name"
+
+	if espNameEnabled then
+		for _, player in ipairs(Players:GetPlayers()) do
+			enableEspNameForPlayer(player)
+		end
+		Players.PlayerAdded:Connect(enableEspNameForPlayer)
+	else
+		removeAllEspNames()
+	end
+end)
+
+local highlightEnabled = false
+local highlightBtn = Instance.new("TextButton")
+highlightBtn.Size = UDim2.new(1, -10, 0, 40)
+highlightBtn.Position = UDim2.new(0, 5, 0, 45)
+highlightBtn.Text = "Highlight"
+highlightBtn.BackgroundColor3 = Color3.fromRGB(130, 130, 130)
+highlightBtn.TextColor3 = Color3.new(1, 1, 1)
+highlightBtn.Font = Enum.Font.SourceSans
+highlightBtn.TextSize = 18
+highlightBtn.Parent = page3
+
+local function applyHighlightToPlayer(player)
+	if player == Players.LocalPlayer then return end
+
+	local function createHighlight(char)
+		if not char:FindFirstChild("HighlightESP") then
+			local highlight = Instance.new("Highlight")
+			highlight.Name = "HighlightESP"
+			highlight.FillTransparency = 1
+			highlight.OutlineTransparency = 0
+			highlight.OutlineColor = Color3.fromRGB(0, 255, 0)
+			highlight.Adornee = char
+			highlight.Parent = char
+		end
+	end
+
+	-- Apply if character exists
+	if player.Character then
+		createHighlight(player.Character)
+	end
+
+	-- Ensure it's applied again on respawn
+	player.CharacterAdded:Connect(function(char)
+		char:WaitForChild("HumanoidRootPart", 5)
+		wait(1)
+		createHighlight(char)
+	end)
+end
+
+local function removeAllHighlights()
+	for _, p in ipairs(Players:GetPlayers()) do
+		if p.Character then
+			local h = p.Character:FindFirstChild("HighlightESP")
+			if h then h:Destroy() end
+		end
+	end
+end
+
+highlightBtn.MouseButton1Click:Connect(function()
+	highlightEnabled = not highlightEnabled
+	highlightBtn.Text = highlightEnabled and "Highlight [ON]" or "Highlight"
+
+	if highlightEnabled then
+		for _, p in ipairs(Players:GetPlayers()) do
+			applyHighlightToPlayer(p)
+		end
+		Players.PlayerAdded:Connect(function(p)
+			applyHighlightToPlayer(p)
+		end)
+	else
+		removeAllHighlights()
+	end
+end)
+
+-- Đừng quên cập nhật CanvasSize nếu bạn đã thêm nút khác
+page3.CanvasSize = UDim2.new(0, 0, 0, 100)
+
+local showHealthEnabled = false
+local showHealthBtn = Instance.new("TextButton")
+showHealthBtn.Size = UDim2.new(1, -10, 0, 40)
+showHealthBtn.Position = UDim2.new(0, 5, 0, 90) -- điều chỉnh nếu cần
+showHealthBtn.Text = "Show Health"
+showHealthBtn.BackgroundColor3 = Color3.fromRGB(130, 130, 130)
+showHealthBtn.TextColor3 = Color3.new(1, 1, 1)
+showHealthBtn.Font = Enum.Font.SourceSans
+showHealthBtn.TextSize = 18
+showHealthBtn.Parent = page3
+
+local showHealthConnections = {}
+
+local function createHealthDisplay(char)
+	if not char:FindFirstChild("Head") or not char:FindFirstChild("Humanoid") then return end
+	if char.Head:FindFirstChild("ESP_HealthText") then return end
+
+	local gui = Instance.new("BillboardGui")
+	gui.Name = "ESP_HealthText"
+	gui.Size = UDim2.new(0, 100, 0, 30)
+	gui.StudsOffset = Vector3.new(0, 3, 0)
+	gui.AlwaysOnTop = true
+	gui.Adornee = char.Head
+	gui.Parent = char.Head
+
+	local text = Instance.new("TextLabel")
+	text.Size = UDim2.new(1, 0, 1, 0)
+	text.BackgroundTransparency = 1
+	text.TextColor3 = Color3.fromRGB(255, 0, 0)
+	text.Font = Enum.Font.SourceSansBold
+	text.TextScaled = true
+	text.Text = "Health: 100%"
+	text.Parent = gui
+
+	local hum = char:FindFirstChild("Humanoid")
+	if hum then
+		text.Text = "Health: " .. math.floor((hum.Health / hum.MaxHealth) * 100) .. "%"
+		local conn = hum.HealthChanged:Connect(function()
+			text.Text = "Health: " .. math.floor((hum.Health / hum.MaxHealth) * 100) .. "%"
+		end)
+		table.insert(showHealthConnections, conn)
+	end
+end
+
+local function handlePlayerForHealth(player)
+	if player == Players.LocalPlayer then return end
+
+	local function onCharAdded(char)
+		wait(0.5)
+		createHealthDisplay(char)
+	end
+
+	if player.Character then
+		onCharAdded(player.Character)
+	end
+
+	local charConn = player.CharacterAdded:Connect(onCharAdded)
+	table.insert(showHealthConnections, charConn)
+end
+
+local function clearHealthDisplays()
+	for _, p in ipairs(Players:GetPlayers()) do
+		if p.Character and p.Character:FindFirstChild("Head") then
+			local gui = p.Character.Head:FindFirstChild("ESP_HealthText")
+			if gui then gui:Destroy() end
+		end
+	end
+	for _, conn in ipairs(showHealthConnections) do
+		if conn and conn.Disconnect then conn:Disconnect() end
+	end
+	showHealthConnections = {}
+end
+
+showHealthBtn.MouseButton1Click:Connect(function()
+	showHealthEnabled = not showHealthEnabled
+	showHealthBtn.Text = showHealthEnabled and "Show Health [ON]" or "Show Health"
+
+	if showHealthEnabled then
+		for _, p in ipairs(Players:GetPlayers()) do
+			handlePlayerForHealth(p)
+		end
+		local joinConn = Players.PlayerAdded:Connect(handlePlayerForHealth)
+		table.insert(showHealthConnections, joinConn)
+	else
+		clearHealthDisplays()
+	end
+end)
+
+local showHealthBarEnabled = false
+local showHealthBarBtn = Instance.new("TextButton")
+showHealthBarBtn.Size = UDim2.new(1, -10, 0, 40)
+showHealthBarBtn.Position = UDim2.new(0, 5, 0, 135)
+showHealthBarBtn.Text = "Show Health Bar"
+showHealthBarBtn.BackgroundColor3 = Color3.fromRGB(130, 130, 130)
+showHealthBarBtn.TextColor3 = Color3.new(1, 1, 1)
+showHealthBarBtn.Font = Enum.Font.SourceSans
+showHealthBarBtn.TextSize = 18
+showHealthBarBtn.Parent = page3
+
+local healthBarConns = {}
+
+local function createHealthBar(char)
+	if not char:FindFirstChild("Head") or char.Head:FindFirstChild("ESP_HealthBar") then return end
+	local humanoid = char:FindFirstChildOfClass("Humanoid")
+	if not humanoid then return end
+
+	local gui = Instance.new("BillboardGui")
+	gui.Name = "ESP_HealthBar"
+	gui.Size = UDim2.new(0, 100, 0, 6)
+	gui.StudsOffset = Vector3.new(0, 3.5, 0)
+	gui.AlwaysOnTop = true
+	gui.Adornee = char.Head
+	gui.Parent = char.Head
+
+	local bg = Instance.new("Frame")
+	bg.Size = UDim2.new(1, 0, 1, 0)
+	bg.BackgroundColor3 = Color3.new(0, 0, 0)
+	bg.BorderSizePixel = 0
+	bg.Parent = gui
+
+	local bar = Instance.new("Frame")
+	bar.Name = "HealthBarFill"
+	bar.Size = UDim2.new(1, 0, 1, 0)
+	bar.BackgroundColor3 = Color3.new(1, 0, 0)
+	bar.BorderSizePixel = 0
+	bar.Parent = bg
+
+	local function updateHealth()
+		if humanoid and humanoid.MaxHealth > 0 then
+			local percent = humanoid.Health / humanoid.MaxHealth
+			bar.Size = UDim2.new(math.clamp(percent, 0, 1), 0, 1, 0)
+		end
+	end
+
+	local conn = humanoid.HealthChanged:Connect(updateHealth)
+	table.insert(healthBarConns, conn)
+	u
