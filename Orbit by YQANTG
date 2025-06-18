@@ -1,0 +1,248 @@
+
+--[[
+🌟 Full GUI: Orbit Player, Search, Suggestion, Speed/Distance Adjust, Exit + Confirm Dialog
+💡 Mobile Friendly, Tweened UI, Rounded Corners, Scroll List
+]]
+
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.ResetOnSpawn = false
+gui.Name = "OrbitGui"
+
+-- Hàm bo góc
+local function addCorner(obj)
+	local uic = Instance.new("UICorner", obj)
+	uic.CornerRadius = UDim.new(0, 8)
+end
+
+-- Frame chính
+local mainFrame = Instance.new("Frame", gui)
+mainFrame.Size = UDim2.new(0, 300, 0, 240)
+mainFrame.Position = UDim2.new(0.5, -150, 0.5, -120)
+mainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+mainFrame.BackgroundTransparency = 1
+mainFrame.ClipsDescendants = true
+mainFrame.Active = true
+mainFrame.Draggable = true
+addCorner(mainFrame)
+
+-- Tween GUI vào
+TweenService:Create(mainFrame, TweenInfo.new(0.5), {BackgroundTransparency = 0}):Play()
+
+-- Title
+local title = Instance.new("TextLabel", mainFrame)
+title.Size = UDim2.new(1, -40, 0, 30)
+title.Position = UDim2.new(0, 10, 0, 5)
+title.BackgroundTransparency = 1
+title.Text = "Orbit by YQANTG"
+title.TextColor3 = Color3.new(1, 1, 1)
+title.TextScaled = true
+
+-- Nút X (Close)
+local exitBtn = Instance.new("TextButton", mainFrame)
+exitBtn.Size = UDim2.new(0, 30, 0, 30)
+exitBtn.Position = UDim2.new(1, -35, 0, 5)
+exitBtn.Text = "X"
+exitBtn.TextColor3 = Color3.new(1, 1, 1)
+exitBtn.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
+addCorner(exitBtn)
+
+-- Tên người chơi
+local nameBox = Instance.new("TextBox", mainFrame)
+nameBox.PlaceholderText = "Enter Name"
+nameBox.Size = UDim2.new(0.6, -10, 0, 30)
+nameBox.Position = UDim2.new(0, 10, 0, 45)
+nameBox.Text = ""
+nameBox.TextColor3 = Color3.new(1, 1, 1)
+nameBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+addCorner(nameBox)
+
+-- Gợi ý tên
+local suggestText = Instance.new("TextLabel", mainFrame)
+suggestText.Size = UDim2.new(0.6, -10, 0, 20)
+suggestText.Position = UDim2.new(0, 10, 0, 78)
+suggestText.BackgroundTransparency = 1
+suggestText.TextColor3 = Color3.fromRGB(0, 255, 0)
+suggestText.Text = ""
+suggestText.TextScaled = true
+
+-- Nút Orbit
+local orbitToggle = Instance.new("TextButton", mainFrame)
+orbitToggle.Size = UDim2.new(0.3, 0, 0, 30)
+orbitToggle.Position = UDim2.new(0.65, -10, 0, 45)
+orbitToggle.Text = "Orbit"
+orbitToggle.BackgroundColor3 = Color3.fromRGB(80, 80, 200)
+orbitToggle.TextColor3 = Color3.new(1, 1, 1)
+addCorner(orbitToggle)
+
+-- Speed + Distance
+local speedBox = Instance.new("TextBox", mainFrame)
+speedBox.PlaceholderText = "Speed"
+speedBox.Size = UDim2.new(0.45, -10, 0, 30)
+speedBox.Position = UDim2.new(0.05, 0, 0, 110)
+speedBox.Text = ""
+speedBox.TextColor3 = Color3.new(1, 1, 1)
+speedBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+addCorner(speedBox)
+
+local distBox = Instance.new("TextBox", mainFrame)
+distBox.PlaceholderText = "Distance"
+distBox.Size = UDim2.new(0.45, -10, 0, 30)
+distBox.Position = UDim2.new(0.5, 0, 0, 110)
+distBox.Text = ""
+distBox.TextColor3 = Color3.new(1, 1, 1)
+distBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+addCorner(distBox)
+
+local orbitButton = Instance.new("TextButton")
+orbitButton.Size = UDim2.new(0, 120, 0, 30)
+orbitButton.Position = UDim2.new(0.05, 0, 0, 150) -- chỉnh vị trí nếu cần
+orbitButton.Text = "Orbit NPC: Off"
+orbitButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+orbitButton.TextColor3 = Color3.new(1, 1, 1)
+orbitButton.Parent = mainFrame  -- thay 'main' bằng frame cha đang chứa nút nếu khác
+local uic = Instance.new("UICorner", orbitButton)
+uic.CornerRadius = UDim.new(0, 6)
+
+-- Danh sách người chơi + Search
+local scroll = Instance.new("ScrollingFrame", mainFrame)
+scroll.Size = UDim2.new(0.35, 0, 0.5, 0)
+scroll.Position = UDim2.new(0.65, 0, 0.35, 0)
+scroll.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+scroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+scroll.ScrollBarThickness = 4
+addCorner(scroll)
+
+-- Nút >
+local toggleList = Instance.new("TextButton", mainFrame)
+toggleList.Size = UDim2.new(0, 30, 0, 30)
+toggleList.Position = UDim2.new(1, -35, 0, 85)
+toggleList.Text = ">"
+toggleList.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+toggleList.TextColor3 = Color3.new(1, 1, 1)
+addCorner(toggleList)
+
+local orbiting = false
+local orbitConn
+
+-- Cập nhật gợi ý
+nameBox:GetPropertyChangedSignal("Text"):Connect(function()
+	local input = nameBox.Text:lower()
+	local suggestion = ""
+	for _, plr in ipairs(Players:GetPlayers()) do
+		if plr ~= player and plr.Name:lower():sub(1, #input) == input then
+			suggestion = plr.Name
+			break
+		end
+	end
+	suggestText.Text = suggestion
+end)
+
+-- Tạo danh sách
+local function updateList()
+	scroll:ClearAllChildren()
+	local y = 0
+	for _, plr in ipairs(Players:GetPlayers()) do
+		if plr ~= player then
+			local btn = Instance.new("TextButton", scroll)
+			btn.Size = UDim2.new(1, -4, 0, 30)
+			btn.Position = UDim2.new(0, 2, 0, y)
+			btn.Text = plr.Name
+			btn.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+			btn.TextColor3 = Color3.new(1, 1, 1)
+			addCorner(btn)
+			y += 32
+
+			btn.MouseButton1Click:Connect(function()
+				nameBox.Text = plr.Name
+			end)
+		end
+	end
+	scroll.CanvasSize = UDim2.new(0, 0, 0, y)
+end
+updateList()
+
+-- Toggle danh sách
+toggleList.MouseButton1Click:Connect(function()
+	scroll.Visible = not scroll.Visible
+end)
+
+-- Orbit logic
+orbitToggle.MouseButton1Click:Connect(function()
+	orbiting = not orbiting
+	if orbitConn then orbitConn:Disconnect() end
+	if orbiting and nameBox.Text ~= "" then
+		local target = Players:FindFirstChild(nameBox.Text)
+		if target and target.Character and target.Character:FindFirstChild("HumanoidRootPart") then
+			local angle = 0
+			local speed = tonumber(speedBox.Text) or 1
+			local radius = tonumber(distBox.Text) or 5
+			local hrp = target.Character.HumanoidRootPart
+			orbitConn = game:GetService("RunService").RenderStepped:Connect(function(dt)
+				angle += dt * speed
+				local x = math.cos(angle) * radius
+				local z = math.sin(angle) * radius
+				player.Character:MoveTo(hrp.Position + Vector3.new(x, 0, z))
+			end)
+		end
+	else
+		if orbitConn then orbitConn:Disconnect() end
+	end
+end)
+
+-- Xác nhận Xóa
+local confirmFrame = Instance.new("Frame", gui)
+confirmFrame.Size = UDim2.new(0, 220, 0, 120)
+confirmFrame.Position = UDim2.new(0.5, -110, 0.5, -60)
+confirmFrame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+confirmFrame.Visible = false
+confirmFrame.ZIndex = 10
+confirmFrame.Active = true
+addCorner(confirmFrame)
+
+local confirmLabel = Instance.new("TextLabel", confirmFrame)
+confirmLabel.Size = UDim2.new(1, 0, 0, 40)
+confirmLabel.Position = UDim2.new(0, 0, 0, 5)
+confirmLabel.Text = "Do you want remove GUI?"
+confirmLabel.BackgroundTransparency = 1
+confirmLabel.TextColor3 = Color3.new(1, 1, 1)
+confirmLabel.TextScaled = true
+confirmLabel.ZIndex = 11
+
+local yesButton = Instance.new("TextButton", confirmFrame)
+yesButton.Size = UDim2.new(0.4, 0, 0, 30)
+yesButton.Position = UDim2.new(0.1, 0, 1, -40)
+yesButton.Text = "Yes"
+yesButton.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
+yesButton.TextColor3 = Color3.new(1, 1, 1)
+yesButton.ZIndex = 11
+addCorner(yesButton)
+
+local noButton = Instance.new("TextButton", confirmFrame)
+noButton.Size = UDim2.new(0.4, 0, 0, 30)
+noButton.Position = UDim2.new(0.5, 0, 1, -40)
+noButton.Text = "No"
+noButton.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+noButton.TextColor3 = Color3.new(1, 1, 1)
+noButton.ZIndex = 11
+addCorner(noButton)
+
+exitBtn.MouseButton1Click:Connect(function()
+	confirmFrame.Visible = true
+end)
+
+noButton.MouseButton1Click:Connect(function()
+	confirmFrame.Visible = false
+end)
+
+yesButton.MouseButton1Click:Connect(function()
+	local fade = TweenService:Create(mainFrame, TweenInfo.new(0.5), {BackgroundTransparency = 1})
+	fade:Play()
+	fade.Completed:Connect(function()
+		gui:Destroy()
+	end)
+	confirmFrame:Destroy()
+end)
