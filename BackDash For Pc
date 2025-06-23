@@ -1,0 +1,147 @@
+local Players = game:GetService("Players")
+local UIS = game:GetService("UserInputService")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local player = Players.LocalPlayer
+
+local selectedNumber = 1
+local customKeybind = nil
+
+-- Tool mapping theo số
+local toolGroups = {
+    { "Flowing Water", "Lethal Whirlwind Stream", "Hunter's Grasp", "Prey's Peril" },
+    { "Doom Dive", "Crowd Buster", "Hammer Heel", "Binding Cloth" },
+    { "Machine Gun Blows", "Ignition Burst", "Blitz Shot", "Jet Dive" },
+    { "Flash Strike", "Whirlwind Kick", "Scatter", "Explosive Shuriken" },
+    { "Homerun", "Beatdown", "Grand Slam", "Foul Ball" },
+    { "Quick Slice", "Atmos Cleave", "Pinpoint Cut", "Split Second Counter" },
+    { "Crushing Pull", "Windstorm Fury", "Stone Coffin", "Expulsive Push" },
+    { "Bullet Barrage", "Vanishing Kick", "Whirlwind Drop", "Head First" },
+    { "Normal Punch", "Consecutive Punches", "Shove", "Uppercut" }
+}
+
+local function triggerRemote(tool)
+	local args = {
+		[1] = {
+			["Tool"] = tool,
+			["Goal"] = "Console Move"
+		}
+	}
+	local remote = player.Character and player.Character:FindFirstChild("Communicate")
+	if remote then
+		remote:FireServer(unpack(args))
+	end
+end
+
+local function performBackDash()
+	VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.S, false, game)
+	task.spawn(function()
+		VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+		task.wait(0.05)
+		VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Q, false, game)
+	end)
+	task.spawn(function()
+		local backpack = player:FindFirstChild("Backpack")
+		if not backpack then return end
+		for _, group in ipairs(toolGroups) do
+			local toolName = group[selectedNumber]
+			local tool = backpack:FindFirstChild(toolName)
+			if tool then
+				triggerRemote(tool)
+				break
+			end
+		end
+	end)
+	task.delay(1, function()
+		VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.S, false, game)
+	end)
+end
+
+-- GUI
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "SelectKeybindGUI"
+gui.ResetOnSpawn = false
+
+local topFrame = Instance.new("Frame")
+topFrame.Size = UDim2.new(0, 350, 0, 50)
+topFrame.Position = UDim2.new(0.5, -150, 0, 20)
+topFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+topFrame.Parent = gui
+local corner = Instance.new("UICorner", topFrame)
+corner.CornerRadius = UDim.new(0, 15)
+
+-- Nút chọn số 1–4
+for i = 1, 4 do
+	local btn = Instance.new("TextButton")
+	btn.Size = UDim2.new(0, 45, 0, 30)
+	btn.Position = UDim2.new(0, (i - 1) * 55 + 10, 0, 10)
+	btn.Text = tostring(i)
+	btn.Name = "Select_" .. i
+	btn.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+	btn.TextColor3 = Color3.new(1, 1, 1)
+	btn.Font = Enum.Font.SourceSansBold
+	btn.TextSize = 18
+	btn.Parent = topFrame
+	local round = Instance.new("UICorner", btn)
+	round.CornerRadius = UDim.new(0, 12)
+
+	btn.MouseButton1Click:Connect(function()
+		selectedNumber = i
+		for j = 1, 4 do
+			local b = topFrame:FindFirstChild("Select_" .. j)
+			if b then
+				b.BackgroundColor3 = (j == i) and Color3.fromRGB(0, 170, 255) or Color3.fromRGB(80, 80, 80)
+			end
+		end
+	end)
+end
+
+-- Add Keybind Nút
+local keybindBtn = Instance.new("TextButton")
+keybindBtn.Size = UDim2.new(0, 100, 0, 30)
+keybindBtn.Position = UDim2.new(0, 240, 0, 10)
+keybindBtn.Text = "Add Keybind"
+keybindBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+keybindBtn.TextColor3 = Color3.new(1, 1, 1)
+keybindBtn.Font = Enum.Font.SourceSansBold
+keybindBtn.TextSize = 14
+keybindBtn.Parent = topFrame
+local corner2 = Instance.new("UICorner", keybindBtn)
+corner2.CornerRadius = UDim.new(0, 10)
+
+-- TextBox ẩn để hiện bàn phím mobile
+local hiddenInput = Instance.new("TextBox")
+hiddenInput.Size = UDim2.new(0, 1, 0, 1)
+hiddenInput.Position = UDim2.new(0, -100, 0, -100)
+hiddenInput.TextTransparency = 1
+hiddenInput.BackgroundTransparency = 1
+hiddenInput.ClearTextOnFocus = false
+hiddenInput.Parent = gui
+
+keybindBtn.MouseButton1Click:Connect(function()
+	hiddenInput:CaptureFocus()
+	keybindBtn.Text = "Press A-Z..."
+	local conn
+	conn = UIS.InputBegan:Connect(function(input, gpe)
+		if not gpe and input.UserInputType == Enum.UserInputType.Keyboard then
+			local key = tostring(input.KeyCode):gsub("Enum.KeyCode.", "")
+			if #key == 1 and key:match("%u") then
+				customKeybind = Enum.KeyCode[key]
+				keybindBtn.Text = "Bind: " .. key
+			else
+				keybindBtn.Text = "Invalid"
+				task.delay(1, function()
+					keybindBtn.Text = "Add Keybind"
+				end)
+			end
+			conn:Disconnect()
+			hiddenInput:ReleaseFocus()
+		end
+	end)
+end)
+
+-- Lắng nghe khi nhấn keybind
+UIS.InputBegan:Connect(function(input, gpe)
+	if not gpe and customKeybind and input.KeyCode == customKeybind then
+		performBackDash()
+	end
+end)
