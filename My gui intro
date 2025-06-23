@@ -89,7 +89,7 @@ noBtn.Parent = promptFrame
 -- Dòng chữ
 local lines = {
         "-- Script by YQANTG",
-	"-- New : Invisible Block, Fake Dash Q, Standing Pose, Loop Dash Rework, M1 Reach Rework, Aimbot, Block Aimbot, Facelock Script",
+	"-- New : Back Dash",
 }
 
 -- Vùng hiển thị text
