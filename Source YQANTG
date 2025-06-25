@@ -651,7 +651,7 @@ function InsideTab:CreateButton(text, callback)
     Button_Roundify_3px.BackgroundTransparency = 1.000
     Button_Roundify_3px.Position = UDim2.new(0.5, 0, 0.5, 0)
     Button_Roundify_3px.Selectable = true
-    Button_Roundify_3px.Size = UDim2.new(1, 0, 7, 0)
+    Button_Roundify_3px.Size = UDim2.new(7, 0, 1, 0)
     Button_Roundify_3px.Image = "rbxassetid://3570695787"
     Button_Roundify_3px.ImageColor3 = theme2
     Button_Roundify_3px.ScaleType = Enum.ScaleType.Slice
