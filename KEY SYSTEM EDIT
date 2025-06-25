@@ -1,0 +1,175 @@
+-- 📦 Services
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local StarterGui = game:GetService("StarterGui")
+local RunService = game:GetService("RunService")
+
+local player = Players.LocalPlayer
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "KeyGui"
+gui.ResetOnSpawn = false
+
+-- 🔐 Key đúng
+local validKey = "IAKMAJCJYUWIIPQOKIBAZHUBYQANTGNHAKUYOONJJJKYOTOJSNKIJAHHBWJSUHSHSJEJWJBVVAFCZXXZZkoolpiuwkaaLPIWBBUSHJW751JEJBBBEJJ0029838NNSJS"
+local scriptUrl = "https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Logo%20YQANTG"
+local keyFile = "yqantg_key.txt"
+
+-- 📦 Nếu key đã lưu và chưa hết 24h, load ngay
+local function loadSavedKey()
+	if isfile and readfile and isfile(keyFile) then
+		local data = readfile(keyFile)
+		local key, timestamp = data:match("^(.-)\n(.-)$")
+		if key == validKey and tonumber(timestamp) and (tick() - tonumber(timestamp) < 86400) then
+			loadstring(game:HttpGet(scriptUrl))()
+			return true
+		end
+	end
+	return false
+end
+
+if loadSavedKey() then return end -- Dừng nếu đã có key hợp lệ
+
+-- 📦 GUI Frame
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 300, 0, 225)
+frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+frame.AnchorPoint = Vector2.new(0.5, 0.5)
+frame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+frame.BorderSizePixel = 0
+frame.Parent = gui
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 12)
+
+-- 🏷️ Title
+local title = Instance.new("TextLabel", frame)
+title.Text = "Key Sytems"
+title.Size = UDim2.new(1, 0, 0, 30)
+title.BackgroundTransparency = 1
+title.Font = Enum.Font.GothamBold
+title.TextSize = 20
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- 🧾 TextBox
+local textbox = Instance.new("TextBox", frame)
+textbox.PlaceholderText = "Enter Key Here..."
+textbox.Size = UDim2.new(1, -20, 0, 30)
+textbox.Position = UDim2.new(0, 10, 0, 45)
+textbox.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+textbox.TextColor3 = Color3.fromRGB(255, 255, 255)
+textbox.Font = Enum.Font.Gotham
+textbox.TextSize = 16
+textbox.ClearTextOnFocus = false
+textbox.TextWrapped = true
+textbox.ClipsDescendants = true
+textbox.TextXAlignment = Enum.TextXAlignment.Left
+textbox.TextYAlignment = Enum.TextYAlignment.Center
+Instance.new("UICorner", textbox).CornerRadius = UDim.new(0, 10)
+
+-- 🔘 Get Key
+local getKey = Instance.new("TextButton", frame)
+getKey.Size = UDim2.new(0.45, -5, 0, 30)
+getKey.Position = UDim2.new(0, 10, 0, 90)
+getKey.Text = "Get Key"
+getKey.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+getKey.TextColor3 = Color3.fromRGB(255, 255, 255)
+getKey.Font = Enum.Font.GothamBold
+getKey.TextSize = 16
+Instance.new("UICorner", getKey).CornerRadius = UDim.new(0, 10)
+
+-- 🔘 Submit
+local submit = Instance.new("TextButton", frame)
+submit.Size = UDim2.new(0.45, -5, 0, 30)
+submit.Position = UDim2.new(0.55, 0, 0, 90)
+submit.Text = "Submit"
+submit.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+submit.TextColor3 = Color3.fromRGB(255, 255, 255)
+submit.Font = Enum.Font.GothamBold
+submit.TextSize = 16
+Instance.new("UICorner", submit).CornerRadius = UDim.new(0, 10)
+
+-- 🔁 Toggle Save 24h
+local toggle = Instance.new("TextButton", frame)
+toggle.Size = UDim2.new(1, -20, 0, 30)
+toggle.Position = UDim2.new(0, 10, 0, 135)
+toggle.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggle.Font = Enum.Font.GothamBold
+toggle.TextSize = 16
+toggle.Text = "🔴: Save Key 24h"
+Instance.new("UICorner", toggle).CornerRadius = UDim.new(0, 10)
+
+local saveEnabled = false
+toggle.MouseButton1Click:Connect(function()
+	saveEnabled = not saveEnabled
+	toggle.Text = saveEnabled and "🟢: Save Key 24h" or "🔴: Save Key 24h"
+end)
+
+-- 📋 Copy link
+getKey.MouseButton1Click:Connect(function()
+	pcall(function()
+		setclipboard("https://pastebin.pl/view/2f33111f")
+	end)
+	StarterGui:SetCore("SendNotification", {
+		Title = "Copied",
+		Text = "Link copied to clipboard!",
+		Duration = 2
+	})
+end)
+
+-- 💥 Rung frame
+local function shakeFrame()
+	local duration = 0.1
+	local start = tick()
+	while tick() - start < duration do
+		local offset = Vector2.new(math.random(-5, 5), math.random(-5, 5))
+		frame.Position = UDim2.new(0.5, offset.X, 0.5, offset.Y)
+		RunService.RenderStepped:Wait()
+	end
+	frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+end
+
+-- 💥 Vỡ frame
+local function breakIntoPieces()
+	local pos = frame.AbsolutePosition
+	local size = frame.AbsoluteSize
+	local pieceSize = 21
+	for x = 0, size.X - 1, pieceSize do
+		for y = 0, size.Y - 1, pieceSize do
+			local part = Instance.new("Frame")
+			part.Size = UDim2.new(0, pieceSize, 0, pieceSize)
+			part.Position = UDim2.new(0, pos.X + x, 0, pos.Y + y)
+			part.BackgroundColor3 = frame.BackgroundColor3
+			part.BorderSizePixel = 0
+			part.ZIndex = 10
+			part.AnchorPoint = Vector2.new(0, 0)
+			part.Parent = gui
+			Instance.new("UICorner", part).CornerRadius = UDim.new(0, 6)
+
+			local dir = Vector2.new(math.random(-100, 100), math.random(-100, 100))
+			local tween = TweenService:Create(part, TweenInfo.new(1.5, Enum.EasingStyle.Quad), {
+				Position = part.Position + UDim2.new(0, dir.X, 0, dir.Y),
+				BackgroundTransparency = 1
+			})
+			tween:Play()
+			game:GetService("Debris"):AddItem(part, 2)
+		end
+	end
+end
+
+-- 🧠 Submit
+submit.MouseButton1Click:Connect(function()
+	if textbox.Text == validKey then
+		frame.Visible = false
+		shakeFrame()
+		frame:Destroy()
+		breakIntoPieces()
+
+		-- Nếu bật save thì lưu vào file
+		if saveEnabled and writefile then
+			local content = validKey .. "\n" .. tostring(tick())
+			writefile(keyFile, content)
+		end
+
+		task.wait(1.8)
+		loadstring(game:HttpGet(scriptUrl))()
+	end
+end)
