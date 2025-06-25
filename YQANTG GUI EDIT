@@ -1997,7 +1997,7 @@ tab6:CreateToggle("Slide + M1", function(state)
                     ["Mobile"] = true
                 })
 
-                task.delay(2.5, function()
+                task.delay(1.5, function()
                     cooldown = false
                 end)
             end
@@ -2180,6 +2180,133 @@ tab6:CreateToggle("True DownSlam", function(state)
 			end
 		end
 	end)
+end)
+
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local LocalPlayer = Players.LocalPlayer
+local Workspace = game:GetService("Workspace")
+
+local toolEspMap = {
+	["Flowing Water"] = {"Garou", Color3.fromRGB(0, 170, 255)},
+	["Crushed Rock"] = {"Garou", Color3.fromRGB(0, 170, 255)},
+	["Normal Punch"] = {"Saitama", Color3.fromRGB(139, 69, 19)},
+	["Serious Punch"] = {"Saitama", Color3.fromRGB(139, 69, 19)},
+	["Binding Cloth"] = {"Monster Form", Color3.fromRGB(255, 0, 0)},
+	["Beatdown"] = {"Brutal Demon", Color3.fromRGB(255, 255, 255)},
+	["Death Blow"] = {"Brutal Demon", Color3.fromRGB(255, 255, 255)},
+	["Blitz Shot"] = {"Cyborg", Color3.fromRGB(255, 140, 0)},
+	["Flamewave Cannon"] = {"Cyborg", Color3.fromRGB(255, 140, 0)},
+	["Explosive Shuriken"] = {"Sonic", Color3.fromRGB(255, 105, 180)},
+	["Carnage"] = {"Sonic", Color3.fromRGB(255, 105, 180)},
+	["Atmos Cleave"] = {"Blade Master", Color3.fromRGB(255, 255, 0)},
+	["Atomic Slash"] = {"Blade Master", Color3.fromRGB(255, 255, 0)},
+	["Crushing Pull"] = {"Tatsumaki", Color3.fromRGB(0, 255, 0)},
+	["Psychic Ricochet"] = {"Tatsumaki", Color3.fromRGB(0, 255, 0)},
+	["Bullet Barrage"] = {"Martial Artist", Color3.fromRGB(128, 0, 128)},
+	["Earth Splitting Strike"] = {"Martial Artist", Color3.fromRGB(128, 0, 128)},
+}
+
+local espFolder = Instance.new("Folder", Workspace)
+espFolder.Name = "DynamicESP"
+
+local espEnabled = false
+
+local function getEspData(player)
+	local backpack = player:FindFirstChildOfClass("Backpack")
+	if not backpack then return "Tech Prodigy", Color3.fromRGB(200, 200, 200) end
+
+	for toolName, data in pairs(toolEspMap) do
+		if backpack:FindFirstChild(toolName) then
+			return data[1], data[2]
+		end
+	end
+	return "Tech Prodigy", Color3.fromRGB(200, 200, 200)
+end
+
+local function createESP(player, labelText, color)
+	local char = player.Character
+	if not char or not char:FindFirstChild("Head") then return end
+	if espFolder:FindFirstChild(player.Name) then return end
+
+	local billboard = Instance.new("BillboardGui")
+	billboard.Name = player.Name
+	billboard.Adornee = char.Head
+	billboard.Size = UDim2.new(0, 100, 0, 20)
+	billboard.StudsOffset = Vector3.new(3.5, 0.5, 0)
+	billboard.AlwaysOnTop = true
+	billboard.Parent = espFolder
+
+	local label = Instance.new("TextLabel", billboard)
+	label.Size = UDim2.new(1, 0, 1, 0)
+	label.BackgroundTransparency = 1
+	label.Text = labelText
+	label.TextColor3 = color
+	label.Font = Enum.Font.GothamBold
+	label.TextScaled = false
+	label.TextSize = 12
+	label.TextStrokeTransparency = 0.6
+	label.TextTransparency = 1
+
+	TweenService:Create(label, TweenInfo.new(0.3), {
+		TextTransparency = 0,
+		TextStrokeTransparency = 0.3
+	}):Play()
+end
+
+local function clearAllESP()
+	for _, v in ipairs(espFolder:GetChildren()) do
+		v:Destroy()
+	end
+end
+
+local function updateESPForPlayer(player)
+	if player == LocalPlayer then return end
+	if not player.Character or not player.Character:FindFirstChild("Head") then return end
+	local labelText, color = getEspData(player)
+	createESP(player, labelText, color)
+end
+
+local function refreshAll()
+	clearAllESP()
+	for _, p in ipairs(Players:GetPlayers()) do
+		updateESPForPlayer(p)
+	end
+end
+
+tab3:CreateToggle("Esp Character", function(state)
+	espEnabled = state
+
+	if espEnabled then
+		refreshAll()
+
+		for _, player in pairs(Players:GetPlayers()) do
+			player.CharacterAdded:Connect(function()
+				if espEnabled then
+					task.wait(1)
+					updateESPForPlayer(player)
+				end
+			end)
+		end
+
+		Players.PlayerAdded:Connect(function(player)
+			player.CharacterAdded:Connect(function()
+				if espEnabled then
+					task.wait(1)
+					updateESPForPlayer(player)
+				end
+			end)
+		end)
+
+		task.spawn(function()
+			while espEnabled do
+				refreshAll()
+				task.wait(2)
+			end
+		end)
+	else
+		clearAllESP()
+	end
 end)
 
 tab:Show()
