@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/ShaddowScripts/Main/main/Library"))()
 
-local Main = library:CreateWindow("Main","Crimson")
+local Main = library:CreateWindow("YQANTG Hub","Crimson")
 
 local tab = Main:CreateTab("Misc")
 local tab2 = Main:CreateTab("Local")
@@ -15,7 +15,19 @@ tab:CreateButton("M1 Reach",function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/M1%20Reach%20Rework"))()
 end)
 
-tab:CreateButton("Auto block + Aimbot",function()
+tab:CreateButton("Aimbot",function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Aimlock%20By%20YQANTG"))()
+end)
+
+tab:CreateButton("FaceLock",function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/Tsb/FACELOCK"))()
+end)
+
+tab:CreateButton("Block Aimlock",function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Block%20Aimlock"))()
+end)
+
+tab:CreateButton("Auto block",function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Cyborg883/TSB/refs/heads/main/CombatGui"))()
 end)
 
@@ -1819,6 +1831,44 @@ tab7:CreateButton("Exit Server", function()
 	noBtn.MouseButton1Click:Connect(function()
 		gui:Destroy()
 	end)
+end)
+
+
+tab7:CreateButton("Check Ping",function()
+   -- Tạo GUI hiển thị ping
+local player = game:GetService("Players").LocalPlayer
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "PingDisplay"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+local pingLabel = Instance.new("TextLabel")
+pingLabel.Size = UDim2.new(0, 150, 0, 40)
+pingLabel.Position = UDim2.new(1, -160, 0, 10) -- góc trên bên phải
+pingLabel.BackgroundTransparency = 0.4
+pingLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+pingLabel.TextColor3 = Color3.new(1, 1, 1)
+pingLabel.Font = Enum.Font.GothamBold
+pingLabel.TextSize = 20
+pingLabel.Text = "PING: -- ms"
+pingLabel.Parent = screenGui
+
+-- Cập nhật ping liên tục
+while true do
+    local ping = math.floor(player:GetNetworkPing() * 1000)
+    pingLabel.Text = "PING: " .. ping .. " ms"
+
+    -- Đổi màu theo mức ping
+    if ping <= 80 then
+        pingLabel.TextColor3 = Color3.fromRGB(0, 255, 0) -- xanh
+    elseif ping <= 150 then
+        pingLabel.TextColor3 = Color3.fromRGB(255, 170, 0) -- cam
+    else
+        pingLabel.TextColor3 = Color3.fromRGB(255, 0, 0) -- đỏ
+    end
+
+    wait(1)
+end
 end)
 
 tab7:CreateToggle("Anti Kick", function(state)
