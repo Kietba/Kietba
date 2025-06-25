@@ -1,4 +1,4 @@
-local library = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/ShaddowScripts/Main/main/Library"))()
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/weakhoes/Roblox-UI-Libs/refs/heads/main/Shadow%20Lib/Shadow%20Lib%20Source.lua"))()
 
 local Main = library:CreateWindow("YQANTG Hub","Reverse")
 
@@ -2093,6 +2093,91 @@ tab6:CreateToggle("Auto Surf", function(state)
 		task.wait(1)
 		if active then
 			getCharacter()
+		end
+	end)
+end)
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+
+local LocalPlayer = Players.LocalPlayer
+local Camera = Workspace.CurrentCamera
+
+local LIFT_IDS = {
+	["rbxassetid://13532600125"] = true,
+	["rbxassetid://10469630950"] = true,
+	["rbxassetid://13296577783"] = true,
+	["rbxassetid://13370310513"] = true,
+	["rbxassetid://15240216931"] = true,
+	["rbxassetid://16515520431"] = true,
+	["rbxassetid://17889461810"] = true,
+}
+
+local JUMP_IDS = {
+	["rbxassetid://13532604085"] = true,
+	["rbxassetid://10469639222"] = true,
+	["rbxassetid://13295919399"] = true,
+	["rbxassetid://13378751717"] = true,
+	["rbxassetid://15240176873"] = true,
+	["rbxassetid://16515448089"] = true,
+	["rbxassetid://17889471098"] = true,
+}
+
+local isEnabled = false
+local lastUsed = {}
+
+local function waitForCharacter()
+	local char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+	local humanoid = char:WaitForChild("Humanoid")
+	local hrp = char:WaitForChild("HumanoidRootPart")
+	char.PrimaryPart = hrp
+	return char, humanoid
+end
+
+local Character, Humanoid = waitForCharacter()
+
+local function liftCharacter()
+	if not Character or not Character.PrimaryPart then return end
+	local originalSubject = Camera.CameraSubject
+	Camera.CameraSubject = nil
+
+	local startCFrame = Character:GetPivot()
+	local targetCFrame = startCFrame + Vector3.new(0, 7, 0)
+	local steps, duration = 10, 0.1
+	for i = 1, steps do
+		local alpha = i / steps
+		Character:PivotTo(startCFrame:Lerp(targetCFrame, alpha))
+		task.wait(duration / steps)
+	end
+
+	Camera.CameraSubject = originalSubject
+end
+
+tab6:CreateToggle("True DownSlam", function(state)
+	isEnabled = state
+
+	RunService.RenderStepped:Connect(function()
+		if not isEnabled then return end
+
+		if LocalPlayer.Character ~= Character then
+			Character, Humanoid = waitForCharacter()
+		end
+
+		for _, track in pairs(Humanoid:GetPlayingAnimationTracks()) do
+			local animId = tostring(track.Animation.AnimationId)
+			local now = tick()
+
+			if LIFT_IDS[animId] and (not lastUsed[animId] or now - lastUsed[animId] > 0.5) then
+				lastUsed[animId] = now
+				task.delay(0.15, liftCharacter)
+
+			elseif JUMP_IDS[animId] and (not lastUsed[animId] or now - lastUsed[animId] > 0.5) then
+				lastUsed[animId] = now
+				task.delay(0.15, function()
+					Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+				end)
+			end
 		end
 	end)
 end)
