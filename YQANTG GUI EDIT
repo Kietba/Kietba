@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/ShaddowScripts/Main/main/Library"))()
 
-local Main = library:CreateWindow("YQANTG Hub","Crimson")
+local Main = library:CreateWindow("YQANTG Hub","Reverse")
 
 local tab = Main:CreateTab("Misc")
 local tab2 = Main:CreateTab("Local")
