@@ -160,7 +160,7 @@ do
 		parent = parent or frame
 		
 		-- stolen from wally or kiriot, kek
-		local dragging = false
+		local dragging = true
 		local dragInput, mousePos, framePos
 
 		frame.InputBegan:Connect(function(input)
@@ -219,7 +219,7 @@ do
 			utility:Create("ImageLabel", {
 				Name = "Main",
 				BackgroundTransparency = 1,
-				Position = UDim2.new(0.25, 0, 0.052435593, 0),
+				Position = UDim2.new(0.5, -255, 0.5, -214),
 				Size = UDim2.new(0, 511, 0, 428),
 				Image = "rbxassetid://4641149554",
 				ImageColor3 = themes.Background,
@@ -255,7 +255,7 @@ do
 						BackgroundTransparency = 1,
 						Position = UDim2.new(0, 0, 0, 10),
 						Size = UDim2.new(1, 0, 1, -20),
-						CanvasSize = UDim2.new(0, 0, 0, 314),
+						CanvasSize = UDim2.new(0, 0, 0, 999),
 						ScrollBarThickness = 0
 					}, {
 						utility:Create("UIListLayout", {
@@ -351,7 +351,7 @@ do
 			BorderSizePixel = 0,
 			Position = UDim2.new(0, 134, 0, 46),
 			Size = UDim2.new(1, -142, 1, -56),
-			CanvasSize = UDim2.new(0, 0, 0, 466),
+			CanvasSize = UDim2.new(0, 0, 0, 999),
 			ScrollBarThickness = 3,
 			ScrollBarImageColor3 = themes.DarkContrast,
 			Visible = false
