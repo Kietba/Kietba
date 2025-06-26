@@ -2233,4 +2233,8 @@ tab8:CreateButton("YQANTG Block",function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/YQANTG%20AUTO%20BLOCK%20(1).txt"))()
 end)
 
+tab2:CreateButton("Goku Miui",function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/IdkRandomUsernameok/PublicAssets/refs/heads/main/Releases/MUI.lua"))()
+end)
+
 tab:Show()
