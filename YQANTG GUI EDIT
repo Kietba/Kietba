@@ -2237,4 +2237,51 @@ tab2:CreateButton("Goku Miui",function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/IdkRandomUsernameok/PublicAssets/refs/heads/main/Releases/MUI.lua"))()
 end)
 
+tab6:CreateToggle("Whirlwind Dunk", function(isEnabled)
+    local Players = game:GetService("Players")
+    local RunService = game:GetService("RunService")
+    local lp = Players.LocalPlayer
+
+    -- Ngắt kết nối cũ nếu có
+    if _G.TeleportAnimConnection then
+        _G.TeleportAnimConnection:Disconnect()
+        _G.TeleportAnimConnection = nil
+    end
+
+    if isEnabled then
+        local isTeleporting = false
+        local lastTrack = nil
+
+        _G.TeleportAnimConnection = RunService.RenderStepped:Connect(function()
+            local character = lp.Character
+            if not character or isTeleporting then return end
+
+            local humanoid = character:FindFirstChildWhichIsA("Humanoid")
+            local root = character:FindFirstChild("HumanoidRootPart")
+            if not humanoid or not root then return end
+
+            for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do
+                if track.Animation and track.Animation.AnimationId == "rbxassetid://12296113986" then
+                    if lastTrack == track then return end
+                    lastTrack = track
+
+                    isTeleporting = true
+                    task.delay(1.3, function()
+                        if root and root.Parent then
+                            root.CFrame = root.CFrame + Vector3.new(0, 5, 0)
+                        end
+                        isTeleporting = false
+                    end)
+                    break
+                end
+            end
+
+            -- Reset lại nếu track đã dừng
+            if lastTrack and not lastTrack.IsPlaying then
+                lastTrack = nil
+            end
+        end)
+    end
+end)
+
 tab:Show()
