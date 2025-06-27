@@ -5,7 +5,8 @@ local LocalPlayer = Players.LocalPlayer
 local correctKey = "7f81gtuoinsgvwhannxzjopw"
 local getKeyLink = "https://link-hub.net/1345289/2hMr86cMmBJL"
 
-if LocalPlayer:GetAttribute("KeySaved") and os.time() - (LocalPlayer:GetAttribute("KeyTime") or 0) < 86400 then
+-- ✅ Nếu key đã được lưu vĩnh viễn theo UserId
+if LocalPlayer:GetAttribute("KeySaved") == true and LocalPlayer:GetAttribute("KeyOwner") == tostring(LocalPlayer.UserId) then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Logo%20YQANTG"))()
     return
 end
@@ -124,39 +125,16 @@ end)
 submit.MouseButton1Click:Connect(function()
 	if box.Text == correctKey then
 		result.Text = "✔️ Key Valid"
-		LocalPlayer:SetAttribute("KeySaved", true)
-		LocalPlayer:SetAttribute("KeyTime", os.time())
 
-		-- 🔥 CHẠY SCRIPT SAU KHI NHẬP ĐÚNG
+		-- 🔐 Lưu mãi mãi theo UserId
+		LocalPlayer:SetAttribute("KeySaved", true)
+		LocalPlayer:SetAttribute("KeyOwner", tostring(LocalPlayer.UserId))
+
+		-- 🔥 Chạy script chính
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Logo%20YQANTG"))()
 
-		local countdown = Instance.new("TextLabel", frame)
-		countdown.Size = UDim2.new(1, 0, 0.15, 0)
-		countdown.Position = UDim2.new(0, 0, 0.9, 0)
-		countdown.BackgroundTransparency = 1
-		countdown.TextColor3 = Color3.fromRGB(255, 200, 100)
-		countdown.TextScaled = true
-		countdown.Font = Enum.Font.GothamSemibold
-
-		task.spawn(function()
-			while true do
-				local left = 86400 - (os.time() - (LocalPlayer:GetAttribute("KeyTime") or 0))
-				if left <= 0 then
-					countdown.Text = "⏳ Key expired!"
-					task.wait(2)
-					gui:Destroy()
-					break
-				end
-				local h = math.floor(left / 3600)
-				local m = math.floor((left % 3600) / 60)
-				local s = left % 60
-				countdown.Text = string.format("⏳ Key expires in: %02dh %02dm %02ds", h, m, s)
-				task.wait(1)
-			end
-		end)
-
 		task.wait(2)
-		bg:Destroy()
+		gui:Destroy()
 	else
 		result.Text = "❌ Invalid Key"
 		task.delay(1.5, function()
