@@ -1,14 +1,16 @@
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local LocalPlayer = Players.LocalPlayer
+local UserId = tostring(LocalPlayer.UserId)
 
 local correctKey = "7f81gtuoinsgvwhannxzjopw"
 local getKeyLink = "https://link-hub.net/1345289/2hMr86cMmBJL"
 
--- ✅ Nếu key đã được lưu vĩnh viễn theo UserId
-if LocalPlayer:GetAttribute("KeySaved") == true and LocalPlayer:GetAttribute("KeyOwner") == tostring(LocalPlayer.UserId) then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Logo%20YQANTG"))()
-    return
+-- ✅ Lưu key vào bộ nhớ toàn cục trong phiên chơi
+_G.SavedKeys = _G.SavedKeys or {}
+if _G.SavedKeys[UserId] then
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Logo%20YQANTG"))()
+	return
 end
 
 local gui = Instance.new("ScreenGui", LocalPlayer:WaitForChild("PlayerGui"))
@@ -84,7 +86,7 @@ copy.Font = Enum.Font.GothamSemibold
 Instance.new("UICorner", copy)
 
 local submit = Instance.new("TextButton", frame)
-submit.Text = "✅ Submit"
+submit.Text = "Submit"
 submit.Size = UDim2.new(0.45, 0, 0.15, 0)
 submit.Position = UDim2.new(0.5, 0, 0.55, 0)
 submit.BackgroundColor3 = Color3.fromRGB(0, 200, 140)
@@ -96,7 +98,7 @@ Instance.new("UICorner", submit)
 local result = Instance.new("TextLabel", frame)
 result.Size = UDim2.new(1, 0, 0.2, 0)
 result.Position = UDim2.new(0, 0, 0.75, 0)
-result.Text = ""
+result.Text = "HI"
 result.TextColor3 = Color3.fromRGB(0, 255, 100)
 result.TextScaled = true
 result.BackgroundTransparency = 1
@@ -116,9 +118,9 @@ end)
 
 copy.MouseButton1Click:Connect(function()
 	setclipboard(getKeyLink)
-	copy.Text = "✅ Copied!"
+	copy.Text = "Copied!"
 	task.delay(1.5, function()
-		copy.Text = "🌐 Copy Link"
+		copy.Text = "Copy Link"
 	end)
 end)
 
@@ -126,17 +128,16 @@ submit.MouseButton1Click:Connect(function()
 	if box.Text == correctKey then
 		result.Text = "✔️ Key Valid"
 
-		-- 🔐 Lưu mãi mãi theo UserId
-		LocalPlayer:SetAttribute("KeySaved", true)
-		LocalPlayer:SetAttribute("KeyOwner", tostring(LocalPlayer.UserId))
+		-- ✅ Lưu vào bộ nhớ toàn cục theo UserId
+		_G.SavedKeys[UserId] = true
 
-		-- 🔥 Chạy script chính
+		-- 🔥 Chạy script sau khi nhập key đúng
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Logo%20YQANTG"))()
 
 		task.wait(2)
 		gui:Destroy()
 	else
-		result.Text = "❌ Invalid Key"
+		result.Text = "Invalid Key"
 		task.delay(1.5, function()
 			result.Text = ""
 		end)
