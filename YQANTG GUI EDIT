@@ -2117,7 +2117,7 @@ RunService.Heartbeat:Connect(function()
 
 					if char and char:FindFirstChild("HumanoidRootPart") and oldPos then
 						SafeTeleport(oldPos)
-						task.delay(0.7, function()
+						task.delay(2, function()
 							if oldSubject then
 								Camera.CameraType = Enum.CameraType.Custom
 								Camera.CameraSubject = oldSubject
