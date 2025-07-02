@@ -131,3 +131,5 @@ speedButton.MouseButton1Click:Connect(function()
 		end
 	end
 end)
+
+return gui
