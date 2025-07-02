@@ -1,52 +1,22 @@
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local LocalPlayer = Players.LocalPlayer
-local Camera = workspace.CurrentCamera
 
+-- 📦 GUI setup
 local gui = Instance.new("ScreenGui")
-gui.Name = "FOV_Speed_GUI"
+gui.Name = "SpeedGUI"
 gui.ResetOnSpawn = false
 gui.Parent = LocalPlayer:WaitForChild("PlayerGui")
-
--- 🌄 FOV Frame
-local fovFrame = Instance.new("Frame")
-fovFrame.Size = UDim2.new(0, 200, 0, 100)
-fovFrame.Position = UDim2.new(0, 20, 0.6, 0)
-fovFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-fovFrame.Parent = gui
-Instance.new("UICorner", fovFrame).CornerRadius = UDim.new(0, 12)
-
-local fovInput = Instance.new("TextBox")
-fovInput.PlaceholderText = "Nhập FOV (vd: 70)"
-fovInput.Size = UDim2.new(0, 180, 0, 35)
-fovInput.Position = UDim2.new(0, 10, 0, 10)
-fovInput.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-fovInput.TextColor3 = Color3.new(1, 1, 1)
-fovInput.Font = Enum.Font.Gotham
-fovInput.TextSize = 16
-fovInput.Parent = fovFrame
-Instance.new("UICorner", fovInput).CornerRadius = UDim.new(0, 8)
-
-local fovButton = Instance.new("TextButton")
-fovButton.Size = UDim2.new(0, 180, 0, 35)
-fovButton.Position = UDim2.new(0, 10, 0, 55)
-fovButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-fovButton.TextColor3 = Color3.new(1, 1, 1)
-fovButton.Text = "FOV: OFF"
-fovButton.Font = Enum.Font.GothamBold
-fovButton.TextSize = 16
-fovButton.AutoButtonColor = false
-fovButton.Parent = fovFrame
-Instance.new("UICorner", fovButton).CornerRadius = UDim.new(0, 8)
 
 -- 🏃‍♂️ Speed Frame
 local speedFrame = Instance.new("Frame")
 speedFrame.Size = UDim2.new(0, 200, 0, 100)
-speedFrame.Position = UDim2.new(0, 240, 0.6, 0)
+speedFrame.Position = UDim2.new(0, 20, 0.6, 0)
 speedFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 speedFrame.Parent = gui
 Instance.new("UICorner", speedFrame).CornerRadius = UDim.new(0, 12)
 
+-- ✏️ TextBox nhập tốc độ
 local speedInput = Instance.new("TextBox")
 speedInput.PlaceholderText = "Tốc độ (vd: 2)"
 speedInput.Size = UDim2.new(0, 180, 0, 35)
@@ -58,6 +28,7 @@ speedInput.TextSize = 16
 speedInput.Parent = speedFrame
 Instance.new("UICorner", speedInput).CornerRadius = UDim.new(0, 8)
 
+-- 🔘 Toggle Button
 local speedButton = Instance.new("TextButton")
 speedButton.Size = UDim2.new(0, 180, 0, 35)
 speedButton.Position = UDim2.new(0, 10, 0, 55)
@@ -70,30 +41,7 @@ speedButton.AutoButtonColor = false
 speedButton.Parent = speedFrame
 Instance.new("UICorner", speedButton).CornerRadius = UDim.new(0, 8)
 
--- ✅ FOV Logic
-local originalFOV = Camera.FieldOfView
-local fovEnabled = false
-
-fovButton.MouseButton1Click:Connect(function()
-	fovEnabled = not fovEnabled
-	if fovEnabled then
-		local val = tonumber(fovInput.Text)
-		if val and val >= 1 and val <= 120 then
-			Camera.FieldOfView = val
-			fovButton.Text = "FOV: ON"
-			fovButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
-		else
-			warn("Nhập FOV hợp lệ (1 - 120)")
-			fovEnabled = false
-		end
-	else
-		Camera.FieldOfView = originalFOV
-		fovButton.Text = "FOV: OFF"
-		fovButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-	end
-end)
-
--- 🏃‍♂️ Speed Logic
+-- ⚙️ Speed Logic
 local speedEnabled = false
 local moveConnection = nil
 
@@ -102,7 +50,7 @@ speedButton.MouseButton1Click:Connect(function()
 	if speedEnabled then
 		local speedMult = tonumber(speedInput.Text)
 		if not speedMult or speedMult <= 0 then
-			warn("Số tốc độ không hợp lệ")
+			warn("Nhập tốc độ hợp lệ > 0")
 			speedEnabled = false
 			return
 		end
@@ -117,11 +65,9 @@ speedButton.MouseButton1Click:Connect(function()
 			local hum = char and char:FindFirstChildOfClass("Humanoid")
 			if not (char and hrp and hum and hum.MoveDirection.Magnitude > 0) then return end
 
-			-- CFrame di chuyển dựa theo hướng input
 			local direction = hum.MoveDirection.Unit
 			hrp.CFrame = hrp.CFrame + (direction * speedMult)
 		end)
-
 	else
 		speedButton.Text = "Speed: OFF"
 		speedButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
