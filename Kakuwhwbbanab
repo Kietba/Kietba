@@ -1,0 +1,71 @@
+-- ⚙️ Services
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Camera = workspace.CurrentCamera
+
+-- 📦 GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "FOVController"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+
+-- 🪟 Frame
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 200, 0, 100)
+frame.Position = UDim2.new(0, 20, 0.6, 0)
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+frame.Parent = screenGui
+
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 12)
+
+-- ✏️ TextBox
+local textbox = Instance.new("TextBox")
+textbox.PlaceholderText = "Nhập FOV (vd: 70)"
+textbox.Size = UDim2.new(0, 180, 0, 35)
+textbox.Position = UDim2.new(0, 10, 0, 10)
+textbox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+textbox.TextColor3 = Color3.new(1, 1, 1)
+textbox.Text = ""
+textbox.Font = Enum.Font.Gotham
+textbox.TextSize = 16
+textbox.Parent = frame
+Instance.new("UICorner", textbox).CornerRadius = UDim.new(0, 8)
+
+-- 🔘 Toggle Button
+local toggle = Instance.new("TextButton")
+toggle.Size = UDim2.new(0, 180, 0, 35)
+toggle.Position = UDim2.new(0, 10, 0, 55)
+toggle.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+toggle.TextColor3 = Color3.new(1, 1, 1)
+toggle.Text = "FOV: OFF"
+toggle.Font = Enum.Font.GothamBold
+toggle.TextSize = 16
+toggle.AutoButtonColor = false
+toggle.Parent = frame
+Instance.new("UICorner", toggle).CornerRadius = UDim.new(0, 8)
+
+-- 🔄 FOV Toggle Logic
+local enabled = false
+local originalFOV = Camera.FieldOfView
+
+toggle.MouseButton1Click:Connect(function()
+	enabled = not enabled
+
+	if enabled then
+		local fovValue = tonumber(textbox.Text)
+		if fovValue and fovValue >= 1 and fovValue <= 120 then
+			Camera.FieldOfView = fovValue
+			toggle.Text = "FOV: ON"
+			toggle.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+		else
+			warn("FOV không hợp lệ. Nhập số từ 1 đến 120.")
+			enabled = false
+		end
+	else
+		Camera.FieldOfView = originalFOV
+		toggle.Text = "FOV: OFF"
+		toggle.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+	end
+end)
+
+return gui
