@@ -7,7 +7,7 @@ local Camera = workspace.CurrentCamera
 local gui = Instance.new("ScreenGui")
 gui.Name = "FOV_Speed_GUI"
 gui.ResetOnSpawn = false
-gui.Enabled = false -- 👈 GUI mặc định bị ẩn
+gui.Enabled = true -- 👈 GUI mặc định bị ẩn
 gui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
 -- 🪟 Frame
