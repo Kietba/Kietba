@@ -4,11 +4,10 @@ local LocalPlayer = Players.LocalPlayer
 local Camera = workspace.CurrentCamera
 
 -- 📦 GUI
-local gui = Instance.new("ScreenGui")
-gui.Name = "FOV_Speed_GUI"
-gui.ResetOnSpawn = false
-gui.Enabled = true -- 👈 GUI mặc định bị ẩn
-gui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "FOVController"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
 -- 🪟 Frame
 local frame = Instance.new("Frame")
@@ -69,4 +68,4 @@ toggle.MouseButton1Click:Connect(function()
 	end
 end)
 
-return screenGui
+return gui
