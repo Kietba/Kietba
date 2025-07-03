@@ -1835,89 +1835,95 @@ tab6:CreateToggle("Auto Surf", function(state)
 	end)
 end)
 
+--📦 Services
 local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local Workspace = game:GetService("Workspace")
-
+local TweenService = game:GetService("TweenService")
 local LocalPlayer = Players.LocalPlayer
-local Camera = Workspace.CurrentCamera
+local workspace = game:GetService("Workspace")
 
-local LIFT_IDS = {
-	["rbxassetid://13532600125"] = true,
-	["rbxassetid://10469630950"] = true,
-	["rbxassetid://13296577783"] = true,
-	["rbxassetid://13370310513"] = true,
-	["rbxassetid://15240216931"] = true,
-	["rbxassetid://16515520431"] = true,
-	["rbxassetid://17889461810"] = true,
-}
+--🔧 Biến
+local char, humanoid, hrp
+local enabled = false
 
-local JUMP_IDS = {
-	["rbxassetid://13532604085"] = true,
+--📋 Danh sách animation cần phát hiện
+local validIDs = {
 	["rbxassetid://10469639222"] = true,
+	["rbxassetid://13532604085"] = true,
 	["rbxassetid://13295919399"] = true,
 	["rbxassetid://13378751717"] = true,
+	["rbxassetid://14001963401"] = true,
 	["rbxassetid://15240176873"] = true,
 	["rbxassetid://16515448089"] = true,
 	["rbxassetid://17889471098"] = true,
+	["rbxassetid://104895379416342"] = true,
 }
 
-local isEnabled = false
-local lastUsed = {}
-
-local function waitForCharacter()
-	local char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-	local humanoid = char:WaitForChild("Humanoid")
-	local hrp = char:WaitForChild("HumanoidRootPart")
-	char.PrimaryPart = hrp
-	return char, humanoid
-end
-
-local Character, Humanoid = waitForCharacter()
-
-local function liftCharacter()
-	if not Character or not Character.PrimaryPart then return end
-	local originalSubject = Camera.CameraSubject
-	Camera.CameraSubject = nil
-
-	local startCFrame = Character:GetPivot()
-	local targetCFrame = startCFrame + Vector3.new(0, 7, 0)
-	local steps, duration = 10, 0.1
-	for i = 1, steps do
-		local alpha = i / steps
-		Character:PivotTo(startCFrame:Lerp(targetCFrame, alpha))
-		task.wait(duration / steps)
-	end
-
-	Camera.CameraSubject = originalSubject
-end
-
-tab6:CreateToggle("True DownSlam", function(state)
-	isEnabled = state
-
-	RunService.RenderStepped:Connect(function()
-		if not isEnabled then return end
-
-		if LocalPlayer.Character ~= Character then
-			Character, Humanoid = waitForCharacter()
-		end
-
-		for _, track in pairs(Humanoid:GetPlayingAnimationTracks()) do
-			local animId = tostring(track.Animation.AnimationId)
-			local now = tick()
-
-			if LIFT_IDS[animId] and (not lastUsed[animId] or now - lastUsed[animId] > 0.5) then
-				lastUsed[animId] = now
-				task.delay(0.15, liftCharacter)
-
-			elseif JUMP_IDS[animId] and (not lastUsed[animId] or now - lastUsed[animId] > 0.5) then
-				lastUsed[animId] = now
-				task.delay(0.15, function()
-					Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-				end)
+--📏 Kiểm tra gần mục tiêu
+local function isNearTarget()
+	if not hrp then return false end
+	for _, model in ipairs(workspace.Live:GetChildren()) do
+		if model:IsA("Model") and model ~= char then
+			local root = model:FindFirstChild("HumanoidRootPart")
+			if root and (root.Position - hrp.Position).Magnitude <= 15 then
+				if Players:GetPlayerFromCharacter(model) or model.Name == "Weakest Dummy" then
+					return true
+				end
 			end
 		end
-	end)
+	end
+	return false
+end
+
+--🚀 Nâng lên và nhảy
+local function liftAndJump()
+	if not hrp or not humanoid then return end
+	if not isNearTarget() then return end
+
+	local tween = TweenService:Create(
+		hrp,
+		TweenInfo.new(0.35, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+		{ CFrame = hrp.CFrame + Vector3.new(0, 6, 0) }
+	)
+	tween:Play()
+
+	for _, state in ipairs({
+		Enum.HumanoidStateType.PlatformStanding,
+		Enum.HumanoidStateType.Freefall,
+		Enum.HumanoidStateType.GettingUp,
+	}) do
+		if humanoid:GetState() == state then
+			humanoid:ChangeState(Enum.HumanoidStateType.Physics)
+			task.wait()
+		end
+	end
+
+	humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+end
+
+--🔁 Gắn theo dõi animation
+local function bindAnimationDetect()
+	if humanoid then
+		humanoid.AnimationPlayed:Connect(function(track)
+			if enabled and track.Animation and validIDs[track.Animation.AnimationId] then
+				liftAndJump()
+			end
+		end)
+	end
+end
+
+--📦 Cập nhật nhân vật khi respawn
+local function setupCharacter()
+	char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+	humanoid = char:WaitForChild("Humanoid")
+	hrp = char:WaitForChild("HumanoidRootPart")
+	bindAnimationDetect()
+end
+LocalPlayer.CharacterAdded:Connect(setupCharacter)
+setupCharacter()
+
+--✅ Toggle dạng tab (gắn vào GUI chính của bạn)
+tab6:CreateToggle("Auto DownSlam", function(state)
+	enabled = state
 end)
 
 local Players = game:GetService("Players")
@@ -2047,12 +2053,6 @@ tab3:CreateToggle("Esp Character", function(state)
 	end
 end)
 
---⚙️ Trạng thái điều khiển
-local teleportEnabled = false
-local teleporting = false
-local oldPos = nil
-local oldSubject = nil
-
 tab2:CreateToggle("No Anim Ult", function(state)
     local Players = game:GetService("Players")
     local RunService = game:GetService("RunService")
@@ -2147,9 +2147,195 @@ tab8:CreateButton("YQANTG Block",function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/YQANTG%20AUTO%20BLOCK%20(1).txt"))()
 end)
 
-tab2:CreateButton("Goku Miui",function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/IdkRandomUsernameok/PublicAssets/refs/heads/main/Releases/MUI.lua"))()
+-- ⚙️ Tạo tab toggle điều khiển GUI
+tab2:CreateToggle("Speed", function(state)
+    if not _G.MyExternalGUI then
+        -- Lần đầu gọi: chạy loadstring để tạo GUI và lưu lại biến
+        local success, err = pcall(function()
+            _G.MyExternalGUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Bbbbbbbbbskkakak"))()
+        end)
+
+        if not success then
+            warn("Lỗi tải GUI: ", err)
+            return
+        end
+    end
+
+    -- Nếu GUI đã tạo, bật/tắt bằng `.Enabled`
+    if typeof(_G.MyExternalGUI) == "Instance" and _G.MyExternalGUI:IsA("ScreenGui") then
+        _G.MyExternalGUI.Enabled = state
+    end
 end)
+
+local animationIds = {
+	["rbxassetid://10503381238"] = true,
+	["rbxassetid://13379003796"] = true,
+}
+
+local TWEEN_HEIGHT_OFFSET = Vector3.new(0, 5, 0)
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+local Workspace = game:GetService("Workspace")
+
+local player = Players.LocalPlayer
+local toggleConnection
+local aimlockConnection
+local systemEnabled = false
+local lockedTarget = nil
+
+local function startAimlock(target)
+	if aimlockConnection then aimlockConnection:Disconnect() end
+
+	local cam = Workspace.CurrentCamera
+	local character = player.Character
+	local lockTime = 0.65
+	local chaosTime = 0.15
+	local startTime = tick()
+
+	aimlockConnection = RunService.RenderStepped:Connect(function()
+		if not (target and target.Parent and target:FindFirstChild("HumanoidRootPart")) then return end
+		if not (character and character:FindFirstChild("HumanoidRootPart")) then return end
+
+		local now = tick()
+		local targetPos = target.HumanoidRootPart.Position
+		local camPos = cam.CFrame.Position
+
+		if now - startTime < chaosTime then
+			local angleX = math.rad(math.random(-15, 25))
+			local angleY = math.rad(math.random(-15, 25))
+			local baseCFrame = CFrame.new(camPos, targetPos)
+			local newLook = baseCFrame * CFrame.Angles(angleY, angleX, 0)
+			cam.CFrame = newLook
+		else
+			cam.CFrame = CFrame.new(camPos, targetPos)
+		end
+
+		character.HumanoidRootPart.CFrame = CFrame.new(character.HumanoidRootPart.Position, cam.CFrame.Position + cam.CFrame.LookVector)
+	end)
+
+	task.delay(lockTime, function()
+		if aimlockConnection then
+			aimlockConnection:Disconnect()
+			aimlockConnection = nil
+			lockedTarget = nil
+		end
+	end)
+end
+
+local function setupCharacter(character)
+	if toggleConnection then toggleConnection:Disconnect() end
+	if aimlockConnection then aimlockConnection:Disconnect() end
+	lockedTarget = nil
+
+	if not systemEnabled then return end
+
+	local isTweening = false
+	local lastPlaying = false
+	local cooldown = false
+
+	toggleConnection = RunService.RenderStepped:Connect(function()
+		local hrp = character:FindFirstChild("HumanoidRootPart")
+		local humanoid = character:FindFirstChild("Humanoid")
+		if not character or not hrp or not humanoid then return end
+
+		local isPlaying = false
+		for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do
+			if track.Animation and animationIds[track.Animation.AnimationId] then
+				isPlaying = true
+				break
+			end
+		end
+
+		if isPlaying and not isTweening and not lastPlaying and not cooldown then
+			isTweening = true
+			lastPlaying = true
+			cooldown = true
+
+			task.delay(0.18, function()
+				local target = nil
+				local shortestDist = 15
+				local live = Workspace:FindFirstChild("Live")
+				if live then
+					for _, model in ipairs(live:GetChildren()) do
+						if model:IsA("Model") and model ~= character then
+							local root = model:FindFirstChild("HumanoidRootPart") or model:FindFirstChild("Head") or model:FindFirstChild("UpperTorso")
+							if root then
+								local dist = (hrp.Position - root.Position).Magnitude
+								if dist < shortestDist then
+									shortestDist = dist
+									target = model
+								end
+							end
+						end
+					end
+				end
+
+				if target and target:FindFirstChild("HumanoidRootPart") then
+					local targetPos = target.HumanoidRootPart.Position + TWEEN_HEIGHT_OFFSET
+					local targetCF = CFrame.new(targetPos)
+					local tween = TweenService:Create(hrp, TweenInfo.new(0.1, Enum.EasingStyle.Linear), {
+						CFrame = targetCF
+					})
+					tween:Play()
+					tween.Completed:Wait()
+
+					local bodyPosition = Instance.new("BodyPosition")
+					bodyPosition.MaxForce = Vector3.new(1e5, 1e5, 1e5)
+					bodyPosition.P = 10000
+					bodyPosition.D = 100
+					bodyPosition.Position = targetPos
+					bodyPosition.Parent = hrp
+
+					task.delay(0.76, function()
+						bodyPosition:Destroy()
+					end)
+
+					local remote = character:FindFirstChild("Communicate")
+					if remote then
+						remote:FireServer({
+							["Dash"] = Enum.KeyCode.W,
+							["Key"] = Enum.KeyCode.Q,
+							["Goal"] = "KeyPress"
+						})
+					end
+
+					lockedTarget = target
+					startAimlock(lockedTarget)
+				end
+
+				isTweening = false
+				task.delay(4, function()
+					cooldown = false
+				end)
+			end)
+		elseif not isPlaying then
+			lastPlaying = false
+		end
+	end)
+end
+
+-- ✅ Toggle dưới dạng tab (gắn trong GUI của bạn)
+tab6:CreateToggle("KIBA Tech", function(state)
+	systemEnabled = state
+	if state and player.Character then
+		setupCharacter(player.Character)
+	elseif toggleConnection then
+		toggleConnection:Disconnect()
+	end
+end)
+
+-- 👤 Gắn lại khi respawn
+player.CharacterAdded:Connect(function(char)
+	if systemEnabled then
+		setupCharacter(char)
+	end
+end)
+
+if player.Character then
+	setupCharacter(player.Character)
+end
 
 tab6:CreateToggle("Whirlwind Dunk", function(isEnabled)
     local Players = game:GetService("Players")
@@ -2180,9 +2366,9 @@ tab6:CreateToggle("Whirlwind Dunk", function(isEnabled)
                     lastTrack = track
 
                     isTeleporting = true
-                    task.delay(1.3, function()
+                    task.delay(1, function()
                         if root and root.Parent then
-                            root.CFrame = root.CFrame + Vector3.new(0, 5, 0)
+                            root.CFrame = root.CFrame + Vector3.new(0, 70, 0)
                         end
                         isTeleporting = false
                     end)
@@ -2196,6 +2382,10 @@ tab6:CreateToggle("Whirlwind Dunk", function(isEnabled)
             end
         end)
     end
+end)
+
+tab2:CreateButton("Fov",function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Kakuwhwbbanab"))()
 end)
 
 tab:Show()
