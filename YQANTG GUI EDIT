@@ -6,13 +6,19 @@ local SoundService = game:GetService("SoundService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
---// 🔊 Âm thanh gõ phím
+--// 🔊 Âm thanh gõ từng chữ
 local typeSound = Instance.new("Sound")
-typeSound.SoundId = "rbxassetid://4724430129" -- ID bạn cung cấp
+typeSound.SoundId = "rbxassetid://4724430129"
 typeSound.Volume = 0.5
 typeSound.Parent = SoundService
 
---// 🖼️ Tạo GUI
+--// 🔊 Âm thanh khi kết thúc từ
+local wordDoneSound = Instance.new("Sound")
+wordDoneSound.SoundId = "rbxassetid://5419098675"
+wordDoneSound.Volume = 0.6
+wordDoneSound.Parent = SoundService
+
+--// 🖼️ GUI
 local screenGui = Instance.new("ScreenGui", playerGui)
 screenGui.ResetOnSpawn = false
 screenGui.Name = "NoticeGui"
@@ -40,10 +46,9 @@ task.spawn(function()
 end)
 
 -- Bo góc
-local corner = Instance.new("UICorner", frame)
-corner.CornerRadius = UDim.new(0, 16)
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 16)
 
--- TextLabel chạy từng chữ
+-- Text hiển thị
 local textLabel = Instance.new("TextLabel", frame)
 textLabel.Size = UDim2.new(1, -20, 0, 120)
 textLabel.Position = UDim2.new(0, 10, 0, 10)
@@ -56,15 +61,14 @@ textLabel.TextYAlignment = Enum.TextYAlignment.Top
 textLabel.Text = ""
 textLabel.RichText = true
 
--- Gradient màu
-local uiGradient = Instance.new("UIGradient")
+-- Gradient chữ
+local uiGradient = Instance.new("UIGradient", textLabel)
 uiGradient.Color = ColorSequence.new{
 	ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 128)),
 	ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 170, 255)),
 	ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 128))
 }
 uiGradient.Rotation = 45
-uiGradient.Parent = textLabel
 
 -- Nút X
 local closeBtn = Instance.new("TextButton", frame)
@@ -85,9 +89,11 @@ ytBtn.BackgroundColor3 = Color3.fromRGB(255, 0, 128)
 ytBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 ytBtn.Visible = false
 Instance.new("UICorner", ytBtn).CornerRadius = UDim.new(0, 8)
-local ytStroke = Instance.new("UIStroke", ytBtn)
+local ytStroke = Instance.new("UIStroke")
 ytStroke.Thickness = 2
 ytStroke.Color = Color3.fromRGB(0, 255, 0)
+ytStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+ytStroke.Parent = ytBtn
 
 -- Nút Discord
 local dcBtn = Instance.new("TextButton", frame)
@@ -98,11 +104,13 @@ dcBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
 dcBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 dcBtn.Visible = false
 Instance.new("UICorner", dcBtn).CornerRadius = UDim.new(0, 8)
-local dcStroke = Instance.new("UIStroke", dcBtn)
+local dcStroke = Instance.new("UIStroke")
 dcStroke.Thickness = 2
 dcStroke.Color = Color3.fromRGB(0, 255, 0)
+dcStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+dcStroke.Parent = dcBtn
 
--- 🌟 Tween hiện GUI + lắc nhẹ
+-- 🌟 Hiện frame + hiệu ứng lắc
 TweenService:Create(frame, TweenInfo.new(0.5, Enum.EasingStyle.Back), {
 	BackgroundTransparency = 0
 }):Play()
@@ -116,12 +124,16 @@ task.spawn(function()
 	frame.Position = originalPos
 end)
 
--- ✨ Gõ từng chữ + phát âm thanh
+-- ✨ Text gõ từng chữ + âm thanh
 local fullText = "Notice YQANTG Gui is now closed for some reasons, I hope everyone understands, I will try to update the latest version..."
 task.spawn(function()
 	for i = 1, #fullText do
+		local char = string.sub(fullText, i, i)
 		textLabel.Text = "<i>" .. string.sub(fullText, 1, i) .. "</i>"
 		typeSound:Play()
+		if char == " " or char == "." then
+			wordDoneSound:Play()
+		end
 		task.wait(0.07)
 	end
 	closeBtn.Visible = true
@@ -146,7 +158,7 @@ dcBtn.MouseButton1Click:Connect(function()
 	copyToClipboard("https://discord.gg/qn5mnrzK")
 end)
 
--- ❌ Đóng
+-- ❌ Đóng GUI
 closeBtn.MouseButton1Click:Connect(function()
 	TweenService:Create(frame, TweenInfo.new(0.4), {
 		BackgroundTransparency = 1
