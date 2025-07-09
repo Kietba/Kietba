@@ -38,7 +38,7 @@ title.BackgroundTransparency = 1
 title.TextColor3 = Color3.new(1, 1, 1)
 title.Font = Enum.Font.GothamBold
 title.TextSize = 28
-title.Text = "Loop Dash Tech Rework Script By YQANTG"
+title.Text = " YQANTG GUI"
 title.ZIndex = 7
 title.TextStrokeTransparency = 0.6
 title.Parent = container
@@ -89,9 +89,7 @@ noBtn.Parent = promptFrame
 -- Dòng chữ
 local lines = {
         "-- Script by YQANTG",
-	"-- Turn Off Shiftlock To Use Loop Dash Tech",
-        "-- Fix Teleport ( Teleport = Remove )",
-	"-- Ping 100 ↓",
+	"-- New : Back Dash",
 }
 
 -- Vùng hiển thị text
@@ -173,7 +171,7 @@ end
 yesBtn.MouseButton1Click:Connect(function()
 	playClickSound()
 	pcall(function()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Loop%20Dash%20Rework%20Script"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/My%20gui%20edit"))()
 	end)
 	closeIntro()
 end)

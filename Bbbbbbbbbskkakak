@@ -1,0 +1,81 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
+
+-- 📦 GUI setup
+local gui = Instance.new("ScreenGui")
+gui.Name = "SpeedGUI"
+gui.ResetOnSpawn = false
+gui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+
+-- 🏃‍♂️ Speed Frame
+local speedFrame = Instance.new("Frame")
+speedFrame.Size = UDim2.new(0, 200, 0, 100)
+speedFrame.Position = UDim2.new(0, 20, 0.6, 0)
+speedFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+speedFrame.Parent = gui
+Instance.new("UICorner", speedFrame).CornerRadius = UDim.new(0, 12)
+
+-- ✏️ TextBox nhập tốc độ
+local speedInput = Instance.new("TextBox")
+speedInput.PlaceholderText = "Tốc độ (vd: 2)"
+speedInput.Size = UDim2.new(0, 180, 0, 35)
+speedInput.Position = UDim2.new(0, 10, 0, 10)
+speedInput.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+speedInput.TextColor3 = Color3.new(1, 1, 1)
+speedInput.Font = Enum.Font.Gotham
+speedInput.TextSize = 16
+speedInput.Parent = speedFrame
+Instance.new("UICorner", speedInput).CornerRadius = UDim.new(0, 8)
+
+-- 🔘 Toggle Button
+local speedButton = Instance.new("TextButton")
+speedButton.Size = UDim2.new(0, 180, 0, 35)
+speedButton.Position = UDim2.new(0, 10, 0, 55)
+speedButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+speedButton.TextColor3 = Color3.new(1, 1, 1)
+speedButton.Text = "Speed: OFF"
+speedButton.Font = Enum.Font.GothamBold
+speedButton.TextSize = 16
+speedButton.AutoButtonColor = false
+speedButton.Parent = speedFrame
+Instance.new("UICorner", speedButton).CornerRadius = UDim.new(0, 8)
+
+-- ⚙️ Speed Logic
+local speedEnabled = false
+local moveConnection = nil
+
+speedButton.MouseButton1Click:Connect(function()
+	speedEnabled = not speedEnabled
+	if speedEnabled then
+		local speedMult = tonumber(speedInput.Text)
+		if not speedMult or speedMult <= 0 then
+			warn("Nhập tốc độ hợp lệ > 0")
+			speedEnabled = false
+			return
+		end
+
+		speedButton.Text = "Speed: ON"
+		speedButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+
+		if moveConnection then moveConnection:Disconnect() end
+		moveConnection = RunService.RenderStepped:Connect(function()
+			local char = LocalPlayer.Character
+			local hrp = char and char:FindFirstChild("HumanoidRootPart")
+			local hum = char and char:FindFirstChildOfClass("Humanoid")
+			if not (char and hrp and hum and hum.MoveDirection.Magnitude > 0) then return end
+
+			local direction = hum.MoveDirection.Unit
+			hrp.CFrame = hrp.CFrame + (direction * speedMult)
+		end)
+	else
+		speedButton.Text = "Speed: OFF"
+		speedButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+		if moveConnection then
+			moveConnection:Disconnect()
+			moveConnection = nil
+		end
+	end
+end)
+
+return gui

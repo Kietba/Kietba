@@ -1,0 +1,153 @@
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local LocalPlayer = Players.LocalPlayer
+local UserId = tostring(LocalPlayer.UserId)
+
+local correctKey = "7f81gtuoinsgvwhannxzjopw"
+local getKeyLink = "https://link-hub.net/1345289/2hMr86cMmBJL"
+
+-- ✅ Lưu key vào bộ nhớ toàn cục trong phiên chơi
+_G.SavedKeys = _G.SavedKeys or {}
+if _G.SavedKeys[UserId] then
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Logo%20YQANTG"))()
+	return
+end
+
+local gui = Instance.new("ScreenGui", LocalPlayer:WaitForChild("PlayerGui"))
+gui.Name = "KeyGUI"
+gui.ResetOnSpawn = false
+
+local bg = Instance.new("Frame", gui)
+bg.Size = UDim2.new(1,0,1,0)
+bg.BackgroundColor3 = Color3.fromRGB(0,0,0)
+bg.BackgroundTransparency = 0
+
+local intro = Instance.new("TextLabel", bg)
+intro.Size = UDim2.new(0.6,0,0.2,0)
+intro.Position = UDim2.new(0.5,0,0.5,0)
+intro.AnchorPoint = Vector2.new(0.5, 0.5)
+intro.Text = "🔐 Get Key"
+intro.TextColor3 = Color3.fromRGB(255, 255, 100)
+intro.TextTransparency = 1
+intro.Font = Enum.Font.GothamBlack
+intro.TextScaled = true
+intro.BackgroundTransparency = 1
+
+TweenService:Create(intro, TweenInfo.new(1, Enum.EasingStyle.Back), {
+	TextTransparency = 0,
+	Position = UDim2.new(0.5, 0, 0.45, 0)
+}):Play()
+
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0.8, 0, 0.45, 0)
+frame.Position = UDim2.new(0.5, 0, 1.5, 0)
+frame.AnchorPoint = Vector2.new(0.5, 0.5)
+frame.BackgroundColor3 = Color3.fromRGB(25, 25, 40)
+frame.BackgroundTransparency = 0.1
+frame.Visible = false
+Instance.new("UICorner", frame)
+
+local close = Instance.new("TextButton", frame)
+close.Size = UDim2.new(0.13, 0, 0.18, 0)
+close.Position = UDim2.new(0.87, 0, 0, 0)
+close.Text = "✖"
+close.Font = Enum.Font.GothamSemibold
+close.TextScaled = true
+close.TextColor3 = Color3.fromRGB(255, 180, 180)
+close.BackgroundColor3 = Color3.fromRGB(120, 30, 50)
+Instance.new("UICorner", close)
+
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1,0,0.2,0)
+title.Text = "🔑 Get Key Access"
+title.Font = Enum.Font.GothamSemibold
+title.TextScaled = true
+title.TextColor3 = Color3.fromRGB(100, 200, 255)
+title.BackgroundTransparency = 1
+
+local box = Instance.new("TextBox", frame)
+box.PlaceholderText = "Enter your key..."
+box.Size = UDim2.new(0.9, 0, 0.2, 0)
+box.Position = UDim2.new(0.05, 0, 0.3, 0)
+box.BackgroundColor3 = Color3.fromRGB(35,35,60)
+box.TextColor3 = Color3.fromRGB(255,255,255)
+box.TextScaled = true
+box.Font = Enum.Font.GothamSemibold
+Instance.new("UICorner", box)
+
+local copy = Instance.new("TextButton", frame)
+copy.Text = "🌐 Copy Link"
+copy.Size = UDim2.new(0.4, 0, 0.15, 0)
+copy.Position = UDim2.new(0.05, 0, 0.55, 0)
+copy.BackgroundColor3 = Color3.fromRGB(90, 120, 255)
+copy.TextColor3 = Color3.fromRGB(255, 255, 255)
+copy.TextScaled = true
+copy.Font = Enum.Font.GothamSemibold
+Instance.new("UICorner", copy)
+
+local submit = Instance.new("TextButton", frame)
+submit.Text = "Submit"
+submit.Size = UDim2.new(0.45, 0, 0.15, 0)
+submit.Position = UDim2.new(0.5, 0, 0.55, 0)
+submit.BackgroundColor3 = Color3.fromRGB(0, 200, 140)
+submit.TextColor3 = Color3.fromRGB(255,255,255)
+submit.TextScaled = true
+submit.Font = Enum.Font.GothamSemibold
+Instance.new("UICorner", submit)
+
+local result = Instance.new("TextLabel", frame)
+result.Size = UDim2.new(1, 0, 0.2, 0)
+result.Position = UDim2.new(0, 0, 0.75, 0)
+result.Text = "HI"
+result.TextColor3 = Color3.fromRGB(0, 255, 100)
+result.TextScaled = true
+result.BackgroundTransparency = 1
+result.Font = Enum.Font.GothamSemibold
+
+task.delay(2.5, function()
+	TweenService:Create(intro, TweenInfo.new(1), {
+		TextTransparency = 1,
+		Position = UDim2.new(0.5, 0, 0.35, 0)
+	}):Play()
+	task.wait(1)
+	frame.Visible = true
+	TweenService:Create(frame, TweenInfo.new(0.6, Enum.EasingStyle.Back), {
+		Position = UDim2.new(0.5, 0, 0.5, 0)
+	}):Play()
+end)
+
+copy.MouseButton1Click:Connect(function()
+	setclipboard(getKeyLink)
+	copy.Text = "Copied!"
+	task.delay(1.5, function()
+		copy.Text = "Copy Link"
+	end)
+end)
+
+submit.MouseButton1Click:Connect(function()
+	if box.Text == correctKey then
+		result.Text = "✔️ Key Valid"
+
+		-- ✅ Lưu vào bộ nhớ toàn cục theo UserId
+		_G.SavedKeys[UserId] = true
+
+		-- 🔥 Chạy script sau khi nhập key đúng
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/Logo%20YQANTG"))()
+
+		task.wait(2)
+		gui:Destroy()
+	else
+		result.Text = "Invalid Key"
+		task.delay(1.5, function()
+			result.Text = ""
+		end)
+	end
+end)
+
+close.MouseButton1Click:Connect(function()
+	TweenService:Create(frame, TweenInfo.new(0.5), {Position = UDim2.new(0.5, 0, 1.5, 0)}):Play()
+	TweenService:Create(bg, TweenInfo.new(0.5), {BackgroundTransparency = 1}):Play()
+	task.delay(0.5, function()
+		gui:Destroy()
+	end)
+end)

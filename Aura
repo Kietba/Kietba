@@ -1,0 +1,117 @@
+local player = game.Players.LocalPlayer
+local char = player.Character or player.CharacterAdded:Wait()
+local humanoid = char:WaitForChild("Humanoid")
+
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "AuraGui"
+local toggle = Instance.new("TextButton", gui)
+
+toggle.Size = UDim2.new(0, 160, 0, 50)
+toggle.Position = UDim2.new(0.5, -80, 0.8, 0)
+toggle.Text = "Aura: OFF"
+toggle.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggle.TextScaled = true
+toggle.Font = Enum.Font.GothamBold
+toggle.BackgroundTransparency = 0.1
+toggle.Active = true
+toggle.Draggable = true
+
+-- Biến điều khiển
+local auraOn = false
+local debounce = false
+local dragging = false
+local auraHighlight = nil
+local auraColorTime = 0
+local auraParticles = {}
+
+-- Kéo không nhấn nhầm
+toggle.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		dragging = false
+	end
+end)
+
+toggle.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+		dragging = true
+	end
+end)
+
+toggle.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		if not dragging and not debounce then
+			debounce = true
+			auraOn = not auraOn
+			toggle.Text = auraOn and "Aura: ON" or "Aura: OFF"
+
+			if auraOn then
+				-- Phát animation intro
+				local anim = Instance.new("Animation")
+				anim.AnimationId = "rbxassetid://114586157428274"
+				local track = humanoid:LoadAnimation(anim)
+				track:Play()
+
+				-- Highlight viền cơ thể
+				auraHighlight = Instance.new("Highlight")
+				auraHighlight.Adornee = char
+				auraHighlight.FillTransparency = 1
+				auraHighlight.OutlineTransparency = 0
+				auraHighlight.OutlineColor = Color3.fromRGB(255, 0, 255)
+				auraHighlight.Parent = char
+
+				-- Tỏa khói đen ra xung quanh
+				for _, partName in pairs({"UpperTorso", "LowerTorso", "HumanoidRootPart"}) do
+					local part = char:FindFirstChild(partName)
+					if part then
+						local att = Instance.new("Attachment", part)
+						local particle = Instance.new("ParticleEmitter", att)
+						particle.Name = "DarkAura"
+						particle.Rate = 30
+						particle.Lifetime = NumberRange.new(1.2, 2)
+						particle.Speed = NumberRange.new(2, 5)
+						particle.Size = NumberSequence.new({
+							NumberSequenceKeypoint.new(0, 3),
+							NumberSequenceKeypoint.new(1, 0)
+						})
+						particle.Transparency = NumberSequence.new({
+							NumberSequenceKeypoint.new(0, 0.1),
+							NumberSequenceKeypoint.new(1, 1)
+						})
+						particle.Color = ColorSequence.new(Color3.fromRGB(15, 15, 15))
+						particle.Rotation = NumberRange.new(0, 360)
+						particle.RotSpeed = NumberRange.new(-90, 90)
+						particle.SpreadAngle = Vector2.new(180, 180)
+						particle.LockedToPart = false
+						particle.ZOffset = -1
+						table.insert(auraParticles, particle)
+					end
+				end
+			else
+				-- Tắt hiệu ứng
+				if auraHighlight then
+					auraHighlight:Destroy()
+					auraHighlight = nil
+				end
+				for _, p in pairs(auraParticles) do
+					if p then p:Destroy() end
+				end
+				auraParticles = {}
+			end
+
+			wait(0.3)
+			debounce = false
+		end
+	end
+end)
+
+-- Viền aura đổi màu mượt
+game:GetService("RunService").RenderStepped:Connect(function(dt)
+	if auraOn and auraHighlight then
+		auraColorTime += dt * 0.25
+		local r = math.sin(auraColorTime) * 127 + 128
+		local g = math.sin(auraColorTime + 2) * 127 + 128
+		local b = math.sin(auraColorTime + 4) * 127 + 128
+		auraHighlight.OutlineColor = Color3.fromRGB(r, g, b)
+	end
+end)

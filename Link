@@ -1,0 +1,3 @@
+YQANTG Gui Script : 
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/YQANTG%20REALSE.txt"))()

@@ -1,0 +1,132 @@
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Animation ID cần chặn
+local targetAnimationId = "rbxassetid://10470389827"
+local blockEnabled = false
+local isDragging = false
+
+-- GUI chính
+local screenGui = Instance.new("ScreenGui", playerGui)
+screenGui.Name = "BlockAnimationGui"
+screenGui.ResetOnSpawn = false
+
+-- Nút Toggle
+local button = Instance.new("TextButton")
+button.Name = "ToggleBlock"
+button.Text = "🔴 IVSBBlock: OFF"
+button.Size = UDim2.new(0, 250, 0, 50)
+button.Position = UDim2.new(0.5, -70, 0.5, -25)
+button.AnchorPoint = Vector2.new(0.5, 0.5)
+button.BackgroundColor3 = Color3.fromRGB(40, 40, 60)
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+button.TextSize = 20
+button.Font = Enum.Font.GothamBold
+button.BorderSizePixel = 0
+button.BackgroundTransparency = 0.1
+button.Active = true
+button.Draggable = true
+button.Parent = screenGui
+button.AutoButtonColor = false -- không thay đổi khi hover
+
+-- Hiệu ứng mượt khi hiện lên
+button.Size = UDim2.new(0, 140, 0, 300)
+button.Visible = false
+task.wait(0.2)
+button.Visible = true
+game:GetService("TweenService"):Create(button, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+	Size = UDim2.new(0, 180, 0, 50)
+}):Play()
+
+-- Hiệu ứng đẹp nhẹ
+local uicorner = Instance.new("UICorner", button)
+uicorner.CornerRadius = UDim.new(0, 12)
+
+local shadow = Instance.new("UIStroke", button)
+shadow.Thickness = 2
+shadow.Color = Color3.fromRGB(150, 100, 255)
+
+-- Hàm chặn animation
+local function blockAnimation(humanoid)
+	for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do
+		if track.Animation and track.Animation.AnimationId == targetAnimationId then
+			track:Stop()
+			track:Destroy()
+		end
+	end
+end
+
+-- Kích hoạt hoặc huỷ kích hoạt
+local blockConnection = nil
+local function toggleBlock(state)
+	blockEnabled = state
+	button.Text = blockEnabled and "🟢 IVSBBlock: ON" or "🔴 IVSBBlock: OFF"
+
+	if blockEnabled then
+		local function startBlocking()
+			local char = player.Character or player.CharacterAdded:Wait()
+			local humanoid = char:WaitForChild("Humanoid")
+			-- Dừng liên tục để chống spam
+			task.spawn(function()
+				while blockEnabled and humanoid and humanoid.Parent do
+					blockAnimation(humanoid)
+					task.wait(0.05)
+				end
+			end)
+			-- Dừng ngay khi animation bị phát
+			blockConnection = humanoid.AnimationPlayed:Connect(function(track)
+				if track.Animation and track.Animation.AnimationId == targetAnimationId then
+					track:Stop()
+					track:Destroy()
+				end
+			end)
+		end
+
+		startBlocking()
+		player.CharacterAdded:Connect(function()
+			if blockEnabled then
+				task.wait(1)
+				startBlocking()
+			end
+		end)
+	else
+		-- Ngắt kết nối nếu tắt
+		if blockConnection then
+			blockConnection:Disconnect()
+			blockConnection = nil
+		end
+	end
+end
+
+-- Bảo vệ khỏi bị bấm khi đang kéo
+local userInput = game:GetService("UserInputService")
+
+local dragStarted = false
+button.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		dragStarted = true
+	end
+end)
+
+button.InputEnded:Connect(function(input)
+	if dragStarted and (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
+		if not isDragging then
+			-- Nếu không kéo thì mới toggle
+			toggleBlock(not blockEnabled)
+		end
+		dragStarted = false
+	end
+end)
+
+-- Chống bấm nhầm khi kéo
+button.MouseEnter:Connect(function()
+	isDragging = false
+end)
+
+button.MouseMoved:Connect(function()
+	isDragging = true
+end)
+
+button.MouseLeave:Connect(function()
+	isDragging = false
+end)

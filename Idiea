@@ -1,0 +1,88 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local HRP = character:WaitForChild("HumanoidRootPart")
+
+-- Danh sách Animation ID
+local animIds = {
+    "rbxassetid://17268716692", -- Giai đoạn 1
+    "rbxassetid://17086696468", -- Giai đoạn 2
+    "rbxassetid://17086698204", -- Giai đoạn 3
+    "rbxassetid://17268390209", -- Giai đoạn 4
+    "rbxassetid://17108971736", -- Giai đoạn 5
+    "rbxassetid://17108973561", -- Giai đoạn 6
+    "rbxassetid://17108974875", -- Giai đoạn 7
+    "rbxassetid://15443688094", -- ✅ Giai đoạn 8 (sau 5s)
+}
+
+local idleTimer = 0
+local lastPos = HRP.Position
+local animStartTime = 0
+local stage = 0
+local currentTrack = nil
+
+RunService.RenderStepped:Connect(function(dt)
+    local currentPos = HRP.Position
+    local moved = (currentPos - lastPos).Magnitude > 0.1
+    lastPos = currentPos
+
+    local state = humanoid:GetState()
+    local isJumping = state == Enum.HumanoidStateType.Jumping or state == Enum.HumanoidStateType.Freefall
+
+    if moved or isJumping then
+        -- Reset nếu có di chuyển hoặc nhảy
+        idleTimer = 0
+        animStartTime = 0
+        stage = 0
+        if currentTrack then
+            currentTrack:Stop()
+            currentTrack = nil
+        end
+    else
+        idleTimer += dt
+        local elapsed = tick() - animStartTime
+
+        -- Giai đoạn 1: Sau 5s
+        if idleTimer >= 5 and stage == 0 then
+            local animator = humanoid:FindFirstChildOfClass("Animator")
+            if animator then
+                local anim = Instance.new("Animation")
+                anim.AnimationId = animIds[1]
+                currentTrack = animator:LoadAnimation(anim)
+                currentTrack:Play()
+                animStartTime = tick()
+                stage = 1
+            end
+        end
+
+        -- Giai đoạn 2 đến 7: mỗi cái cách 10 giây
+        if stage >= 1 and stage <= 6 and elapsed >= 10 then
+            if currentTrack then currentTrack:Stop() end
+            local animator = humanoid:FindFirstChildOfClass("Animator")
+            if animator then
+                local anim = Instance.new("Animation")
+                anim.AnimationId = animIds[stage + 1]
+                currentTrack = animator:LoadAnimation(anim)
+                currentTrack:Play()
+                animStartTime = tick()
+                stage += 1
+            end
+        end
+
+        -- Giai đoạn 8: sau 5s từ giai đoạn 7
+        if stage == 7 and elapsed >= 5 then
+            if currentTrack then currentTrack:Stop() end
+            local animator = humanoid:FindFirstChildOfClass("Animator")
+            if animator then
+                local anim = Instance.new("Animation")
+                anim.AnimationId = animIds[8]
+                currentTrack = animator:LoadAnimation(anim)
+                currentTrack:Play()
+                stage = 8 -- Kết thúc chuỗi
+            end
+        end
+    end
+end)
