@@ -136,8 +136,8 @@ task.spawn(function()
 		resultText.Text = "Find game"
 		showResultIcon(true)
 		createCloseButton()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/2.lua"))()
-	else
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/Kietba/Kietba/refs/heads/main/YQANTG%20GUI%20EDIT"))()
+     else
 		resultText.Text = "Can't find game"
 		showResultIcon(false)
 		createCloseButton()
