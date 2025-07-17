@@ -364,7 +364,7 @@ local function checkAnims()
 							break
 						elseif special and dist <= specialRange and not m1CatchEnabled then
 							fireRemote("KeyPress")
-							task.delay(1, function()
+							task.delay(0.6, function()
 								fireRemote("KeyRelease")
 							end)
 							break
